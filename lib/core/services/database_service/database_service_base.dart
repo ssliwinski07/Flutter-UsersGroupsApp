@@ -7,5 +7,5 @@ abstract interface class DatabaseServiceBase {
   Future<List<T>> getDataFromDatabase<T>(
       {required String table,
       required T Function(Map<String, dynamic>) fromJson});
-  Future<void> dropDatabase();
+  Future<bool> dropDatabase();
 }

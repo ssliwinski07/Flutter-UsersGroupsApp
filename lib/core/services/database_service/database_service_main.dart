@@ -3,7 +3,6 @@ import 'package:sqflite/sqflite.dart';
 
 import 'database_service_base.dart';
 import 'package:flutter_users_group_app/helpers/helpers.dart';
-import 'package:flutter_users_group_app/models/models.dart';
 
 class DatabaseServiceMain implements DatabaseServiceBase {
   @override
@@ -25,12 +24,16 @@ class DatabaseServiceMain implements DatabaseServiceBase {
   }
 
   @override
-  Future<void> dropDatabase() async {
+  Future<bool> dropDatabase() async {
     final String path = await getDatabasesPath();
     final String dbPath = join(path, databaseName);
 
-    await deleteDatabase(dbPath);
-    print("Database deleted: $dbPath");
+    try {
+      await deleteDatabase(dbPath);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   @override
