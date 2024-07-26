@@ -1,0 +1,14 @@
+import 'package:get_it/get_it.dart';
+
+import 'package:flutter_users_group_app/core/services/services.dart';
+import 'package:flutter_users_group_app/helpers/constans/constans.dart';
+
+class ServiceLocator {
+  GetIt get getInstance => GetIt.instance;
+
+  //Core services
+  Future<void> initializeCoreServices() async {
+    getInstance.registerSingleton<DatabaseServiceBase>(DatabaseServiceMain(),
+        instanceName: mainInstance);
+  }
+}

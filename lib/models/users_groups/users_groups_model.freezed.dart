@@ -22,7 +22,6 @@ UsersGroupsModel _$UsersGroupsModelFromJson(Map<String, dynamic> json) {
 mixin _$UsersGroupsModel {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  List<UserModel> get users => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +35,7 @@ abstract class $UsersGroupsModelCopyWith<$Res> {
           UsersGroupsModel value, $Res Function(UsersGroupsModel) then) =
       _$UsersGroupsModelCopyWithImpl<$Res, UsersGroupsModel>;
   @useResult
-  $Res call({int id, String name, List<UserModel> users});
+  $Res call({int id, String name});
 }
 
 /// @nodoc
@@ -54,7 +53,6 @@ class _$UsersGroupsModelCopyWithImpl<$Res, $Val extends UsersGroupsModel>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? users = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -65,10 +63,6 @@ class _$UsersGroupsModelCopyWithImpl<$Res, $Val extends UsersGroupsModel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      users: null == users
-          ? _value.users
-          : users // ignore: cast_nullable_to_non_nullable
-              as List<UserModel>,
     ) as $Val);
   }
 }
@@ -81,7 +75,7 @@ abstract class _$$UsersGroupsModelImplCopyWith<$Res>
       __$$UsersGroupsModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, List<UserModel> users});
+  $Res call({int id, String name});
 }
 
 /// @nodoc
@@ -97,7 +91,6 @@ class __$$UsersGroupsModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? users = null,
   }) {
     return _then(_$UsersGroupsModelImpl(
       id: null == id
@@ -108,10 +101,6 @@ class __$$UsersGroupsModelImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      users: null == users
-          ? _value._users
-          : users // ignore: cast_nullable_to_non_nullable
-              as List<UserModel>,
     ));
   }
 }
@@ -119,11 +108,7 @@ class __$$UsersGroupsModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UsersGroupsModelImpl implements _UsersGroupsModel {
-  _$UsersGroupsModelImpl(
-      {required this.id,
-      required this.name,
-      required final List<UserModel> users})
-      : _users = users;
+  _$UsersGroupsModelImpl({required this.id, required this.name});
 
   factory _$UsersGroupsModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UsersGroupsModelImplFromJson(json);
@@ -132,17 +117,10 @@ class _$UsersGroupsModelImpl implements _UsersGroupsModel {
   final int id;
   @override
   final String name;
-  final List<UserModel> _users;
-  @override
-  List<UserModel> get users {
-    if (_users is EqualUnmodifiableListView) return _users;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_users);
-  }
 
   @override
   String toString() {
-    return 'UsersGroupsModel(id: $id, name: $name, users: $users)';
+    return 'UsersGroupsModel(id: $id, name: $name)';
   }
 
   @override
@@ -151,14 +129,12 @@ class _$UsersGroupsModelImpl implements _UsersGroupsModel {
         (other.runtimeType == runtimeType &&
             other is _$UsersGroupsModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality().equals(other._users, _users));
+            (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, const DeepCollectionEquality().hash(_users));
+  int get hashCode => Object.hash(runtimeType, id, name);
 
   @JsonKey(ignore: true)
   @override
@@ -178,8 +154,7 @@ class _$UsersGroupsModelImpl implements _UsersGroupsModel {
 abstract class _UsersGroupsModel implements UsersGroupsModel {
   factory _UsersGroupsModel(
       {required final int id,
-      required final String name,
-      required final List<UserModel> users}) = _$UsersGroupsModelImpl;
+      required final String name}) = _$UsersGroupsModelImpl;
 
   factory _UsersGroupsModel.fromJson(Map<String, dynamic> json) =
       _$UsersGroupsModelImpl.fromJson;
@@ -188,8 +163,6 @@ abstract class _UsersGroupsModel implements UsersGroupsModel {
   int get id;
   @override
   String get name;
-  @override
-  List<UserModel> get users;
   @override
   @JsonKey(ignore: true)
   _$$UsersGroupsModelImplCopyWith<_$UsersGroupsModelImpl> get copyWith =>

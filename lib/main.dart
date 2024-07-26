@@ -1,8 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'helpers/helpers.dart';
 
-void main() {
+import 'helpers/helpers.dart';
+import 'core/core.dart';
+import 'models/models.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final serviceLocator = ServiceLocator();
+
+  Future<void> initServices() async {
+    await serviceLocator.initializeCoreServices();
+  }
+
+  await initServices();
+
+  DatabaseServiceBase databaseServiceBase = serviceLocator
+      .getInstance<DatabaseServiceBase>(instanceName: mainInstance);
+
+  await databaseServiceBase.initilizeDatabase();
+
+  UsersGroupsModel userGroup = UsersGroupsModel(id: 1, name: 'Admins');
+  UserModel user = UserModel(
+      id: 1, name: 'Szymon', lastName: 'Sliwinski', phoneNumber: '797 944 945');
+
+  final userToJson = user.toJson();
+
+  await databaseServiceBase.insertToDatabase(
+    json: userToJson,
+    tableName: usersTable,
+  );
+
+  final List<UsersGroupsModel> resultUsersGroups =
+      await databaseServiceBase.getDataFromDatabase(
+    table: usersGroupsTable,
+    fromJson: (e) => UsersGroupsModel.fromJson(e),
+  );
+
+  final List<UserModel> resultUsers =
+      await databaseServiceBase.getDataFromDatabase(
+    table: usersTable,
+    fromJson: (e) => UserModel.fromJson(e),
+  );
+
+  print(resultUsersGroups);
+  print('---------');
+  print(resultUsers);
+
   runApp(const MyApp());
 }
 
@@ -35,7 +80,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'BE'),
     );
   }
 }

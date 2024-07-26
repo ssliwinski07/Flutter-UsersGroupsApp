@@ -11,9 +11,6 @@ _$UsersGroupsModelImpl _$$UsersGroupsModelImplFromJson(
     _$UsersGroupsModelImpl(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
-      users: (json['users'] as List<dynamic>)
-          .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
 Map<String, dynamic> _$$UsersGroupsModelImplToJson(
@@ -21,5 +18,4 @@ Map<String, dynamic> _$$UsersGroupsModelImplToJson(
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'users': instance.users,
     };
