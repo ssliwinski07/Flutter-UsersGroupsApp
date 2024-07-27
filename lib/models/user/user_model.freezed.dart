@@ -23,7 +23,9 @@ mixin _$UserModel {
   int? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
-  String get phoneNumber => throw _privateConstructorUsedError;
+  String get streetName => throw _privateConstructorUsedError;
+  String get postalCode => throw _privateConstructorUsedError;
+  String get cityName => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +38,13 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({int? id, String name, String lastName, String phoneNumber});
+  $Res call(
+      {int? id,
+      String name,
+      String lastName,
+      String streetName,
+      String postalCode,
+      String cityName});
 }
 
 /// @nodoc
@@ -55,7 +63,9 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? id = freezed,
     Object? name = null,
     Object? lastName = null,
-    Object? phoneNumber = null,
+    Object? streetName = null,
+    Object? postalCode = null,
+    Object? cityName = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -70,9 +80,17 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String,
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
+      streetName: null == streetName
+          ? _value.streetName
+          : streetName // ignore: cast_nullable_to_non_nullable
+              as String,
+      postalCode: null == postalCode
+          ? _value.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      cityName: null == cityName
+          ? _value.cityName
+          : cityName // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -86,7 +104,13 @@ abstract class _$$UserModelImplCopyWith<$Res>
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? id, String name, String lastName, String phoneNumber});
+  $Res call(
+      {int? id,
+      String name,
+      String lastName,
+      String streetName,
+      String postalCode,
+      String cityName});
 }
 
 /// @nodoc
@@ -103,7 +127,9 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = null,
     Object? lastName = null,
-    Object? phoneNumber = null,
+    Object? streetName = null,
+    Object? postalCode = null,
+    Object? cityName = null,
   }) {
     return _then(_$UserModelImpl(
       id: freezed == id
@@ -118,9 +144,17 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String,
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
+      streetName: null == streetName
+          ? _value.streetName
+          : streetName // ignore: cast_nullable_to_non_nullable
+              as String,
+      postalCode: null == postalCode
+          ? _value.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      cityName: null == cityName
+          ? _value.cityName
+          : cityName // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -133,7 +167,9 @@ class _$UserModelImpl implements _UserModel {
       {this.id,
       required this.name,
       required this.lastName,
-      required this.phoneNumber});
+      required this.streetName,
+      required this.postalCode,
+      required this.cityName});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -145,11 +181,15 @@ class _$UserModelImpl implements _UserModel {
   @override
   final String lastName;
   @override
-  final String phoneNumber;
+  final String streetName;
+  @override
+  final String postalCode;
+  @override
+  final String cityName;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, lastName: $lastName, phoneNumber: $phoneNumber)';
+    return 'UserModel(id: $id, name: $name, lastName: $lastName, streetName: $streetName, postalCode: $postalCode, cityName: $cityName)';
   }
 
   @override
@@ -161,13 +201,18 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber));
+            (identical(other.streetName, streetName) ||
+                other.streetName == streetName) &&
+            (identical(other.postalCode, postalCode) ||
+                other.postalCode == postalCode) &&
+            (identical(other.cityName, cityName) ||
+                other.cityName == cityName));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, lastName, phoneNumber);
+  int get hashCode => Object.hash(
+      runtimeType, id, name, lastName, streetName, postalCode, cityName);
 
   @JsonKey(ignore: true)
   @override
@@ -188,7 +233,9 @@ abstract class _UserModel implements UserModel {
       {final int? id,
       required final String name,
       required final String lastName,
-      required final String phoneNumber}) = _$UserModelImpl;
+      required final String streetName,
+      required final String postalCode,
+      required final String cityName}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
@@ -200,7 +247,11 @@ abstract class _UserModel implements UserModel {
   @override
   String get lastName;
   @override
-  String get phoneNumber;
+  String get streetName;
+  @override
+  String get postalCode;
+  @override
+  String get cityName;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>

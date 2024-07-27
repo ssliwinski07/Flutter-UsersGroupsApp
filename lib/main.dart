@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -26,14 +28,31 @@ void main() async {
 
   // GroupModel userGroup = GroupModel(id: 1, name: 'Admins');
   // UserModel user = UserModel(
-  //     id: 1, name: 'Szymon', lastName: 'Sliwinski', phoneNumber: '797 944 945');
+  //   name: 'Frania',
+  //   lastName: 'Sliwinski',
+  //   cityName: 'Katowice',
+  //   postalCode: '40-101',
+  //   streetName: 'Chorzowska 214/83',
+  // );
 
   // final userToJson = user.toJson();
 
-  // await databaseServiceBase.insertToDatabase(
+  // final userId = await databaseServiceBase.insertToDatabase(
   //   json: userToJson,
   //   tableName: usersTable,
   // );
+
+  // UserGroupModel userGroup = UserGroupModel(userId: userId, groupId: 4);
+
+  // final userGroupToJson = userGroup.toJson();
+
+  // await databaseServiceBase.insertToDatabase(
+  //     json: userGroupToJson, tableName: usersGroupsTable);
+
+  // final resultUserGroup = await databaseServiceBase.getDataFromTable(
+  //     table: usersGroupsTable, fromJson: (e) => UserGroupModel.fromJson(e));
+
+  // print(resultUserGroup);
 
   // final List<GroupModel> resultUsersGroups =
   //     await databaseServiceBase.getDataFromDatabase(
@@ -42,14 +61,11 @@ void main() async {
   // );
 
   // final List<UserModel> resultUsers =
-  //     await databaseServiceBase.getDataFromDatabase(
+  //     await databaseServiceBase.getDataFromTable(
   //   table: usersTable,
   //   fromJson: (e) => UserModel.fromJson(e),
   // );
-
-  // print(resultUsersGroups);
-  // print('---------');
-  // print(resultUsers);
+  //print(resultUsers);
 
   runApp(const MyApp());
 }

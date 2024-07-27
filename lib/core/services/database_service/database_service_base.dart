@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 abstract interface class DatabaseServiceBase {
   Future<Database> initilizeDatabase();
-  Future<void> insertToDatabase(
+  Future<int> insertToDatabase(
       {required Map<String, dynamic> json, required String tableName});
   Future<List<T>> getDataFromTable<T>(
       {required String table,

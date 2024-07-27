@@ -11,9 +11,19 @@ class DatabaseServiceMain implements DatabaseServiceBase {
       join(await getDatabasesPath(), databaseName),
       onCreate: (db, version) async {
         await db.execute(
-            'CREATE TABLE $usersTable(id INTEGER PRIMARY KEY, name TEXT, lastName TEXT, phoneNumber TEXT)');
+          '''CREATE TABLE $usersTable(
+            id INTEGER PRIMARY KEY, 
+            name TEXT, 
+            lastName TEXT, 
+            streetName TEXT,
+            postalCode TEXT,
+            cityName TEXT
+            )''',
+        );
         await db.execute(
-          'CREATE TABLE $groupsTable(id INTEGER PRIMARY KEY, name TEXT)',
+          '''CREATE TABLE $groupsTable(
+          id INTEGER PRIMARY KEY, 
+          name TEXT)''',
         );
         await db.execute(
           '''CREATE TABLE $usersGroupsTable(
@@ -45,14 +55,16 @@ class DatabaseServiceMain implements DatabaseServiceBase {
   }
 
   @override
-  Future<void> insertToDatabase(
+  Future<int> insertToDatabase(
       {required Map<String, dynamic> json, required String tableName}) async {
     final db = await initilizeDatabase();
 
-    await db.insert(tableName, json,
+    final id = await db.insert(tableName, json,
         conflictAlgorithm: ConflictAlgorithm.replace);
 
     await db.close();
+
+    return id;
   }
 
   @override
