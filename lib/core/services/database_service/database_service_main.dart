@@ -11,10 +11,18 @@ class DatabaseServiceMain implements DatabaseServiceBase {
       join(await getDatabasesPath(), databaseName),
       onCreate: (db, version) async {
         await db.execute(
-          'CREATE TABLE $usersTable(id INTEGER PRIMARY KEY, name TEXT, lastName TEXT, phoneNumber TEXT);CREATE TABLE $usersGroupsTable(id INTEGER PRIMARY KEY, name TEXT)',
+            'CREATE TABLE $usersTable(id INTEGER PRIMARY KEY, name TEXT, lastName TEXT, phoneNumber TEXT)');
+        await db.execute(
+          'CREATE TABLE $groupsTable(id INTEGER PRIMARY KEY, name TEXT)',
         );
         await db.execute(
-          'CREATE TABLE $usersGroupsTable(id INTEGER PRIMARY KEY, name TEXT)',
+          '''CREATE TABLE $usersGroupsTable(
+              userId INTEGER, 
+              groupId INTEGER, 
+              PRIMARY KEY (userId, groupId),
+              FOREIGN KEY (userId) REFERENCES $usersTable (id),
+              FOREIGN KEY (groupId) REFERENCES $groupsTable (id)  
+              )''',
         );
       },
       version: 1,
@@ -48,7 +56,7 @@ class DatabaseServiceMain implements DatabaseServiceBase {
   }
 
   @override
-  Future<List<T>> getDataFromDatabase<T>({
+  Future<List<T>> getDataFromTable<T>({
     required String table,
     required T Function(Map<String, dynamic>) fromJson,
   }) async {

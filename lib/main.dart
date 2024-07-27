@@ -21,32 +21,35 @@ void main() async {
 
   await databaseServiceBase.initilizeDatabase();
 
-  UsersGroupsModel userGroup = UsersGroupsModel(id: 1, name: 'Admins');
-  UserModel user = UserModel(
-      id: 1, name: 'Szymon', lastName: 'Sliwinski', phoneNumber: '797 944 945');
+  //final result = await databaseServiceBase.getDataFromTable(
+  //   table: usersGroupsTable, fromJson: (e) => UserGroupModel.fromJson(e));
 
-  final userToJson = user.toJson();
+  // GroupModel userGroup = GroupModel(id: 1, name: 'Admins');
+  // UserModel user = UserModel(
+  //     id: 1, name: 'Szymon', lastName: 'Sliwinski', phoneNumber: '797 944 945');
 
-  await databaseServiceBase.insertToDatabase(
-    json: userToJson,
-    tableName: usersTable,
-  );
+  // final userToJson = user.toJson();
 
-  final List<UsersGroupsModel> resultUsersGroups =
-      await databaseServiceBase.getDataFromDatabase(
-    table: usersGroupsTable,
-    fromJson: (e) => UsersGroupsModel.fromJson(e),
-  );
+  // await databaseServiceBase.insertToDatabase(
+  //   json: userToJson,
+  //   tableName: usersTable,
+  // );
 
-  final List<UserModel> resultUsers =
-      await databaseServiceBase.getDataFromDatabase(
-    table: usersTable,
-    fromJson: (e) => UserModel.fromJson(e),
-  );
+  // final List<GroupModel> resultUsersGroups =
+  //     await databaseServiceBase.getDataFromDatabase(
+  //   table: usersGroupsTable,
+  //   fromJson: (e) => GroupModel.fromJson(e),
+  // );
 
-  print(resultUsersGroups);
-  print('---------');
-  print(resultUsers);
+  // final List<UserModel> resultUsers =
+  //     await databaseServiceBase.getDataFromDatabase(
+  //   table: usersTable,
+  //   fromJson: (e) => UserModel.fromJson(e),
+  // );
+
+  // print(resultUsersGroups);
+  // print('---------');
+  // print(resultUsers);
 
   runApp(const MyApp());
 }

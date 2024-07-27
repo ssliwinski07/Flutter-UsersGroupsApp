@@ -3,5 +3,6 @@ const mainInstance = 'mainInstance';
 
 // Database consts
 const databaseName = 'users_groups.db';
-const usersTable = 'users';
-const usersGroupsTable = 'users_group';
+const usersTable = 'Users';
+const groupsTable = 'Groups';
+const usersGroupsTable = 'UsersGroups';

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'users_groups_model.dart';
+part of 'group_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,34 +14,34 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-UsersGroupsModel _$UsersGroupsModelFromJson(Map<String, dynamic> json) {
-  return _UsersGroupsModel.fromJson(json);
+GroupModel _$GroupModelFromJson(Map<String, dynamic> json) {
+  return _GroupModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$UsersGroupsModel {
-  int get id => throw _privateConstructorUsedError;
+mixin _$GroupModel {
+  int? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UsersGroupsModelCopyWith<UsersGroupsModel> get copyWith =>
+  $GroupModelCopyWith<GroupModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UsersGroupsModelCopyWith<$Res> {
-  factory $UsersGroupsModelCopyWith(
-          UsersGroupsModel value, $Res Function(UsersGroupsModel) then) =
-      _$UsersGroupsModelCopyWithImpl<$Res, UsersGroupsModel>;
+abstract class $GroupModelCopyWith<$Res> {
+  factory $GroupModelCopyWith(
+          GroupModel value, $Res Function(GroupModel) then) =
+      _$GroupModelCopyWithImpl<$Res, GroupModel>;
   @useResult
-  $Res call({int id, String name});
+  $Res call({int? id, String name});
 }
 
 /// @nodoc
-class _$UsersGroupsModelCopyWithImpl<$Res, $Val extends UsersGroupsModel>
-    implements $UsersGroupsModelCopyWith<$Res> {
-  _$UsersGroupsModelCopyWithImpl(this._value, this._then);
+class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
+    implements $GroupModelCopyWith<$Res> {
+  _$GroupModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -51,14 +51,14 @@ class _$UsersGroupsModelCopyWithImpl<$Res, $Val extends UsersGroupsModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? name = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -68,35 +68,35 @@ class _$UsersGroupsModelCopyWithImpl<$Res, $Val extends UsersGroupsModel>
 }
 
 /// @nodoc
-abstract class _$$UsersGroupsModelImplCopyWith<$Res>
-    implements $UsersGroupsModelCopyWith<$Res> {
-  factory _$$UsersGroupsModelImplCopyWith(_$UsersGroupsModelImpl value,
-          $Res Function(_$UsersGroupsModelImpl) then) =
-      __$$UsersGroupsModelImplCopyWithImpl<$Res>;
+abstract class _$$GroupModelImplCopyWith<$Res>
+    implements $GroupModelCopyWith<$Res> {
+  factory _$$GroupModelImplCopyWith(
+          _$GroupModelImpl value, $Res Function(_$GroupModelImpl) then) =
+      __$$GroupModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name});
+  $Res call({int? id, String name});
 }
 
 /// @nodoc
-class __$$UsersGroupsModelImplCopyWithImpl<$Res>
-    extends _$UsersGroupsModelCopyWithImpl<$Res, _$UsersGroupsModelImpl>
-    implements _$$UsersGroupsModelImplCopyWith<$Res> {
-  __$$UsersGroupsModelImplCopyWithImpl(_$UsersGroupsModelImpl _value,
-      $Res Function(_$UsersGroupsModelImpl) _then)
+class __$$GroupModelImplCopyWithImpl<$Res>
+    extends _$GroupModelCopyWithImpl<$Res, _$GroupModelImpl>
+    implements _$$GroupModelImplCopyWith<$Res> {
+  __$$GroupModelImplCopyWithImpl(
+      _$GroupModelImpl _value, $Res Function(_$GroupModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? name = null,
   }) {
-    return _then(_$UsersGroupsModelImpl(
-      id: null == id
+    return _then(_$GroupModelImpl(
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -107,27 +107,27 @@ class __$$UsersGroupsModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$UsersGroupsModelImpl implements _UsersGroupsModel {
-  _$UsersGroupsModelImpl({required this.id, required this.name});
+class _$GroupModelImpl implements _GroupModel {
+  _$GroupModelImpl({this.id, required this.name});
 
-  factory _$UsersGroupsModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$UsersGroupsModelImplFromJson(json);
+  factory _$GroupModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GroupModelImplFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override
   final String name;
 
   @override
   String toString() {
-    return 'UsersGroupsModel(id: $id, name: $name)';
+    return 'GroupModel(id: $id, name: $name)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UsersGroupsModelImpl &&
+            other is _$GroupModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name));
   }
@@ -139,32 +139,30 @@ class _$UsersGroupsModelImpl implements _UsersGroupsModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UsersGroupsModelImplCopyWith<_$UsersGroupsModelImpl> get copyWith =>
-      __$$UsersGroupsModelImplCopyWithImpl<_$UsersGroupsModelImpl>(
-          this, _$identity);
+  _$$GroupModelImplCopyWith<_$GroupModelImpl> get copyWith =>
+      __$$GroupModelImplCopyWithImpl<_$GroupModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UsersGroupsModelImplToJson(
+    return _$$GroupModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _UsersGroupsModel implements UsersGroupsModel {
-  factory _UsersGroupsModel(
-      {required final int id,
-      required final String name}) = _$UsersGroupsModelImpl;
+abstract class _GroupModel implements GroupModel {
+  factory _GroupModel({final int? id, required final String name}) =
+      _$GroupModelImpl;
 
-  factory _UsersGroupsModel.fromJson(Map<String, dynamic> json) =
-      _$UsersGroupsModelImpl.fromJson;
+  factory _GroupModel.fromJson(Map<String, dynamic> json) =
+      _$GroupModelImpl.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override
   String get name;
   @override
   @JsonKey(ignore: true)
-  _$$UsersGroupsModelImplCopyWith<_$UsersGroupsModelImpl> get copyWith =>
+  _$$GroupModelImplCopyWith<_$GroupModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,20 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'users_groups_model.dart';
+part of 'group_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UsersGroupsModelImpl _$$UsersGroupsModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$UsersGroupsModelImpl(
-      id: (json['id'] as num).toInt(),
+_$GroupModelImpl _$$GroupModelImplFromJson(Map<String, dynamic> json) =>
+    _$GroupModelImpl(
+      id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String,
     );
 
-Map<String, dynamic> _$$UsersGroupsModelImplToJson(
-        _$UsersGroupsModelImpl instance) =>
+Map<String, dynamic> _$$GroupModelImplToJson(_$GroupModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
