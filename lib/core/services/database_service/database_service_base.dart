@@ -1,5 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
+import 'package:flutter_users_group_app/models/models.dart';
+
 abstract interface class DatabaseServiceBase {
   Future<Database> initilizeDatabase();
   Future<int> insertToDatabase(
@@ -9,8 +11,6 @@ abstract interface class DatabaseServiceBase {
     required T Function(Map<String, dynamic>) fromJson,
   });
   Future<bool> dropDatabase();
-  Future<List<T>> getDataFromQuery<T>({
-    required String query,
-    required T Function(Map<String, dynamic>) fromJson,
-  });
+  Future<List<UserWithGroupModel>> getUsersWithGroup();
+  Future<List<UserModel>> getUsersForGroup({required int groupId});
 }

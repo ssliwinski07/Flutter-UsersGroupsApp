@@ -1,3 +1,6 @@
+import 'package:flutter_users_group_app/models/models.dart';
+import 'package:flutter_users_group_app/models/user/user_model.dart';
+import 'package:flutter_users_group_app/models/user/user_with_group_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -79,7 +82,53 @@ class DatabaseServiceMain implements DatabaseServiceBase {
   }
 
   @override
-  Future<List<T>> getDataFromQuery<T>({
+  Future<List<UserWithGroupModel>> getUsersWithGroup() async {
+    const query = ''' SELECT
+    $usersTable.userId,
+    $usersTable.userName,
+    $usersTable.lastName,
+    $usersTable.streetName,
+    $usersTable.postalCode,
+    $usersTable.cityName,
+    $groupsTable.groupId,
+    $groupsTable.groupName
+    FROM $usersTable
+    JOIN $usersGroupsTable ON $usersGroupsTable.userId = $usersTable.userId
+    JOIN $groupsTable ON $groupsTable.groupId = $usersGroupsTable.groupId
+    ''';
+
+    final data = await _getDataFromQuery(
+        query: query,
+        fromJson: (e) => UserWithGroupModel(
+              user: UserModel.fromJson(e),
+              group: GroupModel.fromJson(e),
+            ));
+
+    return data;
+  }
+
+  @override
+  Future<List<UserModel>> getUsersForGroup({required int groupId}) async {
+    String query = ''' SELECT
+    $usersTable.userId,
+    $usersTable.userName,
+    $usersTable.lastName,
+    $usersTable.streetName,
+    $usersTable.postalCode,
+    $usersTable.cityName
+    FROM $usersTable
+    JOIN $usersGroupsTable ON $usersGroupsTable.userId = $usersTable.userId
+    JOIN $groupsTable ON $groupsTable.groupId = $usersGroupsTable.groupId
+    WHERE $groupsTable.groupId = $groupId
+    ''';
+
+    final data = await _getDataFromQuery(
+        query: query, fromJson: (e) => UserModel.fromJson(e));
+
+    return data;
+  }
+
+  Future<List<T>> _getDataFromQuery<T>({
     required String query,
     required T Function(Map<String, dynamic>) fromJson,
   }) async {

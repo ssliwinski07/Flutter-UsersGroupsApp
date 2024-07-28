@@ -43,7 +43,9 @@ void main() async {
   final result = await databaseServiceBase.getDataFromTable(
       table: groupsTable, fromJson: (e) => GroupModel.fromJson(e));
 
-  // print(result);
+  final result2 = await databaseServiceBase.getUsersForGroup(groupId: 1);
+
+  print(result2);
 
   // List<String> listOfUsers = [];
 
