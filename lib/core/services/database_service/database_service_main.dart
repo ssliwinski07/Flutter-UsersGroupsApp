@@ -12,8 +12,8 @@ class DatabaseServiceMain implements DatabaseServiceBase {
       onCreate: (db, version) async {
         await db.execute(
           '''CREATE TABLE $usersTable(
-            id INTEGER PRIMARY KEY, 
-            name TEXT, 
+            userId INTEGER PRIMARY KEY, 
+            userName TEXT, 
             lastName TEXT, 
             streetName TEXT,
             postalCode TEXT,
@@ -22,8 +22,8 @@ class DatabaseServiceMain implements DatabaseServiceBase {
         );
         await db.execute(
           '''CREATE TABLE $groupsTable(
-          id INTEGER PRIMARY KEY, 
-          name TEXT)''',
+          groupId INTEGER PRIMARY KEY, 
+          groupName TEXT)''',
         );
         await db.execute(
           '''CREATE TABLE $usersGroupsTable(
@@ -76,5 +76,20 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     final List<Map<String, dynamic>> dataMap = await db.query(table);
 
     return dataMap.map((e) => fromJson(e)).toList();
+  }
+
+  @override
+  Future<List<T>> getDataFromQuery<T>({
+    required String query,
+    required T Function(Map<String, dynamic>) fromJson,
+  }) async {
+    final Database db = await initilizeDatabase();
+    final List<Map<String, dynamic>> dataMap = await db.rawQuery(query);
+
+    return dataMap.map(
+      (e) {
+        return fromJson(e);
+      },
+    ).toList();
   }
 }

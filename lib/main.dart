@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_users_group_app/models/groups/group_model.dart';
 
 import 'helpers/helpers.dart';
 import 'core/core.dart';
@@ -23,55 +24,154 @@ void main() async {
 
   await databaseServiceBase.initilizeDatabase();
 
-  //final result = await databaseServiceBase.getDataFromTable(
-  //   table: usersGroupsTable, fromJson: (e) => UserGroupModel.fromJson(e));
+  //// Custom query to get list od groups with users or list of users with their group ////
 
-  // GroupModel userGroup = GroupModel(id: 1, name: 'Admins');
-  // UserModel user = UserModel(
-  //   name: 'Frania',
-  //   lastName: 'Sliwinski',
-  //   cityName: 'Katowice',
-  //   postalCode: '40-101',
-  //   streetName: 'Chorzowska 214/83',
-  // );
+  // const queryForUsersAndGroups = ''' SELECT
+  // $usersTable.userId,
+  // $usersTable.userName,
+  // $usersTable.lastName,
+  // $usersTable.streetName,
+  // $usersTable.postalCode,
+  // $usersTable.cityName,
+  // $groupsTable.groupId,
+  // $groupsTable.groupName
+  // FROM $usersTable
+  // JOIN $usersGroupsTable ON $usersGroupsTable.userId = $usersTable.userId
+  // JOIN $groupsTable ON $groupsTable.groupId = $usersGroupsTable.groupId
+  //  ''';
 
-  // final userToJson = user.toJson();
+  final result = await databaseServiceBase.getDataFromTable(
+      table: groupsTable, fromJson: (e) => GroupModel.fromJson(e));
 
-  // final userId = await databaseServiceBase.insertToDatabase(
-  //   json: userToJson,
-  //   tableName: usersTable,
-  // );
+  // print(result);
 
-  // UserGroupModel userGroup = UserGroupModel(userId: userId, groupId: 4);
+  // List<String> listOfUsers = [];
 
-  // final userGroupToJson = userGroup.toJson();
+  // for (GroupWithUsersModel item in result) {
+  //   List<UserModel> users = item.users;
+  //   String groupName = item.group.groupName;
+  //   if (groupName == 'Administrators') {
+  //     List<String> elements = users.map((e) => e.userName).toList();
 
-  // await databaseServiceBase.insertToDatabase(
-  //     json: userGroupToJson, tableName: usersGroupsTable);
+  //     String element = elements.join(', ');
 
-  // final resultUserGroup = await databaseServiceBase.getDataFromTable(
-  //     table: usersGroupsTable, fromJson: (e) => UserGroupModel.fromJson(e));
+  //     listOfUsers.add(element);
+  //   }
+  // }
 
-  // print(resultUserGroup);
+  //print('List of users in admin group: ${listOfUsers.join(', ')}');
 
-  // final List<GroupModel> resultUsersGroups =
-  //     await databaseServiceBase.getDataFromDatabase(
-  //   table: usersGroupsTable,
-  //   fromJson: (e) => GroupModel.fromJson(e),
-  // );
+  //// Displaying users, groups and users_groups data in json format ////
 
-  // final List<UserModel> resultUsers =
-  //     await databaseServiceBase.getDataFromTable(
+  // final users = await databaseServiceBase.getDataFromTable(
   //   table: usersTable,
   //   fromJson: (e) => UserModel.fromJson(e),
   // );
-  //print(resultUsers);
+  // final groups = await databaseServiceBase.getDataFromTable(
+  //   table: groupsTable,
+  //   fromJson: (e) => GroupModel.fromJson(e),
+  // );
+  // final usersGroups = await databaseServiceBase.getDataFromTable(
+  //   table: usersGroupsTable,
+  //   fromJson: (e) => UserGroupModel.fromJson(e),
+  // );
 
-  runApp(const MyApp());
+  // final usersToJsonList = [];
+  // final groupsToJson = [];
+  // final usersGroupsToJson = [];
+
+  // for (UserModel user in users) {
+  //   usersToJsonList.add(JsonEncoder.withIndent('  ').convert(user.toJson()));
+  // }
+
+  // for (GroupModel group in groups) {
+  //   groupsToJson.add(JsonEncoder.withIndent('  ').convert(group.toJson()));
+  // }
+
+  // for (UserGroupModel userGroup in usersGroups) {
+  //   usersGroupsToJson
+  //       .add(JsonEncoder.withIndent('  ').convert(userGroup.toJson()));
+  // }
+
+  // print(usersToJsonList);
+  // print(groupsToJson);
+  // print(usersGroupsToJson);
+
+  //// Mocking data and adding it to database ////
+
+  // final user = UserModel(
+  //   userName: 'Szymon',
+  //   lastName: 'Sliwinski',
+  //   streetName: 'Chorzowska 214/83',
+  //   postalCode: '41-101',
+  //   cityName: 'Katowice',
+  // );
+  // final user2 = UserModel(
+  //   userName: 'Gosia',
+  //   lastName: 'Sliwinski',
+  //   streetName: 'Chorzowska 214/83',
+  //   postalCode: '41-101',
+  //   cityName: 'Katowice',
+  // );
+  // final user3 = UserModel(
+  //   userName: 'Frania',
+  //   lastName: 'Sliwinski',
+  //   streetName: 'Chorzowska 214/83',
+  //   postalCode: '41-101',
+  //   cityName: 'Katowice',
+  // );
+
+  // final userToJson = user.toJson();
+  // final user2ToJson = user2.toJson();
+  // final user3ToJson = user3.toJson();
+
+  // final group = GroupModel(groupName: 'Administrators');
+  // final group2 = GroupModel(groupName: 'Guests');
+
+  // final groupToJson = group.toJson();
+  // final group2ToJson = group2.toJson();
+
+  // final userId = await databaseServiceBase.insertToDatabase(
+  //     json: userToJson, tableName: usersTable);
+  // print('ID usera user: $userId');
+  // final userId2 = await databaseServiceBase.insertToDatabase(
+  //     json: user2ToJson, tableName: usersTable);
+  // print('ID usera user2: $userId2');
+  // final userId3 = await databaseServiceBase.insertToDatabase(
+  //     json: user3ToJson, tableName: usersTable);
+  // print('ID usera user2: $userId3');
+
+  // final groupId = await databaseServiceBase.insertToDatabase(
+  //     tableName: groupsTable, json: groupToJson);
+  // print('ID grupy administrator: $groupId');
+  // final groupId2 = await databaseServiceBase.insertToDatabase(
+  //     tableName: groupsTable, json: group2ToJson);
+  // print('ID grupy administrator: $groupId2');
+
+  // final userGroup = UserGroupModel(userId: userId, groupId: groupId);
+  // final userGroup2 = UserGroupModel(userId: userId2, groupId: groupId2);
+  // final userGroup3 = UserGroupModel(userId: userId3, groupId: groupId);
+
+  // final userGroupToJson = userGroup.toJson();
+  // final userGroupToJson2 = userGroup2.toJson();
+  // final userGroupToJson3 = userGroup3.toJson();
+
+  // await databaseServiceBase.insertToDatabase(
+  //     json: userGroupToJson, tableName: usersGroupsTable);
+  // await databaseServiceBase.insertToDatabase(
+  //     json: userGroupToJson2, tableName: usersGroupsTable);
+  // await databaseServiceBase.insertToDatabase(
+  //     json: userGroupToJson3, tableName: usersGroupsTable);
+
+  runApp(MyApp(
+    items: result,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key, required this.items});
+
+  List<GroupModel> items;
 
   // This widget is the root of your application.
   @override
@@ -99,13 +199,18 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'BE'),
+      home: MyHomePage(
+        title: 'BE',
+        items: items,
+      ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title, required this.items});
+
+  List<GroupModel> items;
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -157,31 +262,13 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              context.localize.hi,
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+        child: ListView.builder(
+            itemCount: widget.items.length,
+            itemBuilder: (BuildContext context, int index) {
+              var items = widget.items[index];
+              var group = items.groupName;
+              return Text(group);
+            }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,

@@ -9,7 +9,7 @@ part 'group_with_users_model.g.dart';
 class GroupWithUsersModel with _$GroupWithUsersModel {
   factory GroupWithUsersModel({
     required GroupModel group,
-    required List<UserModel> user,
+    required List<UserModel> users,
   }) = _GroupWithUsersModel;
 
   factory GroupWithUsersModel.fromJson(Map<String, Object?> json) =>

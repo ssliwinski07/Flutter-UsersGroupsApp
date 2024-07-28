@@ -20,8 +20,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
-  int? get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  int? get userId => throw _privateConstructorUsedError;
+  String get userName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
   String get streetName => throw _privateConstructorUsedError;
   String get postalCode => throw _privateConstructorUsedError;
@@ -39,8 +39,8 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
-      {int? id,
-      String name,
+      {int? userId,
+      String userName,
       String lastName,
       String streetName,
       String postalCode,
@@ -60,21 +60,21 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? name = null,
+    Object? userId = freezed,
+    Object? userName = null,
     Object? lastName = null,
     Object? streetName = null,
     Object? postalCode = null,
     Object? cityName = null,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as int?,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
               as String,
       lastName: null == lastName
           ? _value.lastName
@@ -105,8 +105,8 @@ abstract class _$$UserModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int? id,
-      String name,
+      {int? userId,
+      String userName,
       String lastName,
       String streetName,
       String postalCode,
@@ -124,21 +124,21 @@ class __$$UserModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? name = null,
+    Object? userId = freezed,
+    Object? userName = null,
     Object? lastName = null,
     Object? streetName = null,
     Object? postalCode = null,
     Object? cityName = null,
   }) {
     return _then(_$UserModelImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as int?,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
               as String,
       lastName: null == lastName
           ? _value.lastName
@@ -164,8 +164,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserModelImpl implements _UserModel {
   _$UserModelImpl(
-      {this.id,
-      required this.name,
+      {this.userId,
+      required this.userName,
       required this.lastName,
       required this.streetName,
       required this.postalCode,
@@ -175,9 +175,9 @@ class _$UserModelImpl implements _UserModel {
       _$$UserModelImplFromJson(json);
 
   @override
-  final int? id;
+  final int? userId;
   @override
-  final String name;
+  final String userName;
   @override
   final String lastName;
   @override
@@ -189,7 +189,7 @@ class _$UserModelImpl implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, lastName: $lastName, streetName: $streetName, postalCode: $postalCode, cityName: $cityName)';
+    return 'UserModel(userId: $userId, userName: $userName, lastName: $lastName, streetName: $streetName, postalCode: $postalCode, cityName: $cityName)';
   }
 
   @override
@@ -197,8 +197,9 @@ class _$UserModelImpl implements _UserModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
             (identical(other.streetName, streetName) ||
@@ -211,8 +212,8 @@ class _$UserModelImpl implements _UserModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, lastName, streetName, postalCode, cityName);
+  int get hashCode => Object.hash(runtimeType, userId, userName, lastName,
+      streetName, postalCode, cityName);
 
   @JsonKey(ignore: true)
   @override
@@ -230,8 +231,8 @@ class _$UserModelImpl implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   factory _UserModel(
-      {final int? id,
-      required final String name,
+      {final int? userId,
+      required final String userName,
       required final String lastName,
       required final String streetName,
       required final String postalCode,
@@ -241,9 +242,9 @@ abstract class _UserModel implements UserModel {
       _$UserModelImpl.fromJson;
 
   @override
-  int? get id;
+  int? get userId;
   @override
-  String get name;
+  String get userName;
   @override
   String get lastName;
   @override

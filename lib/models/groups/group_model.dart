@@ -6,8 +6,8 @@ part 'group_model.g.dart';
 @freezed
 class GroupModel with _$GroupModel {
   factory GroupModel({
-    int? id,
-    required String name,
+    int? groupId,
+    required String groupName,
   }) = _GroupModel;
 
   factory GroupModel.fromJson(Map<String, Object?> json) =>

@@ -21,7 +21,7 @@ GroupWithUsersModel _$GroupWithUsersModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$GroupWithUsersModel {
   GroupModel get group => throw _privateConstructorUsedError;
-  List<UserModel> get user => throw _privateConstructorUsedError;
+  List<UserModel> get users => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $GroupWithUsersModelCopyWith<$Res> {
           GroupWithUsersModel value, $Res Function(GroupWithUsersModel) then) =
       _$GroupWithUsersModelCopyWithImpl<$Res, GroupWithUsersModel>;
   @useResult
-  $Res call({GroupModel group, List<UserModel> user});
+  $Res call({GroupModel group, List<UserModel> users});
 
   $GroupModelCopyWith<$Res> get group;
 }
@@ -54,16 +54,16 @@ class _$GroupWithUsersModelCopyWithImpl<$Res, $Val extends GroupWithUsersModel>
   @override
   $Res call({
     Object? group = null,
-    Object? user = null,
+    Object? users = null,
   }) {
     return _then(_value.copyWith(
       group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as GroupModel,
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
+      users: null == users
+          ? _value.users
+          : users // ignore: cast_nullable_to_non_nullable
               as List<UserModel>,
     ) as $Val);
   }
@@ -85,7 +85,7 @@ abstract class _$$GroupWithUsersModelImplCopyWith<$Res>
       __$$GroupWithUsersModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({GroupModel group, List<UserModel> user});
+  $Res call({GroupModel group, List<UserModel> users});
 
   @override
   $GroupModelCopyWith<$Res> get group;
@@ -103,16 +103,16 @@ class __$$GroupWithUsersModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? group = null,
-    Object? user = null,
+    Object? users = null,
   }) {
     return _then(_$GroupWithUsersModelImpl(
       group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as GroupModel,
-      user: null == user
-          ? _value._user
-          : user // ignore: cast_nullable_to_non_nullable
+      users: null == users
+          ? _value._users
+          : users // ignore: cast_nullable_to_non_nullable
               as List<UserModel>,
     ));
   }
@@ -122,25 +122,25 @@ class __$$GroupWithUsersModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$GroupWithUsersModelImpl implements _GroupWithUsersModel {
   _$GroupWithUsersModelImpl(
-      {required this.group, required final List<UserModel> user})
-      : _user = user;
+      {required this.group, required final List<UserModel> users})
+      : _users = users;
 
   factory _$GroupWithUsersModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$GroupWithUsersModelImplFromJson(json);
 
   @override
   final GroupModel group;
-  final List<UserModel> _user;
+  final List<UserModel> _users;
   @override
-  List<UserModel> get user {
-    if (_user is EqualUnmodifiableListView) return _user;
+  List<UserModel> get users {
+    if (_users is EqualUnmodifiableListView) return _users;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_user);
+    return EqualUnmodifiableListView(_users);
   }
 
   @override
   String toString() {
-    return 'GroupWithUsersModel(group: $group, user: $user)';
+    return 'GroupWithUsersModel(group: $group, users: $users)';
   }
 
   @override
@@ -149,13 +149,13 @@ class _$GroupWithUsersModelImpl implements _GroupWithUsersModel {
         (other.runtimeType == runtimeType &&
             other is _$GroupWithUsersModelImpl &&
             (identical(other.group, group) || other.group == group) &&
-            const DeepCollectionEquality().equals(other._user, _user));
+            const DeepCollectionEquality().equals(other._users, _users));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, group, const DeepCollectionEquality().hash(_user));
+      runtimeType, group, const DeepCollectionEquality().hash(_users));
 
   @JsonKey(ignore: true)
   @override
@@ -175,7 +175,7 @@ class _$GroupWithUsersModelImpl implements _GroupWithUsersModel {
 abstract class _GroupWithUsersModel implements GroupWithUsersModel {
   factory _GroupWithUsersModel(
       {required final GroupModel group,
-      required final List<UserModel> user}) = _$GroupWithUsersModelImpl;
+      required final List<UserModel> users}) = _$GroupWithUsersModelImpl;
 
   factory _GroupWithUsersModel.fromJson(Map<String, dynamic> json) =
       _$GroupWithUsersModelImpl.fromJson;
@@ -183,7 +183,7 @@ abstract class _GroupWithUsersModel implements GroupWithUsersModel {
   @override
   GroupModel get group;
   @override
-  List<UserModel> get user;
+  List<UserModel> get users;
   @override
   @JsonKey(ignore: true)
   _$$GroupWithUsersModelImplCopyWith<_$GroupWithUsersModelImpl> get copyWith =>
