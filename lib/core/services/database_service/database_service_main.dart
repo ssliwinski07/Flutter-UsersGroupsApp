@@ -8,7 +8,7 @@ import 'package:flutter_users_group_app/models/models.dart';
 class DatabaseServiceMain implements DatabaseServiceBase {
   @override
   Future<Database> initilizeDatabase() async {
-    final Future<Database> db = openDatabase(
+    final db = openDatabase(
       join(await getDatabasesPath(), databaseName),
       onCreate: (db, version) async {
         await db.execute(
@@ -38,7 +38,6 @@ class DatabaseServiceMain implements DatabaseServiceBase {
       },
       version: 1,
     );
-
     return db;
   }
 
@@ -53,19 +52,6 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     } catch (e) {
       return false;
     }
-  }
-
-  @override
-  Future<int> insertToDatabase(
-      {required Map<String, dynamic> json, required String tableName}) async {
-    final db = await initilizeDatabase();
-
-    final id = await db.insert(tableName, json,
-        conflictAlgorithm: ConflictAlgorithm.replace);
-
-    await db.close();
-
-    return id;
   }
 
   @override
@@ -84,7 +70,7 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     JOIN $groupsTable ON $groupsTable.groupId = $usersGroupsTable.groupId
     ''';
 
-    final data = await _getDataFromQuery(
+    final data = await _getListDataFromQuery(
         query: query,
         fromJson: (e) => UserWithGroupModel(
               user: UserModel.fromJson(e),
@@ -109,7 +95,7 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     WHERE $groupsTable.groupId = ?
     ''';
 
-    final data = await _getDataFromQuery(
+    final data = await _getListDataFromQuery(
       query: query,
       parameters: [groupId],
       fromJson: (e) => UserModel.fromJson(e),
@@ -122,6 +108,26 @@ class DatabaseServiceMain implements DatabaseServiceBase {
   Future<List<UserModel>> getUsers() async {
     final data = await _getDataFromTable(
         table: usersTable, fromJson: (e) => UserModel.fromJson(e));
+
+    return data;
+  }
+
+  @override
+  Future<GroupModel> getUserGroup({required int userId}) async {
+    String query = ''' SELECT 
+    $groupsTable.groupid,
+    $groupsTable.groupName 
+    FROM $groupsTable
+    JOIN $usersGroupsTable ON $usersGroupsTable.groupId = $groupsTable.groupId
+    JOIN $usersTable ON $usersTable.userId = $usersGroupsTable.userId
+    WHERE $usersGroupsTable.userId = ?
+    ''';
+
+    final data = await _getDataFromQuery(
+      query: query,
+      parameters: [userId],
+      fromJson: (e) => GroupModel.fromJson(e),
+    );
 
     return data;
   }
@@ -175,8 +181,29 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     );
   }
 
+  @override
+  Future<int> addGroup({required Map<String, dynamic> groupJson}) async {
+    final result = await _addToTable(json: groupJson, tableName: groupsTable);
+
+    return result;
+  }
+
+  @override
+  Future<void> addUser({
+    required Map<String, dynamic> userJson,
+    required int groupId,
+  }) async {
+    String query =
+        '''INSERT INTO $usersGroupsTable(userId, groupId) VALUES(?,?)''';
+
+    final result = await _addToTable(json: userJson, tableName: usersTable);
+
+    await _addToTableFromQuery(query: query, parameters: [result, groupId]);
+  }
+
   Future<void> _deleteDataFromBatchQueries({
     required Map<String, List<dynamic>> queries,
+    bool continueOnError = true,
   }) async {
     final db = await initilizeDatabase();
     final batch = db.batch();
@@ -185,9 +212,12 @@ class DatabaseServiceMain implements DatabaseServiceBase {
       batch.rawDelete(entry.key, entry.value);
     }
 
-    await batch.commit(noResult: true);
+    await batch.commit(noResult: true, continueOnError: continueOnError);
+
+    await db.close();
   }
 
+  //probably can be deleted
   Future<int> _deleteDataFromQuery({
     required String query,
     List<Object?>? parameters,
@@ -196,10 +226,12 @@ class DatabaseServiceMain implements DatabaseServiceBase {
 
     final result = await db.rawDelete(query, parameters);
 
+    await db.close();
+
     return result;
   }
 
-  Future<List<T>> _getDataFromQuery<T>({
+  Future<List<T>> _getListDataFromQuery<T>({
     required String query,
     List<Object?>? parameters,
     required T Function(Map<String, dynamic>) fromJson,
@@ -208,11 +240,26 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     final List<Map<String, dynamic>> dataMap =
         await db.rawQuery(query, parameters);
 
+    await db.close();
+
     return dataMap.map(
       (e) {
         return fromJson(e);
       },
     ).toList();
+  }
+
+  Future<T> _getDataFromQuery<T>({
+    required String query,
+    List<Object?>? parameters,
+    required T Function(Map<String, dynamic>) fromJson,
+  }) async {
+    final Database db = await initilizeDatabase();
+    List<Map<String, dynamic>> dataMap = await db.rawQuery(query, parameters);
+
+    await db.close();
+
+    return fromJson(dataMap.first);
   }
 
   Future<List<T>> _getDataFromTable<T>({
@@ -222,6 +269,33 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     final Database db = await initilizeDatabase();
     final List<Map<String, dynamic>> dataMap = await db.query(table);
 
+    await db.close();
+
     return dataMap.map((e) => fromJson(e)).toList();
+  }
+
+  Future<int> _addToTable(
+      {required Map<String, dynamic> json, required String tableName}) async {
+    final db = await initilizeDatabase();
+
+    final result = await db.insert(tableName, json,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+
+    await db.close();
+
+    return result;
+  }
+
+  Future<int> _addToTableFromQuery({
+    required String query,
+    List<Object?>? parameters,
+  }) async {
+    final db = await initilizeDatabase();
+
+    final result = await db.rawInsert(query, parameters);
+
+    await db.close();
+
+    return result;
   }
 }

@@ -4,16 +4,18 @@ import 'package:flutter_users_group_app/models/models.dart';
 
 abstract interface class DatabaseServiceBase {
   Future<Database> initilizeDatabase();
-  Future<int> insertToDatabase({
-    required Map<String, dynamic> json,
-    required String tableName,
-  });
   Future<bool> dropDatabase();
-  Future<List<UserWithGroupModel>> getUsersWithGroup();
-  Future<List<UserModel>> getUsersForGroup({required int groupId});
-  Future<List<GroupModel>> getUsersGroups();
-  Future<void> deleteUser({required int userId});
-  Future<void> deleteGroup({required int groupId});
-  Future<List<UserGroupModel>> getUsersAndGroups();
   Future<List<UserModel>> getUsers();
+  Future<GroupModel> getUserGroup({required int userId});
+  Future<void> addUser(
+      {required Map<String, dynamic> userJson, required int groupId});
+  Future<void> deleteUser({required int userId});
+  //probably can be deleted later
+  Future<List<UserWithGroupModel>> getUsersWithGroup();
+  Future<List<GroupModel>> getUsersGroups();
+  Future<List<UserModel>> getUsersForGroup({required int groupId});
+  Future<int> addGroup({required Map<String, dynamic> groupJson});
+  Future<void> deleteGroup({required int groupId});
+  // delete it later, it's not neccessary ;)
+  Future<List<UserGroupModel>> getUsersAndGroups();
 }

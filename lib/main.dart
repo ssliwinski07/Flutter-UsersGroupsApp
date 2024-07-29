@@ -40,15 +40,27 @@ void main() async {
   // JOIN $groupsTable ON $groupsTable.groupId = $usersGroupsTable.groupId
   //  ''';
 
-  final result2 = await databaseServiceBase.getUsers();
-
-  print(result2);
-
   //await databaseServiceBase.deleteGroup(groupId: 2);
-
   //// GETTINGS USERS GROUPS ////
+  ///
 
-  List<GroupModel> result = [];
+  // final user = UserModel(
+  //     userName: 'vlad',
+  //     lastName: 'smirnofski',
+  //     streetName: 'lesna 19',
+  //     postalCode: '41-943',
+  //     cityName: 'butom');
+
+  // final userToJson = user.toJson();
+
+  //await databaseServiceBase.addUser(userJson: userToJson, groupId: 2);
+  //userId: 4, userName: Michal, lastName: Bonk, streetName: lesna 19, postalCode: 41-943, cityName: butom)
+  //DSA
+
+  final result5 = await databaseServiceBase.getUsersGroups();
+
+  final result6 = await databaseServiceBase.getUsers();
+
   //final result2 = await databaseServiceBase.getUsersGroups();
 
   //print(result2);
@@ -172,14 +184,16 @@ void main() async {
   //     json: userGroupToJson3, tableName: usersGroupsTable);
 
   runApp(MyApp(
-    items: result,
+    items: result5,
+    items2: result6,
   ));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key, required this.items});
+  MyApp({super.key, required this.items, required this.items2});
 
   List<GroupModel> items;
+  List<UserModel> items2;
 
   // This widget is the root of your application.
   @override
@@ -210,15 +224,21 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(
         title: 'BE',
         items: items,
+        items2: items2,
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.title, required this.items});
+  MyHomePage(
+      {super.key,
+      required this.title,
+      required this.items,
+      required this.items2});
 
   List<GroupModel> items;
+  List<UserModel> items2;
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -268,16 +288,39 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: ListView.builder(
-            itemCount: widget.items.length,
-            itemBuilder: (BuildContext context, int index) {
-              var items = widget.items[index];
-              var group = items.groupName;
-              return Text(group);
-            }),
-      ),
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: GridView.count(
+        primary: false,
+        padding: const EdgeInsets.all(20),
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        crossAxisCount: 2,
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(8),
+            color: Colors.teal[100],
+            child: ListView.builder(
+                itemCount: widget.items.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var items = widget.items[index];
+                  var group = items.groupName;
+                  return Text(group);
+                }),
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            color: Colors.teal[200],
+            child: ListView.builder(
+                itemCount: widget.items2.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var items2 = widget.items2[index];
+                  var group = items2.userName;
+                  return Text(group);
+                }),
+          ),
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
