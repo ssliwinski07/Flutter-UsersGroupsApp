@@ -40,12 +40,18 @@ void main() async {
   // JOIN $groupsTable ON $groupsTable.groupId = $usersGroupsTable.groupId
   //  ''';
 
-  final result = await databaseServiceBase.getDataFromTable(
-      table: groupsTable, fromJson: (e) => GroupModel.fromJson(e));
-
-  final result2 = await databaseServiceBase.getUsersForGroup(groupId: 1);
+  final result2 = await databaseServiceBase.getUsers();
 
   print(result2);
+
+  //await databaseServiceBase.deleteGroup(groupId: 2);
+
+  //// GETTINGS USERS GROUPS ////
+
+  List<GroupModel> result = [];
+  //final result2 = await databaseServiceBase.getUsersGroups();
+
+  //print(result2);
 
   // List<String> listOfUsers = [];
 

@@ -1,11 +1,9 @@
-import 'package:flutter_users_group_app/models/models.dart';
-import 'package:flutter_users_group_app/models/user/user_model.dart';
-import 'package:flutter_users_group_app/models/user/user_with_group_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'database_service_base.dart';
 import 'package:flutter_users_group_app/helpers/helpers.dart';
+import 'package:flutter_users_group_app/models/models.dart';
 
 class DatabaseServiceMain implements DatabaseServiceBase {
   @override
@@ -71,17 +69,6 @@ class DatabaseServiceMain implements DatabaseServiceBase {
   }
 
   @override
-  Future<List<T>> getDataFromTable<T>({
-    required String table,
-    required T Function(Map<String, dynamic>) fromJson,
-  }) async {
-    final Database db = await initilizeDatabase();
-    final List<Map<String, dynamic>> dataMap = await db.query(table);
-
-    return dataMap.map((e) => fromJson(e)).toList();
-  }
-
-  @override
   Future<List<UserWithGroupModel>> getUsersWithGroup() async {
     const query = ''' SELECT
     $usersTable.userId,
@@ -119,26 +106,122 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     FROM $usersTable
     JOIN $usersGroupsTable ON $usersGroupsTable.userId = $usersTable.userId
     JOIN $groupsTable ON $groupsTable.groupId = $usersGroupsTable.groupId
-    WHERE $groupsTable.groupId = $groupId
+    WHERE $groupsTable.groupId = ?
     ''';
 
     final data = await _getDataFromQuery(
-        query: query, fromJson: (e) => UserModel.fromJson(e));
+      query: query,
+      parameters: [groupId],
+      fromJson: (e) => UserModel.fromJson(e),
+    );
 
     return data;
   }
 
+  @override
+  Future<List<UserModel>> getUsers() async {
+    final data = await _getDataFromTable(
+        table: usersTable, fromJson: (e) => UserModel.fromJson(e));
+
+    return data;
+  }
+
+  @override
+  Future<List<GroupModel>> getUsersGroups() async {
+    final data = await _getDataFromTable(
+        table: groupsTable, fromJson: (e) => GroupModel.fromJson(e));
+
+    return data;
+  }
+
+  //delete it later, won't be needed in prod ;)
+  @override
+  Future<List<UserGroupModel>> getUsersAndGroups() async {
+    final data = await _getDataFromTable(
+        table: usersGroupsTable, fromJson: (e) => UserGroupModel.fromJson(e));
+
+    return data;
+  }
+
+  @override
+  Future<void> deleteUser({required int userId}) async {
+    String deleteFromUsersTable = 'DELETE FROM $usersTable WHERE userId = ?';
+    String deleteFromUsersGroupsTable =
+        'DELETE FROM $usersGroupsTable WHERE userId = ?';
+
+    Map<String, List<dynamic>> queries = {
+      deleteFromUsersTable: [userId],
+      deleteFromUsersGroupsTable: [userId],
+    };
+
+    await _deleteDataFromBatchQueries(
+      queries: queries,
+    );
+  }
+
+  @override
+  Future<void> deleteGroup({required int groupId}) async {
+    String deleteFromGroupsTable = 'DELETE FROM $groupsTable WHERE groupId = ?';
+    String deleteFromUsersGroupsTable =
+        'DELETE FROM $usersGroupsTable WHERE groupId = ?';
+
+    Map<String, List<dynamic>> queries = {
+      deleteFromGroupsTable: [groupId],
+      deleteFromUsersGroupsTable: [groupId],
+    };
+
+    await _deleteDataFromBatchQueries(
+      queries: queries,
+    );
+  }
+
+  Future<void> _deleteDataFromBatchQueries({
+    required Map<String, List<dynamic>> queries,
+  }) async {
+    final db = await initilizeDatabase();
+    final batch = db.batch();
+
+    for (var entry in queries.entries) {
+      batch.rawDelete(entry.key, entry.value);
+    }
+
+    await batch.commit(noResult: true);
+  }
+
+  Future<int> _deleteDataFromQuery({
+    required String query,
+    List<Object?>? parameters,
+  }) async {
+    final Database db = await initilizeDatabase();
+
+    final result = await db.rawDelete(query, parameters);
+
+    return result;
+  }
+
   Future<List<T>> _getDataFromQuery<T>({
     required String query,
+    List<Object?>? parameters,
     required T Function(Map<String, dynamic>) fromJson,
   }) async {
     final Database db = await initilizeDatabase();
-    final List<Map<String, dynamic>> dataMap = await db.rawQuery(query);
+    final List<Map<String, dynamic>> dataMap =
+        await db.rawQuery(query, parameters);
 
     return dataMap.map(
       (e) {
         return fromJson(e);
       },
     ).toList();
+  }
+
+  Future<List<T>> _getDataFromTable<T>({
+    required String table,
+    required T Function(Map<String, dynamic>) fromJson,
+  }) async {
+    final Database db = await initilizeDatabase();
+    final List<Map<String, dynamic>> dataMap = await db.query(table);
+
+    return dataMap.map((e) => fromJson(e)).toList();
   }
 }
