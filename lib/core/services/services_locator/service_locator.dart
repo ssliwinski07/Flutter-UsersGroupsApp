@@ -8,7 +8,17 @@ class ServiceLocator {
 
   //Core services
   Future<void> initializeCoreServices() async {
-    getInstance.registerSingleton<DatabaseServiceBase>(DatabaseServiceMain(),
-        instanceName: mainInstance);
+    getInstance.registerSingleton<DatabaseServiceBase>(
+      DatabaseServiceMain(),
+      instanceName: mainInstance,
+    );
+  }
+
+  //UI services
+  Future<void> initializeUiServices() async {
+    getInstance.registerSingleton<MessageInfoServiceBase>(
+      MessageInfoServiceUi(),
+      instanceName: mainInstance,
+    );
   }
 }

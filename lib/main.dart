@@ -7,6 +7,9 @@ import 'package:flutter_users_group_app/models/groups/group_model.dart';
 import 'helpers/helpers.dart';
 import 'core/core.dart';
 import 'models/models.dart';
+import 'widgets/widgets.dart';
+import 'views/views.dart';
+import 'routes/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +18,7 @@ void main() async {
 
   Future<void> initServices() async {
     await serviceLocator.initializeCoreServices();
+    await serviceLocator.initializeUiServices();
   }
 
   await initServices();
@@ -183,91 +187,18 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final AppRouter _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: MainScreenView(title: "Users and groups"),
-    );
-  }
-}
-
-class MainScreenView extends StatefulWidget {
-  MainScreenView({
-    super.key,
-    required this.title,
-  });
-
-  final String title;
-
-  @override
-  State<MainScreenView> createState() => _MainScreenViewState();
-}
-
-class _MainScreenViewState extends State<MainScreenView> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.amberAccent,
-        title: Text(widget.title),
-      ),
-      body: Center(
-          child: GridView.count(
-        padding: const EdgeInsets.all(15),
-        crossAxisCount: 2,
-        mainAxisSpacing: 15,
-        crossAxisSpacing: 15,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(10),
-            color: Colors.teal,
-            child: Column(
-              children: <Widget>[
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.person,
-                    size: 30,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(context.localize.users)
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            color: Colors.teal,
-            child: Column(
-              children: <Widget>[
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.people,
-                    size: 30,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(context.localize.usersGroups)
-              ],
-            ),
-          )
-        ],
-      )),
+      routerConfig: _appRouter.router,
+      locale: Locale('pl'),
     );
   }
 }

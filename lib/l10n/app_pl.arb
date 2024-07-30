@@ -1,0 +1,10 @@
+{
+    "usersAndGroups" : "Użytkownicy i grupy",
+    "users" : "Użytkownicy",
+    "usersGroups" : "Grupy użytkowników",
+    "emptyListyinfo" : "Lista jest pusta, dodaj element...",
+    "userAdded" : "Dodano użytkownika",
+    "addingUserError" : "Błąd w trakcie dodawania użytkownika",
+    "userRemoved" : "Użytkownik został usunięty",
+    "removingUserError" : "Błąd w trakcie usuwania użytkownika"
+}

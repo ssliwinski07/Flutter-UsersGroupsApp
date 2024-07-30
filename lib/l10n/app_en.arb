@@ -1,6 +1,10 @@
 {
-    "hi" : "Hi, man",
     "usersAndGroups" : "Users and groups",
     "users" : "Users",
-    "usersGroups" : "Users groups"
+    "usersGroups" : "Users groups",
+    "emptyListyinfo" : "Empty list, start adding items...",
+    "userAdded" : "User succesfully added",
+    "addingUserError" : "Error while adding user",
+    "userRemoved" : "User succesfully removed",
+    "removingUserError" : "Error while removing user"
 }
