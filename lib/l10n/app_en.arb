@@ -1,3 +1,6 @@
 {
-    "hi" : "Hi, man"
+    "hi" : "Hi, man",
+    "usersAndGroups" : "Users and groups",
+    "users" : "Users",
+    "usersGroups" : "Users groups"
 }
