@@ -12,12 +12,12 @@ class AppRouter {
             const MainScreenView(),
         routes: <RouteBase>[
           GoRoute(
-            path: usersScreenView,
-            builder: (BuildContext context, GoRouterState state) =>
-                UsersScreenView(
-              title: state.uri.queryParameters['title'],
-            ),
-          ),
+              path: usersScreenView,
+              builder: (BuildContext context, GoRouterState state) {
+                final title = state.uri.queryParameters['title'];
+                final listView = state.extra as Widget;
+                return CustomListView(title: title, listView: listView);
+              }),
         ]),
   ]);
 }

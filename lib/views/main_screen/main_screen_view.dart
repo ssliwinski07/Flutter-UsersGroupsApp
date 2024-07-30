@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/widgets/widgets.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_users_group_app/views/views.dart';
 
 class MainScreenView extends StatefulWidget {
   const MainScreenView({super.key});
@@ -71,10 +72,11 @@ class _MainContentState extends State<_MainContent> {
           icon: Icons.person,
           iconColor: Colors.black,
           onTap: () => context.go(
-            Uri(
-                path: usersScreenViewPath,
-                queryParameters: {'title': context.localize.users}).toString(),
-          ),
+              Uri(
+                      path: usersScreenViewPath,
+                      queryParameters: {'title': context.localize.users})
+                  .toString(),
+              extra: const UsersList()),
           titleFontSize: 19,
         ),
         TileWidget(

@@ -6,19 +6,23 @@ import 'package:flutter_users_group_app/core/core.dart';
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 
 //change it to universal ListView widget
-class UsersScreenView extends StatefulWidget {
-  const UsersScreenView({
+class CustomListView<T> extends StatefulWidget {
+  const CustomListView({
     super.key,
     this.title,
+    this.listView,
+    this.items,
   });
 
   final String? title;
+  final Widget? listView;
+  final List<T>? items;
 
   @override
-  State<UsersScreenView> createState() => _UsersScreenViewState();
+  State<CustomListView> createState() => _CustomListViewState();
 }
 
-class _UsersScreenViewState extends State<UsersScreenView> {
+class _CustomListViewState extends State<CustomListView> {
   List<String> names = ['Szymon', 'Gosia', 'Wojtek', 'Adam'];
 
   MessageInfoServiceBase get messageInfoService => ServiceLocator()
@@ -47,33 +51,10 @@ class _UsersScreenViewState extends State<UsersScreenView> {
             title: Text(widget.title!),
           )
         ],
-        body: names.isEmpty
+        body: widget.items == null
             ? const NoItemsInfoWidget()
             //make it more customizable by adding here a widget to pass (for example in that case you can create a widget UsersList)
-            : ListView.builder(
-                itemCount: names.length,
-                itemBuilder: (BuildContext context, int index) => UsersListItem(
-                  title: names[index],
-                  trailingIcon: Icons.person_4_rounded,
-                  onDelete: () {
-                    try {
-                      names.removeAt(index);
-                      messageInfoService.showMessage(
-                        infoMessage: context.localize.userRemoved,
-                        infoType: MessageInfoTypes.info,
-                        context: context,
-                      );
-                      setState(() {});
-                    } catch (e) {
-                      messageInfoService.showMessage(
-                        infoMessage: context.localize.removingUserError,
-                        infoType: MessageInfoTypes.alert,
-                        context: context,
-                      );
-                    }
-                  },
-                ),
-              ),
+            : widget.listView ?? const SizedBox.shrink(),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
