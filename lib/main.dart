@@ -1,14 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_users_group_app/models/groups/group_model.dart';
 
 import 'helpers/helpers.dart';
 import 'core/core.dart';
-import 'models/models.dart';
-import 'widgets/widgets.dart';
-import 'views/views.dart';
 import 'routes/routes.dart';
 
 void main() async {
