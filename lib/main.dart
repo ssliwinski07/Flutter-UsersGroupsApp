@@ -54,8 +54,6 @@ void main() async {
 
   final userToJson = user.toJson();
 
-  await databaseServiceBase.addUser(groupId: 2, userJson: userToJson);
-
   //userId: 4, userName: Michal, lastName: Bonk, streetName: lesna 19, postalCode: 41-943, cityName: butom)
   //DSA
 

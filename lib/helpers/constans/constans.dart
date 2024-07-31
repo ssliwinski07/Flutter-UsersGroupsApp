@@ -10,6 +10,7 @@ const usersGroupsTable = 'UsersGroups';
 // resources (lottie, images, etc.) paths
 
 const lottieLoadingIconPath = 'lib/res/lottie/lottie_loading_icon.json';
+const lottieLoadingDetailsPath = 'lib/res/lottie/lottie_loading_details.json';
 
 // routes names
 

@@ -8,12 +8,14 @@ class SlidableListTile extends StatefulWidget {
     this.trailingIcon,
     this.onDelete,
     this.onEdit,
+    this.onDetails,
   });
 
   final String? title;
   final IconData? trailingIcon;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
+  final VoidCallback? onDetails;
 
   @override
   State<SlidableListTile> createState() => _SlidableListTileState();
@@ -55,16 +57,23 @@ class _SlidableListTileState extends State<SlidableListTile> {
           ),
         ],
       ),
-      child: ListTile(
-        title: Text(
-          maxLines: 1,
-          style: const TextStyle(
-            overflow: TextOverflow.ellipsis,
+      child: GestureDetector(
+        onTap: () {
+          if (widget.onDetails != null) {
+            widget.onDetails!();
+          }
+        },
+        child: ListTile(
+          title: Text(
+            maxLines: 1,
+            style: const TextStyle(
+              overflow: TextOverflow.ellipsis,
+            ),
+            widget.title ?? '-',
           ),
-          widget.title ?? '-',
-        ),
-        leading: Icon(
-          widget.trailingIcon,
+          leading: Icon(
+            widget.trailingIcon,
+          ),
         ),
       ),
     );

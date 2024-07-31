@@ -20,6 +20,9 @@ abstract class UsersStoreBase with Store {
   @observable
   int usersCounter = 0;
 
+  @observable
+  GroupModel? userGroup;
+
   @action
   void countUsers() {
     usersCounter = users.length;
@@ -33,5 +36,10 @@ abstract class UsersStoreBase with Store {
   @action
   Future<void> getUsers() async {
     users = ObservableList.of(await databaseService.getUsers());
+  }
+
+  @action
+  Future<void> getUserGroup({required int userId}) async {
+    userGroup = await databaseService.getUserGroup(userId: userId);
   }
 }

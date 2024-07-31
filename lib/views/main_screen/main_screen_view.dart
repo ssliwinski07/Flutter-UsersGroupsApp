@@ -37,7 +37,11 @@ class _MainScreenViewState extends State<MainScreenView> {
               ),
             ),
       body: Center(
-        child: _isLoading ? const LoadingWidget() : const _MainContent(),
+        child: _isLoading
+            ? const LoadingWidget(
+                path: lottieLoadingIconPath,
+              )
+            : const _MainContent(),
       ),
     );
   }

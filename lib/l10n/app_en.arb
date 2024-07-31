@@ -8,5 +8,11 @@
     "userRemoved" : "User {userName} succesfully removed",
     "removingUserError" : "Error while removing user {userName}",
     "groupRemoved" : "Group {groupName} succesfully removed",
-    "removingGroupError" : "Error while removing user {groupName}"
+    "removingGroupError" : "Error while removing user {groupName}",
+    "streetName" : "Street",
+    "nameAndLastName" : "Name and last name",
+    "postalCodeAndCity" : "Postal code and city",
+    "groupName" : "User group"
+
+
 }

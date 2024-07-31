@@ -40,6 +40,22 @@ mixin _$UsersStore on UsersStoreBase, Store {
     });
   }
 
+  late final _$userGroupAtom =
+      Atom(name: 'UsersStoreBase.userGroup', context: context);
+
+  @override
+  GroupModel? get userGroup {
+    _$userGroupAtom.reportRead();
+    return super.userGroup;
+  }
+
+  @override
+  set userGroup(GroupModel? value) {
+    _$userGroupAtom.reportWrite(value, super.userGroup, () {
+      super.userGroup = value;
+    });
+  }
+
   late final _$deleteUserAsyncAction =
       AsyncAction('UsersStoreBase.deleteUser', context: context);
 
@@ -54,6 +70,15 @@ mixin _$UsersStore on UsersStoreBase, Store {
   @override
   Future<void> getUsers() {
     return _$getUsersAsyncAction.run(() => super.getUsers());
+  }
+
+  late final _$getUserGroupAsyncAction =
+      AsyncAction('UsersStoreBase.getUserGroup', context: context);
+
+  @override
+  Future<void> getUserGroup({required int userId}) {
+    return _$getUserGroupAsyncAction
+        .run(() => super.getUserGroup(userId: userId));
   }
 
   late final _$UsersStoreBaseActionController =
@@ -74,7 +99,8 @@ mixin _$UsersStore on UsersStoreBase, Store {
   String toString() {
     return '''
 users: ${users},
-usersCounter: ${usersCounter}
+usersCounter: ${usersCounter},
+userGroup: ${userGroup}
     ''';
   }
 }

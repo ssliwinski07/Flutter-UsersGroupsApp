@@ -8,5 +8,9 @@
     "userRemoved" : "Użytkownik {userName} został usunięty",
     "removingUserError" : "Błąd w trakcie usuwania użytkownika {userName}",
     "groupRemoved" : "Grupa {groupName} została usunięta",
-    "removingGroupError" : "Błąd w trakcie usuwania grupy {groupName}"
+    "removingGroupError" : "Błąd w trakcie usuwania grupy {groupName}",
+    "streetName" : "Ulica",
+    "nameAndLastName" : "Imię i nazwisko",
+    "postalCodeAndCity" : "Kod pocztowy oraz miasto",
+    "groupName" : "Grupa użytkownika"
 }
