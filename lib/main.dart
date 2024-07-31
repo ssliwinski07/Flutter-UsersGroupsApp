@@ -46,13 +46,15 @@ void main() async {
   ///
 
   final user = UserModel(
-      userName: 'Szymi',
-      lastName: 'smirnofski',
-      streetName: 'lesna 19',
-      postalCode: '41-943',
-      cityName: 'butom');
+      userName: 'MICHAL',
+      lastName: 'KostKowski',
+      streetName: 'Chorzowska 214/83',
+      postalCode: '40-101',
+      cityName: 'Katowice');
 
-  final userToJson = user.toJson();
+  final group = GroupModel(groupName: 'testowa');
+
+  //await databaseServiceBase.addUser(userJson: user.toJson(), groupId: 2);
 
   //userId: 4, userName: Michal, lastName: Bonk, streetName: lesna 19, postalCode: 41-943, cityName: butom)
   //DSA

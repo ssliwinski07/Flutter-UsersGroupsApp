@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/mobx/stores/stores.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:lottie/lottie.dart';
-
 import 'package:flutter_users_group_app/widgets/widgets.dart';
 import 'package:flutter_users_group_app/models/models.dart';
 
@@ -56,7 +55,7 @@ class _UsersListItemState extends State<UsersListItem> {
   }
 }
 
-class _UserDetails extends StatefulWidget {
+class _UserDetails extends StatelessWidget {
   const _UserDetails({
     this.user,
     this.usersStore,
@@ -65,95 +64,111 @@ class _UserDetails extends StatefulWidget {
   final UserModel? user;
   final UsersStore? usersStore;
 
-  @override
-  State<_UserDetails> createState() => _UserDetailsState();
-}
-
-class _UserDetailsState extends State<_UserDetails> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  String? get group => widget.usersStore!.userGroup?.groupName;
+  String? get group => usersStore!.userGroup?.groupName;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getUserGroup(),
+      future: _getUserGroup(userId: user!.userId!),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const LoadingWidget(path: lottieLoadingDetailsPath);
         }
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: '${context.localize.nameAndLastName}: ',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+        return SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          style: const TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                          text:
+                              '${user?.userName ?? '-'} ${user?.lastName ?? '-'}',
+                        ),
+                      ],
+                    ),
                   ),
-                  TextSpan(
-                    text:
-                        '${widget.user?.userName ?? '-'} ${widget.user?.lastName ?? '-'}',
-                  ),
-                ],
+                ),
               ),
-            ),
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: '${context.localize.postalCodeAndCity}: ',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(
-                    text:
-                        '${widget.user?.postalCode ?? '-'}, ${widget.user?.cityName ?? '-'}',
-                  ),
-                ],
-              ),
-            ),
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: '${context.localize.streetName}: ',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(
-                    text: widget.user?.streetName ?? '-',
-                  ),
-                ],
-              ),
-            ),
-            Observer(
-              builder: (_) => Text.rich(
+              Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: '${context.localize.groupName}: ',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      text: '${context.localize.postalCodeAndCity}: ',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
                     TextSpan(
-                      text: group ?? '-',
+                      style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 16,
+                      ),
+                      text:
+                          '${user?.postalCode ?? '-'}, ${user?.cityName ?? '-'}',
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${context.localize.streetName}: ',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    TextSpan(
+                      style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 16,
+                      ),
+                      text: user?.streetName ?? '-',
+                    ),
+                  ],
+                ),
+              ),
+              Observer(
+                builder: (_) => Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${context.localize.groupName}: ',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      TextSpan(
+                        style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 16,
+                        ),
+                        text: group ?? '-',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
   }
 
-  Future<void> getUserGroup() async {
-    await Future.delayed(const Duration(seconds: 4));
-    await widget.usersStore!.getUserGroup(userId: widget.user!.userId!);
+  Future<void> _getUserGroup({required int userId}) async {
+    await usersStore!.getUserGroup(userId: userId);
   }
 }

@@ -10,7 +10,7 @@
     "groupRemoved" : "Group {groupName} succesfully removed",
     "removingGroupError" : "Error while removing user {groupName}",
     "streetName" : "Street",
-    "nameAndLastName" : "Name and last name",
+    "name" : "User name",
     "postalCodeAndCity" : "Postal code and city",
     "groupName" : "User group"
 

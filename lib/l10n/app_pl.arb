@@ -10,7 +10,7 @@
     "groupRemoved" : "Grupa {groupName} została usunięta",
     "removingGroupError" : "Błąd w trakcie usuwania grupy {groupName}",
     "streetName" : "Ulica",
-    "nameAndLastName" : "Imię i nazwisko",
+    "name" : "Nazwa uzytkownika",
     "postalCodeAndCity" : "Kod pocztowy oraz miasto",
     "groupName" : "Grupa użytkownika"
 }

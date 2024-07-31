@@ -46,7 +46,9 @@ class _GroupsListState extends State<GroupsList> {
                 itemBuilder: (BuildContext context, int index) {
                   final group = groupsStore.groups[index];
                   return GroupsListItem(
-                    title: group.groupName,
+                    groupName: group.groupName,
+                    groupId: group.groupId,
+                    groupStore: groupsStore,
                     leadingIcon: Icons.people,
                     onDelete: () async {
                       try {

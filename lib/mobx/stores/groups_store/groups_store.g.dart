@@ -25,6 +25,22 @@ mixin _$GroupsStore on GroupsStoreBase, Store {
     });
   }
 
+  late final _$groupUsersAtom =
+      Atom(name: 'GroupsStoreBase.groupUsers', context: context);
+
+  @override
+  ObservableList<UserModel> get groupUsers {
+    _$groupUsersAtom.reportRead();
+    return super.groupUsers;
+  }
+
+  @override
+  set groupUsers(ObservableList<UserModel> value) {
+    _$groupUsersAtom.reportWrite(value, super.groupUsers, () {
+      super.groupUsers = value;
+    });
+  }
+
   late final _$groupsCounterAtom =
       Atom(name: 'GroupsStoreBase.groupsCounter', context: context);
 
@@ -58,6 +74,15 @@ mixin _$GroupsStore on GroupsStoreBase, Store {
     return _$getGroupsAsyncAction.run(() => super.getGroups());
   }
 
+  late final _$getUsersForGroupAsyncAction =
+      AsyncAction('GroupsStoreBase.getUsersForGroup', context: context);
+
+  @override
+  Future<void> getUsersForGroup({required int groupId}) {
+    return _$getUsersForGroupAsyncAction
+        .run(() => super.getUsersForGroup(groupId: groupId));
+  }
+
   late final _$GroupsStoreBaseActionController =
       ActionController(name: 'GroupsStoreBase', context: context);
 
@@ -76,6 +101,7 @@ mixin _$GroupsStore on GroupsStoreBase, Store {
   String toString() {
     return '''
 groups: ${groups},
+groupUsers: ${groupUsers},
 groupsCounter: ${groupsCounter}
     ''';
   }
