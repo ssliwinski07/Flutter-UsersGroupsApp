@@ -4,8 +4,8 @@ import 'package:flutter_users_group_app/core/core.dart';
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/widgets/widgets.dart';
 
-class UsersList extends StatefulWidget {
-  const UsersList({
+class GroupsList extends StatefulWidget {
+  const GroupsList({
     super.key,
     this.items,
   });
@@ -13,10 +13,10 @@ class UsersList extends StatefulWidget {
   final List<String?>? items;
 
   @override
-  State<UsersList> createState() => _UsersListState();
+  State<GroupsList> createState() => _GroupsListState();
 }
 
-class _UsersListState extends State<UsersList> {
+class _GroupsListState extends State<GroupsList> {
   MessageInfoServiceBase get messageInfoService => ServiceLocator()
       .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
 
@@ -24,9 +24,9 @@ class _UsersListState extends State<UsersList> {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: widget.items?.length,
-      itemBuilder: (BuildContext context, int index) => UsersListItem(
+      itemBuilder: (BuildContext context, int index) => GroupsListItem(
         title: widget.items?[index],
-        leadingIcon: Icons.person_4_rounded,
+        leadingIcon: Icons.people,
         onDelete: () {
           try {
             widget.items?.removeAt(index);

@@ -14,7 +14,9 @@ const lottieLoadingIconPath = 'lib/res/lottie/lottie_loading_icon.json';
 // routes names
 
 const usersScreenView = 'usersScreenView';
+const groupsScreenView = 'groupsScreenView';
 
 // routes paths
 
 const usersScreenViewPath = '/usersScreenView';
+const groupsScreenViewPath = '/groupsScreenView';

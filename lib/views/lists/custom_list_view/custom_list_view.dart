@@ -12,19 +12,19 @@ class CustomListView<T> extends StatefulWidget {
     this.title,
     this.listView,
     this.items,
+    this.backgroundColor = Colors.green,
   });
 
   final String? title;
   final Widget? listView;
   final List<T>? items;
+  final Color? backgroundColor;
 
   @override
   State<CustomListView> createState() => _CustomListViewState();
 }
 
 class _CustomListViewState extends State<CustomListView> {
-  List<String> names = ['Szymon', 'Gosia', 'Wojtek', 'Adam'];
-
   MessageInfoServiceBase get messageInfoService => ServiceLocator()
       .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
 
@@ -38,7 +38,7 @@ class _CustomListViewState extends State<CustomListView> {
             [
           SliverAppBar(
             automaticallyImplyLeading: false,
-            backgroundColor: Colors.green,
+            backgroundColor: widget.backgroundColor,
             floating: true,
             snap: true,
             leading: Padding(
@@ -51,17 +51,17 @@ class _CustomListViewState extends State<CustomListView> {
             title: Text(widget.title!),
           )
         ],
-        body: widget.items == null
+        body: widget.items!.isEmpty
             ? const NoItemsInfoWidget()
             //make it more customizable by adding here a widget to pass (for example in that case you can create a widget UsersList)
             : widget.listView ?? const SizedBox.shrink(),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
+        backgroundColor: widget.backgroundColor,
         shape: const CircleBorder(),
         onPressed: () {
           try {
-            names.add('Grazyna');
+            widget.items?.add('Grazyna');
             messageInfoService.showMessage(
               infoMessage: context.localize.userAdded,
               infoType: MessageInfoTypes.info,

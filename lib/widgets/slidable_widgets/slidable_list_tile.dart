@@ -63,7 +63,7 @@ class _SlidableListTileState extends State<SlidableListTile> {
           ),
           widget.title ?? '-',
         ),
-        trailing: Icon(
+        leading: Icon(
           widget.trailingIcon,
         ),
       ),

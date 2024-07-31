@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_users_group_app/widgets/widgets.dart';
 
-class UsersListItem extends StatefulWidget {
-  const UsersListItem({
+class GroupsListItem extends StatefulWidget {
+  const GroupsListItem({
     super.key,
     this.title,
     this.leadingIcon,
@@ -17,10 +17,10 @@ class UsersListItem extends StatefulWidget {
   final VoidCallback? onDelete;
 
   @override
-  State<UsersListItem> createState() => _UsersListItemState();
+  State<GroupsListItem> createState() => _GroupsListItemState();
 }
 
-class _UsersListItemState extends State<UsersListItem> {
+class _GroupsListItemState extends State<GroupsListItem> {
   @override
   Widget build(BuildContext context) {
     return SlidableListTile(

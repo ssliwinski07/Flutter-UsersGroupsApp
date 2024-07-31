@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_users_group_app/routes/app_router/app_router.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:flutter_users_group_app/helpers/helpers.dart';
@@ -58,6 +59,8 @@ class _MainContent extends StatefulWidget {
 }
 
 class _MainContentState extends State<_MainContent> {
+  List<String> items = ['sdf'];
+  List<String> groups = ['dupa', 'cyce'];
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -72,18 +75,32 @@ class _MainContentState extends State<_MainContent> {
           icon: Icons.person,
           iconColor: Colors.black,
           onTap: () => context.go(
-              Uri(
-                      path: usersScreenViewPath,
-                      queryParameters: {'title': context.localize.users})
-                  .toString(),
-              extra: const UsersList()),
+            usersScreenViewPath,
+            extra: ListViewArgs(
+              title: context.localize.users,
+              items: items,
+              listView: UsersList(
+                items: items,
+              ),
+            ),
+          ),
           titleFontSize: 19,
         ),
         TileWidget(
           title: context.localize.usersGroups,
           icon: Icons.people,
           iconColor: Colors.black,
-          onTap: () {},
+          onTap: () => context.go(
+            groupsScreenViewPath,
+            extra: ListViewArgs(
+              title: context.localize.usersGroups,
+              items: groups,
+              backgroundColor: Colors.blue,
+              listView: GroupsList(
+                items: groups,
+              ),
+            ),
+          ),
           titleFontSize: 19,
         )
       ],

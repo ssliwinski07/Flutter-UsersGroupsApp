@@ -14,10 +14,40 @@ class AppRouter {
           GoRoute(
               path: usersScreenView,
               builder: (BuildContext context, GoRouterState state) {
-                final title = state.uri.queryParameters['title'];
-                final listView = state.extra as Widget;
-                return CustomListView(title: title, listView: listView);
+                final args = state.extra as ListViewArgs;
+
+                return CustomListView(
+                  title: args.title,
+                  listView: args.listView,
+                  items: args.items,
+                );
+              }),
+          GoRoute(
+              path: groupsScreenView,
+              builder: (BuildContext context, GoRouterState state) {
+                final args = state.extra as ListViewArgs;
+
+                return CustomListView(
+                  title: args.title,
+                  listView: args.listView,
+                  items: args.items,
+                  backgroundColor: args.backgroundColor,
+                );
               }),
         ]),
   ]);
+}
+
+class ListViewArgs {
+  ListViewArgs({
+    this.title,
+    this.listView,
+    this.items,
+    this.backgroundColor,
+  });
+
+  final String? title;
+  final Widget? listView;
+  final List<String>? items;
+  final Color? backgroundColor;
 }
