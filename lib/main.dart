@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import 'helpers/helpers.dart';
 import 'core/core.dart';
+import 'mobx/stores/stores.dart';
 import 'routes/routes.dart';
+import 'models/models.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,16 +45,17 @@ void main() async {
   //// GETTINGS USERS GROUPS ////
   ///
 
-  // final user = UserModel(
-  //     userName: 'vlad',
-  //     lastName: 'smirnofski',
-  //     streetName: 'lesna 19',
-  //     postalCode: '41-943',
-  //     cityName: 'butom');
+  final user = UserModel(
+      userName: 'Szymi',
+      lastName: 'smirnofski',
+      streetName: 'lesna 19',
+      postalCode: '41-943',
+      cityName: 'butom');
 
-  // final userToJson = user.toJson();
+  final userToJson = user.toJson();
 
-  //await databaseServiceBase.addUser(userJson: userToJson, groupId: 2);
+  await databaseServiceBase.addUser(groupId: 2, userJson: userToJson);
+
   //userId: 4, userName: Michal, lastName: Bonk, streetName: lesna 19, postalCode: 41-943, cityName: butom)
   //DSA
 
@@ -177,7 +181,20 @@ void main() async {
   // await databaseServiceBase.insertToDatabase(
   //     json: userGroupToJson3, tableName: usersGroupsTable);
 
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<UsersStore>(
+          create: (context) => UsersStore(databaseService: databaseServiceBase),
+        ),
+        Provider<GroupsStore>(
+          create: (context) =>
+              GroupsStore(databaseService: databaseServiceBase),
+        )
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -192,7 +209,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: _appRouter.router,
-      locale: Locale('en'),
+      locale: const Locale('en'),
     );
   }
 }

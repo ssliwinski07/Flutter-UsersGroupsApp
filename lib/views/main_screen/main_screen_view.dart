@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/widgets/widgets.dart';
 import 'package:flutter_users_group_app/views/views.dart';
+import 'package:flutter_users_group_app/models/models.dart';
 
 class MainScreenView extends StatefulWidget {
   const MainScreenView({super.key});
@@ -59,8 +60,11 @@ class _MainContent extends StatefulWidget {
 }
 
 class _MainContentState extends State<_MainContent> {
-  List<String> items = ['sdf'];
-  List<String> groups = ['dupa', 'cyce'];
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -76,12 +80,9 @@ class _MainContentState extends State<_MainContent> {
           iconColor: Colors.black,
           onTap: () => context.go(
             usersScreenViewPath,
-            extra: ListViewArgs(
+            extra: ListViewArgs<UserModel>(
               title: context.localize.users,
-              items: items,
-              listView: UsersList(
-                items: items,
-              ),
+              listView: const UsersList(),
             ),
           ),
           titleFontSize: 19,
@@ -94,11 +95,8 @@ class _MainContentState extends State<_MainContent> {
             groupsScreenViewPath,
             extra: ListViewArgs(
               title: context.localize.usersGroups,
-              items: groups,
               backgroundColor: Colors.blue,
-              listView: GroupsList(
-                items: groups,
-              ),
+              listView: const GroupsList(),
             ),
           ),
           titleFontSize: 19,
@@ -107,22 +105,3 @@ class _MainContentState extends State<_MainContent> {
     );
   }
 }
-
-
-// showDialog<String>(
-//         context: context,
-//         builder: (BuildContext context) => AlertDialog(
-//           title: const Text('AlertDialog Title'),
-//           content: const Text('AlertDialog description'),
-//           actions: <Widget>[
-//             TextButton(
-//               onPressed: () => Navigator.pop(context, 'Cancel'),
-//               child: const Text('Cancel'),
-//             ),
-//             TextButton(
-//               onPressed: () => Navigator.pop(context, 'OK'),
-//               child: const Text('OK'),
-//             ),
-//           ],
-//         ),
-//       ),

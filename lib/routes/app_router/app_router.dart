@@ -19,7 +19,6 @@ class AppRouter {
                 return CustomListView(
                   title: args.title,
                   listView: args.listView,
-                  items: args.items,
                 );
               }),
           GoRoute(
@@ -30,7 +29,6 @@ class AppRouter {
                 return CustomListView(
                   title: args.title,
                   listView: args.listView,
-                  items: args.items,
                   backgroundColor: args.backgroundColor,
                 );
               }),
@@ -38,16 +36,14 @@ class AppRouter {
   ]);
 }
 
-class ListViewArgs {
+class ListViewArgs<T> {
   ListViewArgs({
     this.title,
     this.listView,
-    this.items,
     this.backgroundColor,
   });
 
   final String? title;
   final Widget? listView;
-  final List<String>? items;
   final Color? backgroundColor;
 }

@@ -5,6 +5,8 @@
     "emptyListyinfo" : "Lista jest pusta, dodaj element...",
     "userAdded" : "Dodano użytkownika",
     "addingUserError" : "Błąd w trakcie dodawania użytkownika",
-    "userRemoved" : "Użytkownik został usunięty",
-    "removingUserError" : "Błąd w trakcie usuwania użytkownika"
+    "userRemoved" : "Użytkownik {userName} został usunięty",
+    "removingUserError" : "Błąd w trakcie usuwania użytkownika {userName}",
+    "groupRemoved" : "Grupa {groupName} została usunięta",
+    "removingGroupError" : "Błąd w trakcie usuwania grupy {groupName}"
 }

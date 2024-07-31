@@ -5,19 +5,16 @@ import 'package:flutter_users_group_app/widgets/widgets.dart';
 import 'package:flutter_users_group_app/core/core.dart';
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 
-//change it to universal ListView widget
-class CustomListView<T> extends StatefulWidget {
+class CustomListView extends StatefulWidget {
   const CustomListView({
     super.key,
     this.title,
     this.listView,
-    this.items,
     this.backgroundColor = Colors.green,
   });
 
   final String? title;
   final Widget? listView;
-  final List<T>? items;
   final Color? backgroundColor;
 
   @override
@@ -27,6 +24,11 @@ class CustomListView<T> extends StatefulWidget {
 class _CustomListViewState extends State<CustomListView> {
   MessageInfoServiceBase get messageInfoService => ServiceLocator()
       .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,17 +53,13 @@ class _CustomListViewState extends State<CustomListView> {
             title: Text(widget.title!),
           )
         ],
-        body: widget.items!.isEmpty
-            ? const NoItemsInfoWidget()
-            //make it more customizable by adding here a widget to pass (for example in that case you can create a widget UsersList)
-            : widget.listView ?? const SizedBox.shrink(),
+        body: widget.listView ?? const NoItemsInfoWidget(),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: widget.backgroundColor,
         shape: const CircleBorder(),
         onPressed: () {
           try {
-            widget.items?.add('Grazyna');
             messageInfoService.showMessage(
               infoMessage: context.localize.userAdded,
               infoType: MessageInfoTypes.info,

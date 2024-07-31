@@ -5,6 +5,8 @@
     "emptyListyinfo" : "Empty list, start adding items...",
     "userAdded" : "User succesfully added",
     "addingUserError" : "Error while adding user",
-    "userRemoved" : "User succesfully removed",
-    "removingUserError" : "Error while removing user"
+    "userRemoved" : "User {userName} succesfully removed",
+    "removingUserError" : "Error while removing user {userName}",
+    "groupRemoved" : "Group {groupName} succesfully removed",
+    "removingGroupError" : "Error while removing user {groupName}"
 }
