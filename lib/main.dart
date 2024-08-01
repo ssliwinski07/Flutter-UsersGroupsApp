@@ -7,6 +7,7 @@ import 'helpers/helpers.dart';
 import 'core/core.dart';
 import 'mobx/stores/stores.dart';
 import 'routes/routes.dart';
+import 'models/models.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,12 @@ void main() async {
       .getInstance<DatabaseServiceBase>(instanceName: mainInstance);
 
   await databaseServiceBase.initilizeDatabase();
+
+  // print(u);
+
+  // final g = GroupModel(groupName: 'Admins');
+
+  // await databaseServiceBase.addGroup(groupJson: g.toJson());
 
   // String query =
   //     '''UPDATE $settingsTable SET settingValue = ? WHERE settingName = 'UserLanguage' ''';

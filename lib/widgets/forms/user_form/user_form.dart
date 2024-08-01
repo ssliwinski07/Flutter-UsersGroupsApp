@@ -136,6 +136,7 @@ class _UserFormState extends State<UserForm> {
                 context.localize.usersGroups,
               ),
             ),
+            disabledHint: Text(context.localize.noGroups),
             items: widget.items
                 .map(
                   (element) => DropdownMenuItem(
@@ -164,18 +165,21 @@ class _UserFormState extends State<UserForm> {
                 onPressed: () {
                   context.goRouterPop();
                 },
-                child: Text(context.localize.cancel,
-                    style: const TextStyle(color: Colors.white)),
+                child: Text(
+                  context.localize.cancel,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (widget.formKey.currentState?.saveAndValidate() ?? false) {
                     if (true) {
                       if (widget.onSubbmit != null) {
                         widget.onSubbmit!();
+                        context.goRouterPop();
                       }
                     }
                   }

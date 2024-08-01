@@ -14,7 +14,7 @@ class UsersListItem extends StatefulWidget {
     this.onDelete,
     this.onEdit,
     this.user,
-    this.usetStore,
+    this.userStore,
   });
 
   final String? title;
@@ -22,7 +22,7 @@ class UsersListItem extends StatefulWidget {
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
   final UserModel? user;
-  final UsersStore? usetStore;
+  final UsersStore? userStore;
 
   @override
   State<UsersListItem> createState() => _UsersListItemState();
@@ -39,7 +39,7 @@ class _UsersListItemState extends State<UsersListItem> {
               context: context,
               detailsWidget: _UserDetails(
                 user: widget.user,
-                usersStore: widget.usetStore,
+                usersStore: widget.userStore,
               ));
         },
         onDelete: () {
@@ -155,7 +155,7 @@ class _UserDetails extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           fontSize: 16,
                         ),
-                        text: group ?? '-',
+                        text: usersStore!.userGroup?.groupName ?? '-',
                       ),
                     ],
                   ),
@@ -169,6 +169,7 @@ class _UserDetails extends StatelessWidget {
   }
 
   Future<void> _getUserGroup({required int userId}) async {
+    await Future.delayed(const Duration(seconds: 3));
     await usersStore!.getUserGroup(userId: userId);
   }
 }

@@ -20,5 +20,6 @@
     "name" : "Imie",
     "lastName" : "Nazwisko",
     "zipCode" : "Kod pocztowy",
-    "cityName" : "Miasto"
+    "cityName" : "Miasto",
+    "noGroups" : "Brak grup do wyboru"
 }

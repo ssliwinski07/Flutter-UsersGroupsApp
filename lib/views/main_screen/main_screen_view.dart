@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_users_group_app/core/core.dart';
+import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -116,85 +118,173 @@ class _MainContentState extends State<_MainContent> {
 
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormBuilderState>();
     return GridView.count(
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(15),
       crossAxisCount: 2,
       mainAxisSpacing: 30,
       crossAxisSpacing: 30,
-      children: <Widget>[
-        TileWidget(
-          title: context.localize.users,
-          icon: Icons.person,
-          iconColor: Colors.black,
-          onTap: () async {
-            context.go(
-              usersScreenViewPath,
-              extra: ListViewArgs<UserModel>(
-                title: context.localize.users,
-                listView: const UsersList(),
-                formKey: formKey,
-                onActionCallback: () async {
-                  await showForm(
-                    context: context,
-                    formKey: formKey,
-                    child: UserForm(
-                      formKey: formKey,
-                      items: [
-                        GroupModel(groupName: 'TEST'),
-                        GroupModel(groupName: 'ADMIN')
-                      ],
+      children: const <Widget>[
+        _UsersTileWidget(),
+        _GroupsTileWidget(),
+      ],
+    );
+  }
+}
+
+class _UsersTileWidget extends StatefulWidget {
+  const _UsersTileWidget();
+
+  @override
+  State<_UsersTileWidget> createState() => _UsersTileWidgetState();
+}
+
+class _UsersTileWidgetState extends State<_UsersTileWidget> {
+  final _formKey = GlobalKey<FormBuilderState>();
+
+  late GroupsStore _groupsStore;
+  late UsersStore _usersStore;
+
+  MessageInfoServiceBase get _messageInfoService => ServiceLocator()
+      .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
+
+  @override
+  void initState() {
+    super.initState();
+    _groupsStore = Provider.of<GroupsStore>(context, listen: false);
+    _usersStore = Provider.of<UsersStore>(context, listen: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String? name;
+    String? lastName;
+    String? streetName;
+    String? city;
+    String? zipCode;
+    GroupModel? group;
+
+    return TileWidget(
+      title: context.localize.users,
+      icon: Icons.person,
+      iconColor: Colors.black,
+      onTap: () async {
+        context.go(
+          usersScreenViewPath,
+          extra: ListViewArgs<UserModel>(
+            title: context.localize.users,
+            listView: const UsersList(),
+            formKey: _formKey,
+            onActionCallback: () async {
+              await showForm(
+                context: context,
+                formKey: _formKey,
+                child: FutureBuilder(
+                  future: _buildGroupsList(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return const LoadingWidget(
+                          path: lottieLoadingDetailsPath);
+                    }
+                    return UserForm(
+                      formKey: _formKey,
+                      items: _groupsStore.groups,
                       onNameChange: (value) {
-                        String name = value!;
-                        debugPrint(name);
+                        name = value!;
                       },
                       onLastNameChange: (value) {
-                        String lastName = value!;
-                        debugPrint(lastName);
+                        lastName = value!;
                       },
                       onStreetNameChange: (value) {
-                        String streetName = value!;
-                        debugPrint(streetName);
+                        streetName = value!;
                       },
                       onCityChange: (value) {
-                        String city = value!;
-                        debugPrint(city);
+                        city = value!;
                       },
                       onZipCodeChange: (value) {
-                        String zipCode = value!;
-                        debugPrint(zipCode);
+                        zipCode = value!;
                       },
                       onGroupChange: (value) {
-                        GroupModel group = value!;
-                        debugPrint('Group: ${group.groupName}');
+                        group = value!;
                       },
-                      onSubbmit: () {
-                        debugPrint('success');
+                      onSubbmit: () async {
+                        try {
+                          UserModel user = UserModel(
+                            userName: name!,
+                            lastName: lastName!,
+                            streetName: streetName!,
+                            postalCode: zipCode!,
+                            cityName: city!,
+                          );
+                          final userToJson = user.toJson();
+                          await _addUser(
+                            userJson: userToJson,
+                            groupId: group!.groupId!,
+                          );
+
+                          if (context.mounted) {
+                            _messageInfoService.showMessage(
+                              context: context,
+                              infoMessage: context.localize.userAdded,
+                              infoType: MessageInfoTypes.info,
+                            );
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            _messageInfoService.showMessage(
+                              context: context,
+                              infoMessage: context.localize.addingUserError,
+                              infoType: MessageInfoTypes.alert,
+                            );
+                          }
+                        }
                       },
-                    ),
-                  );
-                },
-              ),
-            );
-          },
-          titleFontSize: 19,
-        ),
-        TileWidget(
-          title: context.localize.usersGroups,
-          icon: Icons.people,
-          iconColor: Colors.black,
-          onTap: () => context.go(
-            groupsScreenViewPath,
-            extra: ListViewArgs(
-              title: context.localize.usersGroups,
-              backgroundColor: Colors.blue,
-              listView: const GroupsList(),
-            ),
+                    );
+                  },
+                ),
+              );
+            },
           ),
-          titleFontSize: 19,
-        )
-      ],
+        );
+      },
+      titleFontSize: 19,
+    );
+  }
+
+  Future<void> _buildGroupsList() async {
+    await _groupsStore.getGroups();
+  }
+
+  Future<void> _addUser(
+      {required Map<String, dynamic> userJson, required int groupId}) async {
+    await _usersStore.addUser(userJson: userJson, groupId: groupId);
+    await _usersStore.getUsers();
+  }
+}
+
+class _GroupsTileWidget extends StatefulWidget {
+  const _GroupsTileWidget();
+
+  @override
+  State<_GroupsTileWidget> createState() => _GroupsTileWidgetState();
+}
+
+class _GroupsTileWidgetState extends State<_GroupsTileWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return TileWidget(
+      title: context.localize.usersGroups,
+      icon: Icons.people,
+      iconColor: Colors.black,
+      onTap: () => context.go(
+        groupsScreenViewPath,
+        extra: ListViewArgs(
+          title: context.localize.usersGroups,
+          backgroundColor: Colors.blue,
+          listView: const GroupsList(),
+        ),
+      ),
+      titleFontSize: 19,
     );
   }
 }

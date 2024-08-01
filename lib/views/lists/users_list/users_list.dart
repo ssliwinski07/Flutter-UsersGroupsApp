@@ -47,7 +47,7 @@ class _UsersListState extends State<UsersList> {
                 final user = usersStore.users[index];
                 return UsersListItem(
                   title: '${user.userName} ${user.lastName}',
-                  usetStore: usersStore,
+                  userStore: usersStore,
                   user: user,
                   leadingIcon: Icons.person_4_rounded,
                   onDelete: () async {

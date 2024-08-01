@@ -159,7 +159,7 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     FROM $groupsTable
     JOIN $usersGroupsTable ON $usersGroupsTable.groupId = $groupsTable.groupId
     JOIN $usersTable ON $usersTable.userId = $usersGroupsTable.userId
-    WHERE $usersGroupsTable.userId = ?
+    WHERE $usersTable.userId = ?
     ''';
 
     final data = await _getDataFromQuery(
