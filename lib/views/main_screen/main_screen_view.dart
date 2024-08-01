@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/widgets/widgets.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_users_group_app/views/views.dart';
 import 'package:flutter_users_group_app/models/models.dart';
 import 'package:flutter_users_group_app/mobx/stores/stores.dart';
 import 'package:flutter_users_group_app/routes/app_router/app_router.dart';
-import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
 
 class MainScreenView extends StatefulWidget {
   const MainScreenView({super.key});
@@ -119,13 +117,6 @@ class _MainContentState extends State<_MainContent> {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormBuilderState>();
-    String userName;
-    String lastName;
-    String streetName;
-    String zipCode;
-    String cityName;
-    String groupName;
-    List<String> items = ['Admin', 'Dupa'];
     return GridView.count(
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(15),
@@ -148,146 +139,39 @@ class _MainContentState extends State<_MainContent> {
                   await showForm(
                     context: context,
                     formKey: formKey,
-                    child: AlertDialog(
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          FormBuilderTextField(
-                            name: context.localize.name,
-                            decoration: InputDecoration(
-                                labelText: context.localize.name),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                errorText: context.localize.requiredField,
-                              ),
-                            ]),
-                            onChanged: (value) {
-                              userName = value!;
-                              debugPrint(userName);
-                            },
-                          ),
-                          FormBuilderTextField(
-                            name: context.localize.lastName,
-                            decoration: InputDecoration(
-                                labelText: context.localize.lastName),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                errorText: context.localize.requiredField,
-                              ),
-                            ]),
-                            onChanged: (value) {
-                              lastName = value!;
-                              debugPrint(lastName);
-                            },
-                          ),
-                          FormBuilderTextField(
-                            name: context.localize.streetName,
-                            decoration: InputDecoration(
-                                labelText: context.localize.streetName),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                errorText: context.localize.requiredField,
-                              ),
-                            ]),
-                            onChanged: (value) {
-                              streetName = value!;
-                              debugPrint(streetName);
-                            },
-                          ),
-                          FormBuilderTextField(
-                            name: context.localize.zipCode,
-                            inputFormatters: [Formatters().zipCodeFormatter],
-                            decoration: InputDecoration(
-                                hintText: '##-###',
-                                labelText: context.localize.zipCode),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                errorText: context.localize.requiredField,
-                              ),
-                            ]),
-                            onChanged: (value) {
-                              zipCode = value!;
-                              debugPrint(zipCode);
-                            },
-                          ),
-                          FormBuilderTextField(
-                            name: context.localize.cityName,
-                            decoration: InputDecoration(
-                                labelText: context.localize.cityName),
-                            validator: FormBuilderValidators.compose(
-                              [
-                                FormBuilderValidators.required(
-                                  errorText: context.localize.requiredField,
-                                ),
-                              ],
-                            ),
-                            onChanged: (value) {
-                              cityName = value!;
-                              debugPrint(cityName);
-                            },
-                          ),
-                          FormBuilderDropdown<String>(
-                            validator: FormBuilderValidators.compose(
-                              [
-                                FormBuilderValidators.required(
-                                  errorText: context.localize.requiredField,
-                                ),
-                              ],
-                            ),
-                            name: context.localize.usersGroups,
-                            decoration: InputDecoration(
-                              label: Text(
-                                context.localize.usersGroups,
-                              ),
-                            ),
-                            items: items
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                      value: e, child: Text(e)),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              groupName = value!;
-                              debugPrint(groupName);
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                ),
-                                onPressed: () {
-                                  context.goRouterPop();
-                                },
-                                child: Text(context.localize.cancel,
-                                    style:
-                                        const TextStyle(color: Colors.white)),
-                              ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                ),
-                                onPressed: () {
-                                  if (formKey.currentState?.saveAndValidate() ??
-                                      false) {
-                                    if (true) {
-                                      debugPrint('SUCCESS');
-                                    }
-                                  }
-                                },
-                                child: Text(context.localize.add,
-                                    style:
-                                        const TextStyle(color: Colors.white)),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                    child: UserForm(
+                      formKey: formKey,
+                      items: [
+                        GroupModel(groupName: 'TEST'),
+                        GroupModel(groupName: 'ADMIN')
+                      ],
+                      onNameChange: (value) {
+                        String name = value!;
+                        debugPrint(name);
+                      },
+                      onLastNameChange: (value) {
+                        String lastName = value!;
+                        debugPrint(lastName);
+                      },
+                      onStreetNameChange: (value) {
+                        String streetName = value!;
+                        debugPrint(streetName);
+                      },
+                      onCityChange: (value) {
+                        String city = value!;
+                        debugPrint(city);
+                      },
+                      onZipCodeChange: (value) {
+                        String zipCode = value!;
+                        debugPrint(zipCode);
+                      },
+                      onGroupChange: (value) {
+                        GroupModel group = value!;
+                        debugPrint('Group: ${group.groupName}');
+                      },
+                      onSubbmit: () {
+                        debugPrint('success');
+                      },
                     ),
                   );
                 },
