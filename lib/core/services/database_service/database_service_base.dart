@@ -18,4 +18,11 @@ abstract interface class DatabaseServiceBase {
   Future<void> deleteGroup({required int groupId});
   // delete it later, it's not neccessary ;)
   Future<List<UserGroupModel>> getUsersAndGroups();
+  Future<SettingsModel> getSettingValue({
+    required String settingsTable,
+    String? where,
+    List<Object?>? whereArgs,
+  });
+  Future<int> updateSettingValue(
+      {required String query, List<Object?>? parameters});
 }

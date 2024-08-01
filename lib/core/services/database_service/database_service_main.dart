@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -34,6 +35,19 @@ class DatabaseServiceMain implements DatabaseServiceBase {
               FOREIGN KEY (userId) REFERENCES $usersTable (id),
               FOREIGN KEY (groupId) REFERENCES $groupsTable (id)  
               )''',
+        );
+        await db.execute(
+          '''CREATE TABLE $settingsTable(
+              settingId INTEGER PRIMARY KEY,
+              settingName TEXT,
+              settingValue TEXT
+            )''',
+        );
+        await db.execute(
+          '''INSERT INTO $settingsTable (settingName, settingValue) 
+              VALUES (?, ?) 
+              ''',
+          ['UserLanguage', 'en'],
         );
       },
       version: 1,
@@ -108,6 +122,32 @@ class DatabaseServiceMain implements DatabaseServiceBase {
   Future<List<UserModel>> getUsers() async {
     final data = await _getDataFromTable(
         table: usersTable, fromJson: (e) => UserModel.fromJson(e));
+
+    return data;
+  }
+
+  @override
+  Future<SettingsModel> getSettingValue({
+    required String settingsTable,
+    String? where,
+    List<Object?>? whereArgs,
+  }) async {
+    final data = await _getSingleDataFromTable(
+        table: settingsTable,
+        where: where,
+        whereArgs: whereArgs,
+        fromJson: (e) => SettingsModel.fromJson(e));
+
+    return data;
+  }
+
+  @override
+  Future<int> updateSettingValue(
+      {required String query, List<Object?>? parameters}) async {
+    final data = await _updateTableFromQuery(
+      query: query,
+      parameters: parameters,
+    );
 
     return data;
   }
@@ -262,12 +302,34 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     return fromJson(dataMap.first);
   }
 
-  Future<List<T>> _getDataFromTable<T>({
-    required String table,
-    required T Function(Map<String, dynamic>) fromJson,
-  }) async {
+  Future<T> _getSingleDataFromTable<T>(
+      {required String table,
+      required T Function(Map<String, dynamic>) fromJson,
+      String? where,
+      List<Object?>? whereArgs}) async {
     final Database db = await initilizeDatabase();
-    final List<Map<String, dynamic>> dataMap = await db.query(table);
+    final List<Map<String, dynamic>> dataMap = await db.query(
+      table,
+      where: where,
+      whereArgs: whereArgs,
+    );
+
+    await db.close();
+
+    return fromJson(dataMap.first);
+  }
+
+  Future<List<T>> _getDataFromTable<T>(
+      {required String table,
+      required T Function(Map<String, dynamic>) fromJson,
+      String? where,
+      List<Object?>? whereArgs}) async {
+    final Database db = await initilizeDatabase();
+    final List<Map<String, dynamic>> dataMap = await db.query(
+      table,
+      where: where,
+      whereArgs: whereArgs,
+    );
 
     await db.close();
 
@@ -280,6 +342,20 @@ class DatabaseServiceMain implements DatabaseServiceBase {
 
     final result = await db.insert(tableName, json,
         conflictAlgorithm: ConflictAlgorithm.replace);
+
+    await db.close();
+
+    return result;
+  }
+
+  Future<int> _updateTableFromQuery(
+      {required String query, List<Object?>? parameters}) async {
+    final db = await initilizeDatabase();
+
+    final result = await db.rawUpdate(
+      query,
+      parameters,
+    );
 
     await db.close();
 

@@ -23,8 +23,24 @@ void main() async {
   DatabaseServiceBase databaseServiceBase = serviceLocator
       .getInstance<DatabaseServiceBase>(instanceName: mainInstance);
 
+  SettingsStore settingsStore =
+      SettingsStore(databaseServiceBase: databaseServiceBase);
+
+  await settingsStore.initializeLocale();
   await databaseServiceBase.initilizeDatabase();
 
+  // String query =
+  //     '''UPDATE $settingsTable SET settingValue = ? WHERE settingName = 'UserLanguage' ''';
+
+  // await databaseServiceBase
+  //     .updateSettingValue(query: query, parameters: ['pl']);
+
+  // final s = await databaseServiceBase.getSettingValue(
+  //     settingsTable: settingsTable,
+  //     where: 'settingName = ?',
+  //     whereArgs: ['UserLanguage']);
+
+  // print(s);
   //// Custom query to get list od groups with users or list of users with their group ////
 
   // const queryForUsersAndGroups = ''' SELECT
@@ -45,14 +61,14 @@ void main() async {
   //// GETTINGS USERS GROUPS ////
   ///
 
-  final user = UserModel(
-      userName: 'MICHAL',
-      lastName: 'KostKowski',
-      streetName: 'Chorzowska 214/83',
-      postalCode: '40-101',
-      cityName: 'Katowice');
+  // final user = UserModel(
+  //     userName: 'MICHAL',
+  //     lastName: 'KostKowski',
+  //     streetName: 'Chorzowska 214/83',
+  //     postalCode: '40-101',
+  //     cityName: 'Katowice');
 
-  final group = GroupModel(groupName: 'testowa');
+  // final group = GroupModel(groupName: 'testowa');
 
   //await databaseServiceBase.addUser(userJson: user.toJson(), groupId: 2);
 
@@ -190,16 +206,26 @@ void main() async {
         Provider<GroupsStore>(
           create: (context) =>
               GroupsStore(databaseService: databaseServiceBase),
-        )
+        ),
+        Provider<SettingsStore>(
+          create: (context) =>
+              SettingsStore(databaseServiceBase: databaseServiceBase),
+        ),
       ],
-      child: MyApp(),
+      child: MyApp(
+        locale: settingsStore.locale,
+      ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  MyApp({
+    super.key,
+    this.locale,
+  });
 
+  final String? locale;
   final AppRouter _appRouter = AppRouter();
 
   @override
@@ -209,7 +235,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: _appRouter.router,
-      locale: const Locale('en'),
+      locale: Locale(locale ?? 'en'),
     );
   }
 }

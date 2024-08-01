@@ -6,6 +6,7 @@ const databaseName = 'users_groups.db';
 const usersTable = 'Users';
 const groupsTable = 'Groups';
 const usersGroupsTable = 'UsersGroups';
+const settingsTable = 'Settings';
 
 // resources (lottie, images, etc.) paths
 
