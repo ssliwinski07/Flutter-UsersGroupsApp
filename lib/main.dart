@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'helpers/helpers.dart';
 import 'core/core.dart';
 import 'mobx/stores/stores.dart';
 import 'routes/routes.dart';
-import 'models/models.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,10 +23,6 @@ void main() async {
   DatabaseServiceBase databaseServiceBase = serviceLocator
       .getInstance<DatabaseServiceBase>(instanceName: mainInstance);
 
-  SettingsStore settingsStore =
-      SettingsStore(databaseServiceBase: databaseServiceBase);
-
-  await settingsStore.initializeLocale();
   await databaseServiceBase.initilizeDatabase();
 
   // String query =
@@ -35,12 +31,6 @@ void main() async {
   // await databaseServiceBase
   //     .updateSettingValue(query: query, parameters: ['pl']);
 
-  // final s = await databaseServiceBase.getSettingValue(
-  //     settingsTable: settingsTable,
-  //     where: 'settingName = ?',
-  //     whereArgs: ['UserLanguage']);
-
-  // print(s);
   //// Custom query to get list od groups with users or list of users with their group ////
 
   // const queryForUsersAndGroups = ''' SELECT
@@ -212,9 +202,7 @@ void main() async {
               SettingsStore(databaseServiceBase: databaseServiceBase),
         ),
       ],
-      child: MyApp(
-        locale: settingsStore.locale,
-      ),
+      child: MyApp(),
     ),
   );
 }
@@ -222,20 +210,23 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({
     super.key,
-    this.locale,
   });
 
-  final String? locale;
   final AppRouter _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      routerConfig: _appRouter.router,
-      locale: Locale(locale ?? 'en'),
+    SettingsStore settingsStore =
+        Provider.of<SettingsStore>(context, listen: false);
+
+    return Observer(
+      builder: (_) => MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routerConfig: _appRouter.router,
+        locale: Locale(settingsStore.locale ?? pl),
+      ),
     );
   }
 }

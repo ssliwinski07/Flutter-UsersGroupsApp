@@ -25,12 +25,21 @@ mixin _$SettingsStore on SettingsStoreBase, Store {
     });
   }
 
-  late final _$initializeLocaleAsyncAction =
-      AsyncAction('SettingsStoreBase.initializeLocale', context: context);
+  late final _$getLocaleAsyncAction =
+      AsyncAction('SettingsStoreBase.getLocale', context: context);
 
   @override
-  Future<void> initializeLocale() {
-    return _$initializeLocaleAsyncAction.run(() => super.initializeLocale());
+  Future<void> getLocale() {
+    return _$getLocaleAsyncAction.run(() => super.getLocale());
+  }
+
+  late final _$updateLocaleAsyncAction =
+      AsyncAction('SettingsStoreBase.updateLocale', context: context);
+
+  @override
+  Future<void> updateLocale({required String value}) {
+    return _$updateLocaleAsyncAction
+        .run(() => super.updateLocale(value: value));
   }
 
   @override

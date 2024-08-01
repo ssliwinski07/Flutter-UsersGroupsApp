@@ -11,9 +11,7 @@ class SettingsStore = SettingsStoreBase with _$SettingsStore;
 abstract class SettingsStoreBase with Store {
   SettingsStoreBase({
     required this.databaseServiceBase,
-  }) {
-    _initializeStore();
-  }
+  });
 
   final DatabaseServiceBase databaseServiceBase;
 
@@ -21,13 +19,29 @@ abstract class SettingsStoreBase with Store {
   String? locale;
 
   @action
-  Future<void> initializeLocale() async {
+  Future<void> getLocale() async {
     String where = 'settingName = ?';
     List<Object?>? whereArgs = ['UserLanguage'];
 
     final data = await _getSetting(where: where, whereArgs: whereArgs);
-
     locale = data.settingValue;
+  }
+
+  @action
+  Future<void> updateLocale({required String value}) async {
+    String query =
+        '''UPDATE $settingsTable SET settingValue = ? WHERE settingName = 'UserLanguage' ''';
+
+    await _updateSetting(query: query, parameters: [value]);
+    await getLocale();
+  }
+
+  Future<int> _updateSetting(
+      {required String query, List<Object?>? parameters}) async {
+    final data = await databaseServiceBase.updateSettingValue(
+        query: query, parameters: parameters);
+
+    return data;
   }
 
   Future<SettingsModel> _getSetting({
@@ -38,9 +52,5 @@ abstract class SettingsStoreBase with Store {
         settingsTable: settingsTable, where: where, whereArgs: whereArgs);
 
     return data;
-  }
-
-  void _initializeStore() {
-    initializeLocale();
   }
 }

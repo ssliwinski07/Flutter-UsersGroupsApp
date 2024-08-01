@@ -10,9 +10,15 @@
     "groupRemoved" : "Group {groupName} succesfully removed",
     "removingGroupError" : "Error while removing user {groupName}",
     "streetName" : "Street",
-    "name" : "User name",
     "postalCodeAndCity" : "Postal code and city",
-    "groupName" : "User group"
-
-
+    "groupName" : "User group",
+    "changeLanguage" : "Change langugage to",
+    "requiredField" : "This field is required",
+    "add" : "Add",
+    "cancel" : "Cancel",
+    "edit" : "Edit",
+    "name" : "Name",
+    "lastName" : "Last name",
+    "zipCode" : "Zip code",
+    "cityName" : "City name"
 }

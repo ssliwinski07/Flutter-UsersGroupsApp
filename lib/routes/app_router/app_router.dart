@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_users_group_app/views/views.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_users_group_app/helpers/constans/constans.dart';
 
 class AppRouter {
@@ -19,6 +20,8 @@ class AppRouter {
                 return CustomListView(
                   title: args.title,
                   listView: args.listView,
+                  formKey: args.formKey,
+                  onActionCallback: args.onActionCallback,
                 );
               }),
           GoRoute(
@@ -30,6 +33,8 @@ class AppRouter {
                   title: args.title,
                   listView: args.listView,
                   backgroundColor: args.backgroundColor,
+                  formKey: args.formKey,
+                  onActionCallback: args.onActionCallback,
                 );
               }),
         ]),
@@ -41,9 +46,13 @@ class ListViewArgs<T> {
     this.title,
     this.listView,
     this.backgroundColor,
+    this.formKey,
+    this.onActionCallback,
   });
 
   final String? title;
   final Widget? listView;
   final Color? backgroundColor;
+  final GlobalKey<FormBuilderState>? formKey;
+  final VoidCallback? onActionCallback;
 }

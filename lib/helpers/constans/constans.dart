@@ -22,3 +22,8 @@ const groupsScreenView = 'groupsScreenView';
 
 const usersScreenViewPath = '/usersScreenView';
 const groupsScreenViewPath = '/groupsScreenView';
+
+// localizations
+
+const en = 'en';
+const pl = 'pl';

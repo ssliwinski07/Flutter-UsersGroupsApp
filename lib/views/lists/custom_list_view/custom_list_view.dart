@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
 import 'package:flutter_users_group_app/widgets/widgets.dart';
@@ -10,12 +11,16 @@ class CustomListView extends StatefulWidget {
     super.key,
     this.title,
     this.listView,
+    this.formKey,
+    this.onActionCallback,
     this.backgroundColor = Colors.green,
   });
 
   final String? title;
   final Widget? listView;
   final Color? backgroundColor;
+  final GlobalKey<FormBuilderState>? formKey;
+  final VoidCallback? onActionCallback;
 
   @override
   State<CustomListView> createState() => _CustomListViewState();
@@ -58,20 +63,9 @@ class _CustomListViewState extends State<CustomListView> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: widget.backgroundColor,
         shape: const CircleBorder(),
-        onPressed: () {
-          try {
-            messageInfoService.showMessage(
-              infoMessage: context.localize.userAdded,
-              infoType: MessageInfoTypes.info,
-              context: context,
-            );
-            setState(() {});
-          } catch (e) {
-            messageInfoService.showMessage(
-              infoMessage: context.localize.addingUserError,
-              infoType: MessageInfoTypes.alert,
-              context: context,
-            );
+        onPressed: () async {
+          if (widget.onActionCallback != null) {
+            widget.onActionCallback!();
           }
         },
         child: const Icon(

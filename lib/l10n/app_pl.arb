@@ -10,7 +10,15 @@
     "groupRemoved" : "Grupa {groupName} została usunięta",
     "removingGroupError" : "Błąd w trakcie usuwania grupy {groupName}",
     "streetName" : "Ulica",
-    "name" : "Nazwa uzytkownika",
     "postalCodeAndCity" : "Kod pocztowy oraz miasto",
-    "groupName" : "Grupa użytkownika"
+    "groupName" : "Grupa użytkownika",
+    "changeLanguage" : "Zmień język na",
+    "requiredField" : "To pole jest wymagane",
+    "add" : "Dodaj",
+    "cancel" : "Anuluj",
+    "edit" : "Edytuj",
+    "name" : "Imie",
+    "lastName" : "Nazwisko",
+    "zipCode" : "Kod pocztowy",
+    "cityName" : "Miasto"
 }
