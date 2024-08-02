@@ -23,7 +23,14 @@ void main() async {
   DatabaseServiceBase databaseServiceBase = serviceLocator
       .getInstance<DatabaseServiceBase>(instanceName: mainInstance);
 
+  ZipCodesServiceBase zipCodesServiceBase = serviceLocator
+      .getInstance<ZipCodesServiceBase>(instanceName: mainInstance);
+
   await databaseServiceBase.initilizeDatabase();
+
+  final zipCodes = await zipCodesServiceBase.getZipCodes(cityName: 'Katowice');
+
+  print(zipCodes);
 
   runApp(
     MultiProvider(

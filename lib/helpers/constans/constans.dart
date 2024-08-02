@@ -37,3 +37,8 @@ const streetNameForm = 'streetNameForm';
 const zipCodeForm = 'zipCodeFormatter';
 const cityForm = 'cityForm';
 const usersGroupsForm = 'usersGroupsForm';
+
+// APIs
+
+///zip codes api
+const zipCodesBaseApiUrl = 'http://kodpocztowy.intami.pl';

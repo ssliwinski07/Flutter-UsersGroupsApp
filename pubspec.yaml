@@ -50,6 +50,8 @@ dependencies:
   flutter_form_builder: ^9.3.0
   form_builder_validators: ^10.0.1
   mask_text_input_formatter: ^2.9.0
+  retrofit: ^4.1.0
+  dio: ^5.5.0+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -62,6 +64,8 @@ dev_dependencies:
   json_serializable: ^6.8.0
   build_runner: ^2.4.11
   mobx_codegen: ^2.6.1
+  retrofit_generator: ^8.1.2
+
   
 
 
