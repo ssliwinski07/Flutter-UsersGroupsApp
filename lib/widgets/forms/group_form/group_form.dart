@@ -4,18 +4,23 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
+import 'package:flutter_users_group_app/models/models.dart';
 
 class GroupForm extends StatefulWidget {
   const GroupForm({
     super.key,
     required this.formKey,
+    required this.confirmationButtonName,
     this.onNameChange,
     this.onSubbmit,
+    this.group,
   });
 
   final GlobalKey<FormBuilderState> formKey;
   final FunctionCallback<String> onNameChange;
   final VoidCallback? onSubbmit;
+  final GroupModel? group;
+  final String confirmationButtonName;
 
   @override
   State<GroupForm> createState() => _GroupFormState();
@@ -30,6 +35,7 @@ class _GroupFormState extends State<GroupForm> {
         children: <Widget>[
           FormBuilderTextField(
             name: groupNameForm,
+            initialValue: widget.group?.groupName ?? '',
             decoration: InputDecoration(labelText: context.localize.groupName),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(
@@ -74,7 +80,7 @@ class _GroupFormState extends State<GroupForm> {
                     }
                   }
                 },
-                child: Text(context.localize.add,
+                child: Text(widget.confirmationButtonName,
                     style: const TextStyle(color: Colors.white)),
               ),
             ],

@@ -48,4 +48,15 @@ abstract class GroupsStoreBase with Store {
   Future<void> addGroup({required Map<String, dynamic> groupJson}) async {
     await databaseService.addGroup(groupJson: groupJson);
   }
+
+  @action
+  Future<void> updateGroup({
+    required String groupName,
+    required int groupId,
+  }) async {
+    await databaseService.updateGroup(
+      groupId: groupId,
+      groupName: groupName,
+    );
+  }
 }

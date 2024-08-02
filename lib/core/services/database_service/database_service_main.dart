@@ -141,6 +141,21 @@ class DatabaseServiceMain implements DatabaseServiceBase {
   }
 
   @override
+  Future<int> updateGroup({
+    required String groupName,
+    required int groupId,
+  }) async {
+    String query =
+        '''UPDATE $groupsTable SET groupName = ? WHERE groupId = ? ''';
+    final data = await _updateTableFromQuery(
+      query: query,
+      parameters: [groupName, groupId],
+    );
+
+    return data;
+  }
+
+  @override
   Future<int> updateSettingValue(
       {required String query, List<Object?>? parameters}) async {
     final data = await _updateTableFromQuery(

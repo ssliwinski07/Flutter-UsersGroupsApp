@@ -92,6 +92,15 @@ mixin _$GroupsStore on GroupsStoreBase, Store {
         .run(() => super.addGroup(groupJson: groupJson));
   }
 
+  late final _$updateGroupAsyncAction =
+      AsyncAction('GroupsStoreBase.updateGroup', context: context);
+
+  @override
+  Future<void> updateGroup({required String groupName, required int groupId}) {
+    return _$updateGroupAsyncAction
+        .run(() => super.updateGroup(groupName: groupName, groupId: groupId));
+  }
+
   late final _$GroupsStoreBaseActionController =
       ActionController(name: 'GroupsStoreBase', context: context);
 

@@ -23,5 +23,10 @@
     "lastName" : "Nazwisko",
     "zipCode" : "Kod pocztowy",
     "cityName" : "Miasto",
-    "noGroups" : "Brak grup do wyboru"
+    "noGroups" : "Brak grup do wyboru",
+    "confirm" : "Zatwierdź",
+    "groupModified" : "Grupa została zmodyfikowana",
+    "modifyingGroupError" : "Błąd w trakcie modyfikacji grupy",
+    "modifyingUserError" : "Błąd w trakcie modyfikacji użytkownika",
+    "userModified" : "Użytkownik został zmodyfikowany"
 }

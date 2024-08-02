@@ -23,5 +23,10 @@
     "lastName" : "Last name",
     "zipCode" : "Zip code",
     "cityName" : "City name",
-    "noGroups" : "No groups to choose"
+    "noGroups" : "No groups to choose",
+    "confirm" : "Confirm",
+    "groupModified" : "Group has been modified",
+    "modifyingGroupError" : "Error while modifying group",
+    "modifyingUserError" : "Error while modifying user",
+    "userModified" : "User has been modified"
 }

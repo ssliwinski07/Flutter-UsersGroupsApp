@@ -17,6 +17,10 @@ abstract interface class DatabaseServiceBase {
   Future<List<UserModel>> getUsersForGroup({required int groupId});
   Future<int> addGroup({required Map<String, dynamic> groupJson});
   Future<void> deleteGroup({required int groupId});
+  Future<int> updateGroup({
+    required String groupName,
+    required int groupId,
+  });
   // delete it later, it's not neccessary ;)
   Future<List<UserGroupModel>> getUsersAndGroups();
 

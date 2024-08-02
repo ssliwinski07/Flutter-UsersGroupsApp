@@ -303,6 +303,7 @@ class _GroupsTileWidgetState extends State<_GroupsTileWidget> {
               formKey: _formKey,
               child: GroupForm(
                 formKey: _formKey,
+                confirmationButtonName: context.localize.add,
                 onNameChange: (value) {
                   groupName = value!;
                 },
