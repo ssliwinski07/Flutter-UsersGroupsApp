@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'package:flutter_users_group_app/core/core.dart';
 import 'package:flutter_users_group_app/helpers/helpers.dart';
@@ -17,15 +18,19 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
-  MessageInfoServiceBase get messageInfoService => ServiceLocator()
+  MessageInfoServiceBase get _messageInfoService => ServiceLocator()
       .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
 
-  late UsersStore usersStore;
+  final _formKey = GlobalKey<FormBuilderState>();
+
+  late UsersStore _usersStore;
+  late GroupsStore _groupsStore;
 
   @override
   void initState() {
     super.initState();
-    usersStore = Provider.of<UsersStore>(context, listen: false);
+    _usersStore = Provider.of<UsersStore>(context, listen: false);
+    _groupsStore = Provider.of<GroupsStore>(context, listen: false);
   }
 
   @override
@@ -38,16 +43,16 @@ class _UsersListState extends State<UsersList> {
         }
         return Observer(
           builder: (_) {
-            if (usersStore.users.isEmpty) {
+            if (_usersStore.users.isEmpty) {
               return const NoItemsInfoWidget();
             }
             return ListView.builder(
-              itemCount: usersStore.users.length,
+              itemCount: _usersStore.users.length,
               itemBuilder: (BuildContext context, int index) {
-                final user = usersStore.users[index];
+                final user = _usersStore.users[index];
                 return UsersListItem(
                   title: '${user.userName} ${user.lastName}',
-                  userStore: usersStore,
+                  userStore: _usersStore,
                   user: user,
                   leadingIcon: Icons.person_4_rounded,
                   onDelete: () async {
@@ -55,7 +60,7 @@ class _UsersListState extends State<UsersList> {
                       await _deleteUser(userId: user.userId!);
 
                       if (context.mounted) {
-                        messageInfoService.showMessage(
+                        _messageInfoService.showMessage(
                           infoMessage: context.localize
                               .userRemoved('${user.userName} ${user.lastName}'),
                           infoType: MessageInfoTypes.info,
@@ -64,7 +69,7 @@ class _UsersListState extends State<UsersList> {
                       }
                     } catch (e) {
                       if (context.mounted) {
-                        messageInfoService.showMessage(
+                        _messageInfoService.showMessage(
                           infoMessage: context.localize.removingUserError(
                               '${user.userName} ${user.lastName}'),
                           infoType: MessageInfoTypes.alert,
@@ -72,6 +77,56 @@ class _UsersListState extends State<UsersList> {
                         );
                       }
                     }
+                  },
+                  onEdit: () async {
+                    await showForm(
+                      context: context,
+                      formKey: _formKey,
+                      child: FutureBuilder(
+                        future: _getUserGroup(userId: user.userId!),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.done) {
+                            return const LoadingWidget(
+                                path: lottieLoadingDetailsPath);
+                          }
+                          return UserForm(
+                            user: user,
+                            confirmationButtonName: context.localize.edit,
+                            group: _usersStore.userGroup,
+                            formKey: _formKey,
+                            items: _groupsStore.groups,
+                            onNameChange: (value) {},
+                            onLastNameChange: (value) {},
+                            onStreetNameChange: (value) {},
+                            onCityChange: (value) {},
+                            onZipCodeChange: (value) {},
+                            onGroupChange: (value) {},
+                            onSubbmit: () async {
+                              try {
+                                if (context.mounted) {
+                                  _messageInfoService.showMessage(
+                                    context: context,
+                                    infoMessage: context.localize.userModified,
+                                    infoType: MessageInfoTypes.info,
+                                  );
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
+                                  _messageInfoService.showMessage(
+                                    context: context,
+                                    infoMessage:
+                                        context.localize.modifyingUserError,
+                                    infoType: MessageInfoTypes.alert,
+                                  );
+                                }
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    );
                   },
                 );
               },
@@ -83,11 +138,19 @@ class _UsersListState extends State<UsersList> {
   }
 
   Future<void> _getUsers() async {
-    await usersStore.getUsers();
+    await _usersStore.getUsers();
+  }
+
+  Future<void> _getUserGroup({required int userId}) async {
+    try {
+      await _usersStore.getUserGroup(userId: userId);
+    } catch (e) {
+      await _groupsStore.getGroups();
+    }
   }
 
   Future<void> _deleteUser({required int userId}) async {
-    await usersStore.deleteUser(userId: userId);
+    await _usersStore.deleteUser(userId: userId);
     await _getUsers();
   }
 }

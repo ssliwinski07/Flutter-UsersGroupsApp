@@ -29,10 +29,11 @@ abstract class SettingsStoreBase with Store {
 
   @action
   Future<void> updateLocale({required String value}) async {
+    String settingName = 'UserLanguage';
     String query =
-        '''UPDATE $settingsTable SET settingValue = ? WHERE settingName = 'UserLanguage' ''';
+        '''UPDATE $settingsTable SET settingValue = ? WHERE settingName = ? ''';
 
-    await _updateSetting(query: query, parameters: [value]);
+    await _updateSetting(query: query, parameters: [value, settingName]);
     await getLocale();
   }
 

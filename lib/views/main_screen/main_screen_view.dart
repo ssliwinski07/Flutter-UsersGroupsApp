@@ -187,6 +187,7 @@ class _UsersTileWidgetState extends State<_UsersTileWidget> {
                     }
                     return UserForm(
                       formKey: _formKey,
+                      confirmationButtonName: context.localize.add,
                       items: _groupsStore.groups,
                       onNameChange: (value) {
                         name = value!;

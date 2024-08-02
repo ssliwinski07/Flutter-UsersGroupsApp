@@ -10,6 +10,9 @@ import 'package:flutter_users_group_app/models/models.dart';
 class UserForm extends StatefulWidget {
   const UserForm({
     super.key,
+    required this.confirmationButtonName,
+    required this.items,
+    required this.formKey,
     this.onNameChange,
     this.onLastNameChange,
     this.onStreetNameChange,
@@ -17,11 +20,13 @@ class UserForm extends StatefulWidget {
     this.onCityChange,
     this.onGroupChange,
     this.onSubbmit,
-    required this.items,
-    required this.formKey,
+    this.user,
+    this.group,
   });
 
   final List<GroupModel> items;
+  final UserModel? user;
+  final GroupModel? group;
   final GlobalKey<FormBuilderState> formKey;
   final FunctionCallback<String> onNameChange;
   final FunctionCallback<String> onLastNameChange;
@@ -30,6 +35,7 @@ class UserForm extends StatefulWidget {
   final FunctionCallback<String> onCityChange;
   final FunctionCallback<GroupModel> onGroupChange;
   final VoidCallback? onSubbmit;
+  final String confirmationButtonName;
 
   @override
   State<UserForm> createState() => _UserFormState();
@@ -44,6 +50,7 @@ class _UserFormState extends State<UserForm> {
         children: <Widget>[
           FormBuilderTextField(
             name: userNameForm,
+            initialValue: widget.user?.userName ?? '',
             decoration: InputDecoration(labelText: context.localize.name),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(
@@ -58,6 +65,7 @@ class _UserFormState extends State<UserForm> {
           ),
           FormBuilderTextField(
             name: userLastNameForm,
+            initialValue: widget.user?.lastName ?? '',
             decoration: InputDecoration(labelText: context.localize.lastName),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(
@@ -72,6 +80,7 @@ class _UserFormState extends State<UserForm> {
           ),
           FormBuilderTextField(
             name: streetNameForm,
+            initialValue: widget.user?.streetName ?? '',
             decoration: InputDecoration(labelText: context.localize.streetName),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(
@@ -86,6 +95,7 @@ class _UserFormState extends State<UserForm> {
           ),
           FormBuilderTextField(
             name: zipCodeForm,
+            initialValue: widget.user?.postalCode ?? '',
             inputFormatters: [Formatters().zipCodeFormatter],
             decoration: InputDecoration(
               hintText: '##-###',
@@ -106,6 +116,7 @@ class _UserFormState extends State<UserForm> {
           ),
           FormBuilderTextField(
             name: cityForm,
+            initialValue: widget.user?.cityName ?? '',
             decoration: InputDecoration(labelText: context.localize.cityName),
             validator: FormBuilderValidators.compose(
               [
@@ -129,6 +140,7 @@ class _UserFormState extends State<UserForm> {
               ],
             ),
             name: usersGroupsForm,
+            initialValue: widget.group,
             decoration: InputDecoration(
               label: Text(
                 context.localize.usersGroups,
@@ -182,7 +194,7 @@ class _UserFormState extends State<UserForm> {
                     }
                   }
                 },
-                child: Text(context.localize.add,
+                child: Text(widget.confirmationButtonName,
                     style: const TextStyle(color: Colors.white)),
               ),
             ],

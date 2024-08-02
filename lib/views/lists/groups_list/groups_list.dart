@@ -7,7 +7,6 @@ import 'package:flutter_users_group_app/core/core.dart';
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/widgets/widgets.dart';
 import 'package:flutter_users_group_app/mobx/stores/stores.dart';
-import 'package:flutter_users_group_app/models/models.dart';
 
 class GroupsList extends StatefulWidget {
   const GroupsList({

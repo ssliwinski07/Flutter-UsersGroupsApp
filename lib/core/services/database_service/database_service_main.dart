@@ -68,32 +68,6 @@ class DatabaseServiceMain implements DatabaseServiceBase {
   }
 
   @override
-  Future<List<UserWithGroupModel>> getUsersWithGroup() async {
-    const query = ''' SELECT
-    $usersTable.userId,
-    $usersTable.userName,
-    $usersTable.lastName,
-    $usersTable.streetName,
-    $usersTable.postalCode,
-    $usersTable.cityName,
-    $groupsTable.groupId,
-    $groupsTable.groupName
-    FROM $usersTable
-    JOIN $usersGroupsTable ON $usersGroupsTable.userId = $usersTable.userId
-    JOIN $groupsTable ON $groupsTable.groupId = $usersGroupsTable.groupId
-    ''';
-
-    final data = await _getListDataFromQuery(
-        query: query,
-        fromJson: (e) => UserWithGroupModel(
-              user: UserModel.fromJson(e),
-              group: GroupModel.fromJson(e),
-            ));
-
-    return data;
-  }
-
-  @override
   Future<List<UserModel>> getUsersForGroup({required int groupId}) async {
     String query = ''' SELECT
     $usersTable.userId,
@@ -141,21 +115,6 @@ class DatabaseServiceMain implements DatabaseServiceBase {
   }
 
   @override
-  Future<int> updateGroup({
-    required String groupName,
-    required int groupId,
-  }) async {
-    String query =
-        '''UPDATE $groupsTable SET groupName = ? WHERE groupId = ? ''';
-    final data = await _updateTableFromQuery(
-      query: query,
-      parameters: [groupName, groupId],
-    );
-
-    return data;
-  }
-
-  @override
   Future<int> updateSettingValue(
       {required String query, List<Object?>? parameters}) async {
     final data = await _updateTableFromQuery(
@@ -164,6 +123,22 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     );
 
     return data;
+  }
+
+  @override
+  Future<void> deleteUser({required int userId}) async {
+    String deleteFromUsersTable = 'DELETE FROM $usersTable WHERE userId = ?';
+    String deleteFromUsersGroupsTable =
+        'DELETE FROM $usersGroupsTable WHERE userId = ?';
+
+    Map<String, List<dynamic>> queries = {
+      deleteFromUsersTable: [userId],
+      deleteFromUsersGroupsTable: [userId],
+    };
+
+    await _deleteDataFromBatchQueries(
+      queries: queries,
+    );
   }
 
   @override
@@ -194,29 +169,19 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     return data;
   }
 
-  //delete it later, won't be needed in prod ;)
   @override
-  Future<List<UserGroupModel>> getUsersAndGroups() async {
-    final data = await _getDataFromTable(
-        table: usersGroupsTable, fromJson: (e) => UserGroupModel.fromJson(e));
+  Future<int> updateGroup({
+    required String groupName,
+    required int groupId,
+  }) async {
+    String query =
+        '''UPDATE $groupsTable SET groupName = ? WHERE groupId = ? ''';
+    final data = await _updateTableFromQuery(
+      query: query,
+      parameters: [groupName, groupId],
+    );
 
     return data;
-  }
-
-  @override
-  Future<void> deleteUser({required int userId}) async {
-    String deleteFromUsersTable = 'DELETE FROM $usersTable WHERE userId = ?';
-    String deleteFromUsersGroupsTable =
-        'DELETE FROM $usersGroupsTable WHERE userId = ?';
-
-    Map<String, List<dynamic>> queries = {
-      deleteFromUsersTable: [userId],
-      deleteFromUsersGroupsTable: [userId],
-    };
-
-    await _deleteDataFromBatchQueries(
-      queries: queries,
-    );
   }
 
   @override
@@ -269,20 +234,6 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     await batch.commit(noResult: true, continueOnError: continueOnError);
 
     await db.close();
-  }
-
-  //probably can be deleted
-  Future<int> _deleteDataFromQuery({
-    required String query,
-    List<Object?>? parameters,
-  }) async {
-    final Database db = await initilizeDatabase();
-
-    final result = await db.rawDelete(query, parameters);
-
-    await db.close();
-
-    return result;
   }
 
   Future<List<T>> _getListDataFromQuery<T>({
