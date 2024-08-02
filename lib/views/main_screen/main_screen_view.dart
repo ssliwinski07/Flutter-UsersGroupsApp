@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_users_group_app/core/core.dart';
-import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -180,7 +179,7 @@ class _UsersTileWidgetState extends State<_UsersTileWidget> {
                 context: context,
                 formKey: _formKey,
                 child: FutureBuilder(
-                  future: _buildGroupsList(),
+                  future: _getGroupsList(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState != ConnectionState.done) {
                       return const LoadingWidget(
@@ -251,7 +250,7 @@ class _UsersTileWidgetState extends State<_UsersTileWidget> {
     );
   }
 
-  Future<void> _buildGroupsList() async {
+  Future<void> _getGroupsList() async {
     await _groupsStore.getGroups();
   }
 
@@ -270,8 +269,23 @@ class _GroupsTileWidget extends StatefulWidget {
 }
 
 class _GroupsTileWidgetState extends State<_GroupsTileWidget> {
+  final _formKey = GlobalKey<FormBuilderState>();
+
+  MessageInfoServiceBase get _messageInfoService => ServiceLocator()
+      .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
+
+  late GroupsStore _groupsStore;
+
+  @override
+  void initState() {
+    super.initState();
+    _groupsStore = Provider.of<GroupsStore>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
+    String? groupName;
+
     return TileWidget(
       title: context.localize.usersGroups,
       icon: Icons.people,
@@ -282,9 +296,51 @@ class _GroupsTileWidgetState extends State<_GroupsTileWidget> {
           title: context.localize.usersGroups,
           backgroundColor: Colors.blue,
           listView: const GroupsList(),
+          formKey: _formKey,
+          onActionCallback: () async {
+            await showForm(
+              context: context,
+              formKey: _formKey,
+              child: GroupForm(
+                formKey: _formKey,
+                onNameChange: (value) {
+                  groupName = value!;
+                },
+                onSubbmit: () async {
+                  try {
+                    GroupModel group = GroupModel(
+                      groupName: groupName!,
+                    );
+                    final groupToJson = group.toJson();
+                    await _addGroup(groupJson: groupToJson);
+                    if (context.mounted) {
+                      _messageInfoService.showMessage(
+                        context: context,
+                        infoMessage: context.localize.groupAdded,
+                        infoType: MessageInfoTypes.info,
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      _messageInfoService.showMessage(
+                        context: context,
+                        infoMessage: context.localize.addingGroupError,
+                        infoType: MessageInfoTypes.alert,
+                      );
+                    }
+                  }
+                },
+              ),
+            );
+          },
         ),
       ),
       titleFontSize: 19,
     );
+  }
+
+  Future<void> _addGroup({required Map<String, dynamic> groupJson}) async {
+    await _groupsStore.addGroup(groupJson: groupJson);
+    await _groupsStore.getGroups();
   }
 }

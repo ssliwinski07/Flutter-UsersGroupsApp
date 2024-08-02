@@ -9,6 +9,8 @@
     "removingUserError" : "Error while removing user {userName}",
     "groupRemoved" : "Group {groupName} succesfully removed",
     "removingGroupError" : "Error while removing user {groupName}",
+    "groupAdded" : "Group has been added",
+    "addingGroupError" : "Error while adding group",
     "streetName" : "Street",
     "postalCodeAndCity" : "Zip code and city",
     "groupName" : "User group",

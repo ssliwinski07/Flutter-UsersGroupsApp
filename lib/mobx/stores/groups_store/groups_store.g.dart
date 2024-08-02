@@ -83,6 +83,15 @@ mixin _$GroupsStore on GroupsStoreBase, Store {
         .run(() => super.getUsersForGroup(groupId: groupId));
   }
 
+  late final _$addGroupAsyncAction =
+      AsyncAction('GroupsStoreBase.addGroup', context: context);
+
+  @override
+  Future<void> addGroup({required Map<String, dynamic> groupJson}) {
+    return _$addGroupAsyncAction
+        .run(() => super.addGroup(groupJson: groupJson));
+  }
+
   late final _$GroupsStoreBaseActionController =
       ActionController(name: 'GroupsStoreBase', context: context);
 

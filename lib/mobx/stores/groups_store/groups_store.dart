@@ -43,4 +43,9 @@ abstract class GroupsStoreBase with Store {
     groupUsers = ObservableList.of(
         await databaseService.getUsersForGroup(groupId: groupId));
   }
+
+  @action
+  Future<void> addGroup({required Map<String, dynamic> groupJson}) async {
+    await databaseService.addGroup(groupJson: groupJson);
+  }
 }

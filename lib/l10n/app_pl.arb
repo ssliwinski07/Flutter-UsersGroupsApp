@@ -9,6 +9,8 @@
     "removingUserError" : "Błąd w trakcie usuwania użytkownika {userName}",
     "groupRemoved" : "Grupa {groupName} została usunięta",
     "removingGroupError" : "Błąd w trakcie usuwania grupy {groupName}",
+    "groupAdded" : "Grupa została dodana",
+    "addingGroupError" : "Błąd w trakcie dodawania grupy",
     "streetName" : "Ulica",
     "postalCodeAndCity" : "Kod pocztowy oraz miasto",
     "groupName" : "Grupa użytkownika",

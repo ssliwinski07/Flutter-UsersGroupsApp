@@ -7,8 +7,6 @@ import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
 import 'package:flutter_users_group_app/models/models.dart';
 
-typedef FunctionCallback<T> = void Function(T?)?;
-
 class UserForm extends StatefulWidget {
   const UserForm({
     super.key,
@@ -45,7 +43,7 @@ class _UserFormState extends State<UserForm> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           FormBuilderTextField(
-            name: context.localize.name,
+            name: userNameForm,
             decoration: InputDecoration(labelText: context.localize.name),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(
@@ -59,7 +57,7 @@ class _UserFormState extends State<UserForm> {
             },
           ),
           FormBuilderTextField(
-            name: context.localize.lastName,
+            name: userLastNameForm,
             decoration: InputDecoration(labelText: context.localize.lastName),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(
@@ -73,7 +71,7 @@ class _UserFormState extends State<UserForm> {
             },
           ),
           FormBuilderTextField(
-            name: context.localize.streetName,
+            name: streetNameForm,
             decoration: InputDecoration(labelText: context.localize.streetName),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(
@@ -87,7 +85,7 @@ class _UserFormState extends State<UserForm> {
             },
           ),
           FormBuilderTextField(
-            name: context.localize.zipCode,
+            name: zipCodeForm,
             inputFormatters: [Formatters().zipCodeFormatter],
             decoration: InputDecoration(
               hintText: '##-###',
@@ -107,7 +105,7 @@ class _UserFormState extends State<UserForm> {
             },
           ),
           FormBuilderTextField(
-            name: context.localize.cityName,
+            name: cityForm,
             decoration: InputDecoration(labelText: context.localize.cityName),
             validator: FormBuilderValidators.compose(
               [
@@ -130,7 +128,7 @@ class _UserFormState extends State<UserForm> {
                 ),
               ],
             ),
-            name: context.localize.usersGroups,
+            name: usersGroupsForm,
             decoration: InputDecoration(
               label: Text(
                 context.localize.usersGroups,

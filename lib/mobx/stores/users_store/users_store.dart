@@ -41,7 +41,6 @@ abstract class UsersStoreBase with Store {
   @action
   Future<void> getUserGroup({required int userId}) async {
     userGroup = await databaseService.getUserGroup(userId: userId);
-    print(userGroup);
   }
 
   @action

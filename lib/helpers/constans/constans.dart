@@ -27,3 +27,13 @@ const groupsScreenViewPath = '/groupsScreenView';
 
 const en = 'en';
 const pl = 'pl';
+
+// form names
+
+const groupNameForm = 'groupNameForm';
+const userNameForm = 'userNameForm';
+const userLastNameForm = 'userLastNameForm';
+const streetNameForm = 'streetNameForm';
+const zipCodeForm = 'zipCodeFormatter';
+const cityForm = 'cityForm';
+const usersGroupsForm = 'usersGroupsForm';

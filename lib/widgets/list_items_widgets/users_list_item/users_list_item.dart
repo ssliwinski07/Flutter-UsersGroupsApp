@@ -169,7 +169,6 @@ class _UserDetails extends StatelessWidget {
   }
 
   Future<void> _getUserGroup({required int userId}) async {
-    await Future.delayed(const Duration(seconds: 3));
     await usersStore!.getUserGroup(userId: userId);
   }
 }
