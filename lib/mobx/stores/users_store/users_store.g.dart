@@ -72,6 +72,22 @@ mixin _$UsersStore on UsersStoreBase, Store {
     });
   }
 
+  late final _$zipCodeInfoAtom =
+      Atom(name: 'UsersStoreBase.zipCodeInfo', context: context);
+
+  @override
+  ZipCodeModel? get zipCodeInfo {
+    _$zipCodeInfoAtom.reportRead();
+    return super.zipCodeInfo;
+  }
+
+  @override
+  set zipCodeInfo(ZipCodeModel? value) {
+    _$zipCodeInfoAtom.reportWrite(value, super.zipCodeInfo, () {
+      super.zipCodeInfo = value;
+    });
+  }
+
   late final _$deleteUserAsyncAction =
       AsyncAction('UsersStoreBase.deleteUser', context: context);
 
@@ -87,6 +103,15 @@ mixin _$UsersStore on UsersStoreBase, Store {
   Future<void> getZipCodes({required String cityName}) {
     return _$getZipCodesAsyncAction
         .run(() => super.getZipCodes(cityName: cityName));
+  }
+
+  late final _$getZipCodeInfoAsyncAction =
+      AsyncAction('UsersStoreBase.getZipCodeInfo', context: context);
+
+  @override
+  Future<void> getZipCodeInfo({required String zipCode}) {
+    return _$getZipCodeInfoAsyncAction
+        .run(() => super.getZipCodeInfo(zipCode: zipCode));
   }
 
   late final _$getUsersAsyncAction =
@@ -136,7 +161,8 @@ mixin _$UsersStore on UsersStoreBase, Store {
 users: ${users},
 zipCodes: ${zipCodes},
 usersCounter: ${usersCounter},
-userGroup: ${userGroup}
+userGroup: ${userGroup},
+zipCodeInfo: ${zipCodeInfo}
     ''';
   }
 }

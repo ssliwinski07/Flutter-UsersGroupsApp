@@ -27,6 +27,9 @@ abstract class UsersStoreBase with Store {
   @observable
   GroupModel? userGroup;
 
+  @observable
+  ZipCodeModel? zipCodeInfo;
+
   @action
   void countUsers() {
     usersCounter = users.length;
@@ -41,6 +44,14 @@ abstract class UsersStoreBase with Store {
   Future<void> getZipCodes({required String cityName}) async {
     zipCodes = ObservableList.of(
         await zipCodesNetworkServiceBase.getZipCodes(cityName: cityName));
+  }
+
+  @action
+  Future<void> getZipCodeInfo({required String zipCode}) async {
+    final result =
+        await zipCodesNetworkServiceBase.getZipCodeInfo(zipCode: zipCode);
+
+    zipCodeInfo = result.first;
   }
 
   @action

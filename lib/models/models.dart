@@ -4,3 +4,4 @@ export 'groups/group_model.dart';
 export 'groups/group_with_users_model.dart';
 export 'user_group/user_group_model.dart';
 export 'settings/settings_model.dart';
+export 'zip_codes/zip_code_model.dart';

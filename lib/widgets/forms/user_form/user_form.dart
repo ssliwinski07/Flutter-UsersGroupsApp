@@ -45,14 +45,14 @@ class UserForm extends StatefulWidget {
 }
 
 class _UserFormState extends State<UserForm> {
-  late UsersStore _userStore;
+  late UsersStore _usersStore;
 
   Timer? _debounce;
 
   @override
   void initState() {
     super.initState();
-    _userStore = Provider.of<UsersStore>(context, listen: false);
+    _usersStore = Provider.of<UsersStore>(context, listen: false);
   }
 
   @override
@@ -113,9 +113,13 @@ class _UserFormState extends State<UserForm> {
             },
           ),
           FormBuilderTextField(
-            name: cityForm,
-            initialValue: widget.user?.cityName ?? '',
-            decoration: InputDecoration(labelText: context.localize.cityName),
+            name: zipCodeForm,
+            initialValue: widget.user?.postalCode ?? '',
+            inputFormatters: [Formatters().zipCodeFormatter],
+            decoration: InputDecoration(
+              hintText: '##-###',
+              labelText: context.localize.zipCode,
+            ),
             validator: FormBuilderValidators.compose(
               [
                 FormBuilderValidators.required(
@@ -123,11 +127,17 @@ class _UserFormState extends State<UserForm> {
                 ),
               ],
             ),
-            onChanged: _onCityChanged,
+            onChanged: (value) {
+              if (widget.onZipCodeChange != null) {
+                widget.onZipCodeChange!(value);
+              }
+            },
           ),
-          //change it to dropdown menu
           Observer(
-            builder: (_) => FormBuilderDropdown<String>(
+            builder: (_) => FormBuilderTextField(
+              name: cityForm,
+              initialValue: widget.user?.cityName ?? '',
+              decoration: InputDecoration(labelText: context.localize.cityName),
               validator: FormBuilderValidators.compose(
                 [
                   FormBuilderValidators.required(
@@ -135,26 +145,9 @@ class _UserFormState extends State<UserForm> {
                   ),
                 ],
               ),
-              name: zipCodeForm,
-              initialValue: widget.user?.postalCode ?? '',
-              decoration: InputDecoration(
-                label: Text(
-                  context.localize.zipCode,
-                ),
-              ),
-              disabledHint: Text(context.localize.noZipCodes),
-              items: _userStore.zipCodes
-                  .map(
-                    (element) => DropdownMenuItem(
-                        value: element,
-                        child: Text(
-                          element,
-                        )),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                if (widget.onZipCodeChange != null) {
-                  widget.onZipCodeChange!(value);
+              onChanged: (value) async {
+                if (widget.onCityChange != null) {
+                  widget.onCityChange!(value);
                 }
               },
             ),
@@ -232,11 +225,11 @@ class _UserFormState extends State<UserForm> {
     );
   }
 
-  void _onCityChanged(String? value) {
+  void _onZipCodeChanged(String? value) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(seconds: 3), () {
       if (value != null && value.isNotEmpty) {
-        widget.onCityChange!(value);
+        widget.onZipCodeChange!(value);
       }
     });
   }
@@ -263,4 +256,38 @@ class _UserFormState extends State<UserForm> {
 //                 widget.onZipCodeChange!(value);
 //               }
 //             },
+//           ),
+
+// Observer(
+//             builder: (_) => FormBuilderDropdown<String>(
+//               validator: FormBuilderValidators.compose(
+//                 [
+//                   FormBuilderValidators.required(
+//                     errorText: context.localize.requiredField,
+//                   ),
+//                 ],
+//               ),
+//               name: zipCodeForm,
+//               initialValue: widget.user?.postalCode ?? '',
+//               decoration: InputDecoration(
+//                 label: Text(
+//                   context.localize.zipCode,
+//                 ),
+//               ),
+//               disabledHint: Text(context.localize.noZipCodes),
+//               items: _userStore.zipCodes
+//                   .map(
+//                     (element) => DropdownMenuItem(
+//                         value: element,
+//                         child: Text(
+//                           element,
+//                         )),
+//                   )
+//                   .toList(),
+//               onChanged: (value) {
+//                 if (widget.onZipCodeChange != null) {
+//                   widget.onZipCodeChange!(value);
+//                 }
+//               },
+//             ),
 //           ),

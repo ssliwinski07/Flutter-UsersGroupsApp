@@ -200,20 +200,32 @@ class _UsersTileWidgetState extends State<_UsersTileWidget> {
                       },
                       onCityChange: (value) async {
                         city = value!;
+                        // try {
+                        //   await _usersStore.getZipCodes(cityName: city!);
+                        // } catch (_) {
+                        //   if (context.mounted) {
+                        //     _messageInfoService.showMessage(
+                        //         context: context,
+                        //         infoMessage: context.localize
+                        //             .fetchingZipCodesError(city!),
+                        //         infoType: MessageInfoTypes.alert);
+                        //   }
+                        // }
+                      },
+                      onZipCodeChange: (value) async {
+                        zipCode = value!;
                         try {
-                          await _usersStore.getZipCodes(cityName: city!);
+                          await _usersStore.getZipCodeInfo(zipCode: '40-101');
                         } catch (_) {
                           if (context.mounted) {
                             _messageInfoService.showMessage(
-                                context: context,
-                                infoMessage: context.localize
-                                    .fetchingZipCodesError(city!),
-                                infoType: MessageInfoTypes.alert);
+                              context: context,
+                              infoMessage:
+                                  'Error while fetching city based on zip code $zipCode',
+                              infoType: MessageInfoTypes.alert,
+                            );
                           }
                         }
-                      },
-                      onZipCodeChange: (value) {
-                        zipCode = value!;
                       },
                       onGroupChange: (value) {
                         group = value!;
