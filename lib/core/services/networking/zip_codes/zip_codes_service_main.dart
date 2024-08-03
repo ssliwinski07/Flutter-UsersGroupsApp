@@ -1,8 +1,8 @@
-import 'package:flutter_users_group_app/core/core.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import 'package:flutter_users_group_app/helpers/helpers.dart';
+import 'package:flutter_users_group_app/core/core.dart';
 
 part 'zip_codes_service_main.g.dart';
 

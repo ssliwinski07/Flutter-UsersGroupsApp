@@ -1,12 +1,10 @@
 import 'package:get_it/get_it.dart';
-import 'package:dio/dio.dart';
 
 import 'package:flutter_users_group_app/core/services/services.dart';
 import 'package:flutter_users_group_app/helpers/constans/constans.dart';
 
 class ServiceLocator {
   GetIt get getInstance => GetIt.instance;
-  Dio dio = Dio();
 
   //Core services
   Future<void> initializeCoreServices() async {
@@ -14,7 +12,16 @@ class ServiceLocator {
       DatabaseServiceMain(),
       instanceName: mainInstance,
     );
-    getInstance.registerSingleton<ZipCodesServiceBase>(ZipCodesServiceMain(dio),
+    getInstance.registerSingleton<NetworkingServiceBase>(
+      NetworkingServiceMain(),
+      instanceName: mainInstance,
+    );
+
+    final networkingSerivce = ServiceLocator()
+        .getInstance<NetworkingServiceBase>(instanceName: mainInstance);
+
+    getInstance.registerSingleton<ZipCodesServiceBase>(
+        ZipCodesServiceMain(networkingSerivce.createDio()),
         instanceName: mainInstance);
   }
 

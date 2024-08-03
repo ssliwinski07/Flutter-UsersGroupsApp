@@ -28,9 +28,7 @@ void main() async {
 
   await databaseServiceBase.initilizeDatabase();
 
-  final zipCodes = await zipCodesServiceBase.getZipCodes(cityName: 'Katowice');
-
-  print(zipCodes);
+  await zipCodesServiceBase.getZipCodes(cityName: 'Katowice');
 
   runApp(
     MultiProvider(
