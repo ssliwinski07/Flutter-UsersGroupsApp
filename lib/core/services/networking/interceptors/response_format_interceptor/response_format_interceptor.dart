@@ -15,7 +15,9 @@ class ResponseFormatInterceptor extends Interceptor {
     Response response,
     ResponseInterceptorHandler handler,
   ) {
-    final logger = Logger();
+    final logger = Logger(
+      printer: PrettyPrinter(),
+    );
     response.headers.add(acceptHeader, responseFormat);
     logger.i("Response[${response.data}], EXTRAS: ${response.headers}");
 
