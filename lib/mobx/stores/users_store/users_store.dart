@@ -8,14 +8,18 @@ part 'users_store.g.dart';
 class UsersStore = UsersStoreBase with _$UsersStore;
 
 abstract class UsersStoreBase with Store {
-  UsersStoreBase({
-    required this.databaseService,
-  });
+  UsersStoreBase(
+      {required this.databaseService,
+      required this.zipCodesNetworkServiceBase});
 
   final DatabaseServiceBase databaseService;
+  final ZipCodesNetworkServiceBase zipCodesNetworkServiceBase;
 
   @observable
   ObservableList<UserModel> users = ObservableList<UserModel>();
+
+  @observable
+  ObservableList<String> zipCodes = ObservableList<String>();
 
   @observable
   int usersCounter = 0;
@@ -31,6 +35,12 @@ abstract class UsersStoreBase with Store {
   @action
   Future<void> deleteUser({required int userId}) async {
     await databaseService.deleteUser(userId: userId);
+  }
+
+  @action
+  Future<void> getZipCodes({required String cityName}) async {
+    zipCodes = ObservableList.of(
+        await zipCodesNetworkServiceBase.getZipCodes(cityName: cityName));
   }
 
   @action

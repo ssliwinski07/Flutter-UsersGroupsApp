@@ -20,8 +20,8 @@ class ServiceLocator {
     final networkingSerivce = ServiceLocator()
         .getInstance<NetworkingServiceBase>(instanceName: mainInstance);
 
-    getInstance.registerSingleton<ZipCodesServiceBase>(
-        ZipCodesServiceMain(networkingSerivce.createDio()),
+    getInstance.registerSingleton<ZipCodesNetworkServiceBase>(
+        ZipCodesNetworkServiceMain(networkingSerivce.createDio()),
         instanceName: mainInstance);
   }
 

@@ -17,7 +17,7 @@ class ResponseFormatInterceptor extends Interceptor {
   ) {
     final logger = Logger();
     response.headers.add(acceptHeader, responseFormat);
-    logger.i("Response[${response.data}], EXTRAS: ${response.headers}");
+    logger.i("Response: ${response.data}, EXTRAS: ${response.headers}");
 
     return handler.next(response);
   }

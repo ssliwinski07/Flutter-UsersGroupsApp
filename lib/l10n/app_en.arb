@@ -28,5 +28,6 @@
     "groupModified" : "Group has been modified",
     "modifyingGroupError" : "Error while modifying group",
     "modifyingUserError" : "Error while modifying user",
-    "userModified" : "User has been modified"
+    "userModified" : "User has been modified",
+    "noZipCodes" : "No zip codes"
 }

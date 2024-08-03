@@ -23,18 +23,21 @@ void main() async {
   DatabaseServiceBase databaseServiceBase = serviceLocator
       .getInstance<DatabaseServiceBase>(instanceName: mainInstance);
 
-  ZipCodesServiceBase zipCodesServiceBase = serviceLocator
-      .getInstance<ZipCodesServiceBase>(instanceName: mainInstance);
+  ZipCodesNetworkServiceBase zipCodesNetworkServiceBase = serviceLocator
+      .getInstance<ZipCodesNetworkServiceBase>(instanceName: mainInstance);
 
   await databaseServiceBase.initilizeDatabase();
 
-  await zipCodesServiceBase.getZipCodes(cityName: 'Katowice');
+  await zipCodesNetworkServiceBase.getZipCodes(cityName: 'Katowice');
 
   runApp(
     MultiProvider(
       providers: [
         Provider<UsersStore>(
-          create: (context) => UsersStore(databaseService: databaseServiceBase),
+          create: (context) => UsersStore(
+            databaseService: databaseServiceBase,
+            zipCodesNetworkServiceBase: zipCodesNetworkServiceBase,
+          ),
         ),
         Provider<GroupsStore>(
           create: (context) =>

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:provider/provider.dart';
 
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
 import 'package:flutter_users_group_app/models/models.dart';
+import 'package:flutter_users_group_app/mobx/stores/stores.dart';
 
 class UserForm extends StatefulWidget {
   const UserForm({
@@ -42,6 +43,14 @@ class UserForm extends StatefulWidget {
 }
 
 class _UserFormState extends State<UserForm> {
+  late UsersStore _userStore;
+
+  @override
+  void initState() {
+    super.initState();
+    _userStore = Provider.of<UsersStore>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -94,27 +103,6 @@ class _UserFormState extends State<UserForm> {
             },
           ),
           FormBuilderTextField(
-            name: zipCodeForm,
-            initialValue: widget.user?.postalCode ?? '',
-            inputFormatters: [Formatters().zipCodeFormatter],
-            decoration: InputDecoration(
-              hintText: '##-###',
-              labelText: context.localize.zipCode,
-            ),
-            validator: FormBuilderValidators.compose(
-              [
-                FormBuilderValidators.required(
-                  errorText: context.localize.requiredField,
-                ),
-              ],
-            ),
-            onChanged: (value) {
-              if (widget.onZipCodeChange != null) {
-                widget.onZipCodeChange!(value);
-              }
-            },
-          ),
-          FormBuilderTextField(
             name: cityForm,
             initialValue: widget.user?.cityName ?? '',
             decoration: InputDecoration(labelText: context.localize.cityName),
@@ -128,6 +116,38 @@ class _UserFormState extends State<UserForm> {
             onChanged: (value) {
               if (widget.onCityChange != null) {
                 widget.onCityChange!(value);
+              }
+            },
+          ),
+          //change it to dropdown menu
+          FormBuilderDropdown<String>(
+            validator: FormBuilderValidators.compose(
+              [
+                FormBuilderValidators.required(
+                  errorText: context.localize.requiredField,
+                ),
+              ],
+            ),
+            name: zipCodeForm,
+            initialValue: widget.user?.postalCode ?? '',
+            decoration: InputDecoration(
+              label: Text(
+                context.localize.zipCode,
+              ),
+            ),
+            disabledHint: Text(context.localize.noZipCodes),
+            items: _userStore.zipCodes
+                .map(
+                  (element) => DropdownMenuItem(
+                      value: element,
+                      child: Text(
+                        element,
+                      )),
+                )
+                .toList(),
+            onChanged: (value) {
+              if (widget.onZipCodeChange != null) {
+                widget.onZipCodeChange!(value);
               }
             },
           ),
@@ -204,3 +224,26 @@ class _UserFormState extends State<UserForm> {
     );
   }
 }
+
+
+// FormBuilderTextField(
+//             name: zipCodeForm,
+//             initialValue: widget.user?.postalCode ?? '',
+//             inputFormatters: [Formatters().zipCodeFormatter],
+//             decoration: InputDecoration(
+//               hintText: '##-###',
+//               labelText: context.localize.zipCode,
+//             ),
+//             validator: FormBuilderValidators.compose(
+//               [
+//                 FormBuilderValidators.required(
+//                   errorText: context.localize.requiredField,
+//                 ),
+//               ],
+//             ),
+//             onChanged: (value) {
+//               if (widget.onZipCodeChange != null) {
+//                 widget.onZipCodeChange!(value);
+//               }
+//             },
+//           ),

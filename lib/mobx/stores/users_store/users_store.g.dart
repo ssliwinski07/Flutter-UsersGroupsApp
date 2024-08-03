@@ -24,6 +24,22 @@ mixin _$UsersStore on UsersStoreBase, Store {
     });
   }
 
+  late final _$zipCodesAtom =
+      Atom(name: 'UsersStoreBase.zipCodes', context: context);
+
+  @override
+  ObservableList<String> get zipCodes {
+    _$zipCodesAtom.reportRead();
+    return super.zipCodes;
+  }
+
+  @override
+  set zipCodes(ObservableList<String> value) {
+    _$zipCodesAtom.reportWrite(value, super.zipCodes, () {
+      super.zipCodes = value;
+    });
+  }
+
   late final _$usersCounterAtom =
       Atom(name: 'UsersStoreBase.usersCounter', context: context);
 
@@ -62,6 +78,15 @@ mixin _$UsersStore on UsersStoreBase, Store {
   @override
   Future<void> deleteUser({required int userId}) {
     return _$deleteUserAsyncAction.run(() => super.deleteUser(userId: userId));
+  }
+
+  late final _$getZipCodesAsyncAction =
+      AsyncAction('UsersStoreBase.getZipCodes', context: context);
+
+  @override
+  Future<void> getZipCodes({required String cityName}) {
+    return _$getZipCodesAsyncAction
+        .run(() => super.getZipCodes(cityName: cityName));
   }
 
   late final _$getUsersAsyncAction =
@@ -109,6 +134,7 @@ mixin _$UsersStore on UsersStoreBase, Store {
   String toString() {
     return '''
 users: ${users},
+zipCodes: ${zipCodes},
 usersCounter: ${usersCounter},
 userGroup: ${userGroup}
     ''';

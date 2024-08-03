@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'zip_codes_service_main.dart';
+part of 'zip_codes_network_service_main.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'zip_codes_service_main.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
-class _ZipCodesServiceMain implements ZipCodesServiceMain {
-  _ZipCodesServiceMain(
+class _ZipCodesNetworkServiceMain implements ZipCodesNetworkServiceMain {
+  _ZipCodesNetworkServiceMain(
     this._dio, {
     this.baseUrl,
   }) {
@@ -21,7 +21,7 @@ class _ZipCodesServiceMain implements ZipCodesServiceMain {
   String? baseUrl;
 
   @override
-  Future<List<String?>>? getZipCodes({required String cityName}) async {
+  Future<List<String>> getZipCodes({required String cityName}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -43,7 +43,7 @@ class _ZipCodesServiceMain implements ZipCodesServiceMain {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final _value = _result.data!.cast<String?>();
+    final _value = _result.data!.cast<String>();
     return _value;
   }
 

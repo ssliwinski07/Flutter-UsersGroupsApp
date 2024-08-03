@@ -28,5 +28,6 @@
     "groupModified" : "Grupa została zmodyfikowana",
     "modifyingGroupError" : "Błąd w trakcie modyfikacji grupy",
     "modifyingUserError" : "Błąd w trakcie modyfikacji użytkownika",
-    "userModified" : "Użytkownik został zmodyfikowany"
+    "userModified" : "Użytkownik został zmodyfikowany",
+    "noZipCodes" : "Brak kodów pocztowych"
 }
