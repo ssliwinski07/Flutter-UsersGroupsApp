@@ -198,8 +198,19 @@ class _UsersTileWidgetState extends State<_UsersTileWidget> {
                       onStreetNameChange: (value) {
                         streetName = value!;
                       },
-                      onCityChange: (value) {
+                      onCityChange: (value) async {
                         city = value!;
+                        try {
+                          await _usersStore.getZipCodes(cityName: city!);
+                        } catch (_) {
+                          if (context.mounted) {
+                            _messageInfoService.showMessage(
+                                context: context,
+                                infoMessage: context.localize
+                                    .fetchingZipCodesError(city!),
+                                infoType: MessageInfoTypes.alert);
+                          }
+                        }
                       },
                       onZipCodeChange: (value) {
                         zipCode = value!;

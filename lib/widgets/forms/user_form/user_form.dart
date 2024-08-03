@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'dart:async';
 
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
@@ -45,10 +47,18 @@ class UserForm extends StatefulWidget {
 class _UserFormState extends State<UserForm> {
   late UsersStore _userStore;
 
+  Timer? _debounce;
+
   @override
   void initState() {
     super.initState();
     _userStore = Provider.of<UsersStore>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _debounce?.cancel();
   }
 
   @override
@@ -113,43 +123,41 @@ class _UserFormState extends State<UserForm> {
                 ),
               ],
             ),
-            onChanged: (value) {
-              if (widget.onCityChange != null) {
-                widget.onCityChange!(value);
-              }
-            },
+            onChanged: _onCityChanged,
           ),
           //change it to dropdown menu
-          FormBuilderDropdown<String>(
-            validator: FormBuilderValidators.compose(
-              [
-                FormBuilderValidators.required(
-                  errorText: context.localize.requiredField,
-                ),
-              ],
-            ),
-            name: zipCodeForm,
-            initialValue: widget.user?.postalCode ?? '',
-            decoration: InputDecoration(
-              label: Text(
-                context.localize.zipCode,
+          Observer(
+            builder: (_) => FormBuilderDropdown<String>(
+              validator: FormBuilderValidators.compose(
+                [
+                  FormBuilderValidators.required(
+                    errorText: context.localize.requiredField,
+                  ),
+                ],
               ),
+              name: zipCodeForm,
+              initialValue: widget.user?.postalCode ?? '',
+              decoration: InputDecoration(
+                label: Text(
+                  context.localize.zipCode,
+                ),
+              ),
+              disabledHint: Text(context.localize.noZipCodes),
+              items: _userStore.zipCodes
+                  .map(
+                    (element) => DropdownMenuItem(
+                        value: element,
+                        child: Text(
+                          element,
+                        )),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                if (widget.onZipCodeChange != null) {
+                  widget.onZipCodeChange!(value);
+                }
+              },
             ),
-            disabledHint: Text(context.localize.noZipCodes),
-            items: _userStore.zipCodes
-                .map(
-                  (element) => DropdownMenuItem(
-                      value: element,
-                      child: Text(
-                        element,
-                      )),
-                )
-                .toList(),
-            onChanged: (value) {
-              if (widget.onZipCodeChange != null) {
-                widget.onZipCodeChange!(value);
-              }
-            },
           ),
           FormBuilderDropdown<GroupModel>(
             validator: FormBuilderValidators.compose(
@@ -222,6 +230,15 @@ class _UserFormState extends State<UserForm> {
         ],
       ),
     );
+  }
+
+  void _onCityChanged(String? value) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(seconds: 3), () {
+      if (value != null && value.isNotEmpty) {
+        widget.onCityChange!(value);
+      }
+    });
   }
 }
 

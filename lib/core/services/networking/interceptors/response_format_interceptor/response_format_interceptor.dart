@@ -27,6 +27,8 @@ class ResponseFormatInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) {
+    final logger = Logger();
+    logger.i(err.message);
     return handler.next(err);
   }
 }

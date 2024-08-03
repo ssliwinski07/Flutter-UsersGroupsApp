@@ -28,8 +28,6 @@ void main() async {
 
   await databaseServiceBase.initilizeDatabase();
 
-  await zipCodesNetworkServiceBase.getZipCodes(cityName: 'Katowice');
-
   runApp(
     MultiProvider(
       providers: [
