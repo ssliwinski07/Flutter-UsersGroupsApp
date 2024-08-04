@@ -163,6 +163,10 @@ class _UserFormState extends State<UserForm> {
                 _cityTextController.clear();
                 _usersStore.clearZipCodeInfo();
               }
+
+              if (widget.onZipCodeChange != null) {
+                widget.onZipCodeChange!(value);
+              }
             },
           ),
           FormBuilderTextField(
