@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/mobx/stores/stores.dart';
 import 'package:flutter_users_group_app/widgets/widgets.dart';
 import 'package:flutter_users_group_app/models/models.dart';
+import 'package:mobx/mobx.dart';
 
 class UsersListItem extends StatefulWidget {
   const UsersListItem({
@@ -55,7 +55,7 @@ class _UsersListItemState extends State<UsersListItem> {
   }
 }
 
-class _UserDetails extends StatelessWidget {
+class _UserDetails extends StatefulWidget {
   const _UserDetails({
     this.user,
     this.usersStore,
@@ -64,12 +64,30 @@ class _UserDetails extends StatelessWidget {
   final UserModel? user;
   final UsersStore? usersStore;
 
-  String? get group => usersStore!.userGroup?.groupName;
+  @override
+  State<_UserDetails> createState() => _UserDetailsState();
+}
+
+class _UserDetailsState extends State<_UserDetails> {
+  late Observable<String?> groupName;
+
+  @override
+  void initState() {
+    super.initState();
+
+    groupName = Observable(widget.usersStore!.userGroup?.groupName);
+
+    reaction((_) => widget.usersStore!.userGroup?.groupName, (group) {
+      runInAction(() {
+        groupName.value = group;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getUserGroup(userId: user!.userId!),
+      future: _getUserGroup(userId: widget.user!.userId!),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const LoadingWidget(path: lottieLoadingDetailsPath);
@@ -91,7 +109,7 @@ class _UserDetails extends StatelessWidget {
                             fontSize: 20,
                           ),
                           text:
-                              '${user?.userName ?? '-'} ${user?.lastName ?? '-'}',
+                              '${widget.user?.userName ?? '-'} ${widget.user?.lastName ?? '-'}',
                         ),
                       ],
                     ),
@@ -114,7 +132,7 @@ class _UserDetails extends StatelessWidget {
                         fontSize: 16,
                       ),
                       text:
-                          '${user?.postalCode ?? '-'}, ${user?.cityName ?? '-'}',
+                          '${widget.user?.postalCode ?? '-'}, ${widget.user?.cityName ?? '-'}',
                     ),
                   ],
                 ),
@@ -134,31 +152,29 @@ class _UserDetails extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         fontSize: 16,
                       ),
-                      text: user?.streetName ?? '-',
+                      text: widget.user?.streetName ?? '-',
                     ),
                   ],
                 ),
               ),
-              Observer(
-                builder: (_) => Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '${context.localize.groupName}: ',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${context.localize.groupName}: ',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
-                      TextSpan(
-                        style: const TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 16,
-                        ),
-                        text: usersStore!.userGroup?.groupName ?? '-',
+                    ),
+                    TextSpan(
+                      style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 16,
                       ),
-                    ],
-                  ),
+                      text: groupName.value ?? '-',
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -169,6 +185,6 @@ class _UserDetails extends StatelessWidget {
   }
 
   Future<void> _getUserGroup({required int userId}) async {
-    await usersStore!.getUserGroup(userId: userId);
+    await widget.usersStore!.getUserGroup(userId: userId);
   }
 }

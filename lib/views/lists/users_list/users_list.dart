@@ -112,7 +112,7 @@ class _UsersListState extends State<UsersList> {
                                     infoType: MessageInfoTypes.info,
                                   );
                                 }
-                              } catch (e) {
+                              } catch (_) {
                                 if (context.mounted) {
                                   _messageInfoService.showMessage(
                                     context: context,
