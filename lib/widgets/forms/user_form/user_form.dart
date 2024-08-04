@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'dart:async';
 
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
@@ -46,19 +45,33 @@ class UserForm extends StatefulWidget {
 
 class _UserFormState extends State<UserForm> {
   late UsersStore _usersStore;
-
-  Timer? _debounce;
+  late TextEditingController _cityTextController;
 
   @override
   void initState() {
     super.initState();
     _usersStore = Provider.of<UsersStore>(context, listen: false);
+    _cityTextController = TextEditingController();
+
+    reaction(
+      (_) => _usersStore.zipCodeInfo?.city,
+      (city) {
+        _cityTextController.text = city!;
+      },
+    );
+    _updateCityTextController();
+  }
+
+  @override
+  void didUpdateWidget(covariant UserForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateCityTextController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _debounce?.cancel();
+    _cityTextController.dispose();
   }
 
   @override
@@ -128,29 +141,32 @@ class _UserFormState extends State<UserForm> {
               ],
             ),
             onChanged: (value) {
-              if (widget.onZipCodeChange != null) {
+              if (value != null && value.isNotEmpty && value.length == 6) {
                 widget.onZipCodeChange!(value);
+              } else if (value != null &&
+                  value.isNotEmpty &&
+                  value.length < 6) {
+                _cityTextController.clear();
+                _usersStore.clearZipCodeInfo();
               }
             },
           ),
-          Observer(
-            builder: (_) => FormBuilderTextField(
-              name: cityForm,
-              initialValue: widget.user?.cityName ?? '',
-              decoration: InputDecoration(labelText: context.localize.cityName),
-              validator: FormBuilderValidators.compose(
-                [
-                  FormBuilderValidators.required(
-                    errorText: context.localize.requiredField,
-                  ),
-                ],
-              ),
-              onChanged: (value) async {
-                if (widget.onCityChange != null) {
-                  widget.onCityChange!(value);
-                }
-              },
+          FormBuilderTextField(
+            name: cityForm,
+            controller: _cityTextController,
+            decoration: InputDecoration(labelText: context.localize.cityName),
+            validator: FormBuilderValidators.compose(
+              [
+                FormBuilderValidators.required(
+                  errorText: context.localize.requiredField,
+                ),
+              ],
             ),
+            onChanged: (value) async {
+              if (widget.onCityChange != null) {
+                widget.onCityChange!(value);
+              }
+            },
           ),
           FormBuilderDropdown<GroupModel>(
             validator: FormBuilderValidators.compose(
@@ -225,69 +241,9 @@ class _UserFormState extends State<UserForm> {
     );
   }
 
-  void _onZipCodeChanged(String? value) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(seconds: 3), () {
-      if (value != null && value.isNotEmpty) {
-        widget.onZipCodeChange!(value);
-      }
-    });
+  void _updateCityTextController() {
+    if (widget.user?.cityName != null) {
+      _cityTextController.text = widget.user?.cityName ?? '-';
+    }
   }
 }
-
-
-// FormBuilderTextField(
-//             name: zipCodeForm,
-//             initialValue: widget.user?.postalCode ?? '',
-//             inputFormatters: [Formatters().zipCodeFormatter],
-//             decoration: InputDecoration(
-//               hintText: '##-###',
-//               labelText: context.localize.zipCode,
-//             ),
-//             validator: FormBuilderValidators.compose(
-//               [
-//                 FormBuilderValidators.required(
-//                   errorText: context.localize.requiredField,
-//                 ),
-//               ],
-//             ),
-//             onChanged: (value) {
-//               if (widget.onZipCodeChange != null) {
-//                 widget.onZipCodeChange!(value);
-//               }
-//             },
-//           ),
-
-// Observer(
-//             builder: (_) => FormBuilderDropdown<String>(
-//               validator: FormBuilderValidators.compose(
-//                 [
-//                   FormBuilderValidators.required(
-//                     errorText: context.localize.requiredField,
-//                   ),
-//                 ],
-//               ),
-//               name: zipCodeForm,
-//               initialValue: widget.user?.postalCode ?? '',
-//               decoration: InputDecoration(
-//                 label: Text(
-//                   context.localize.zipCode,
-//                 ),
-//               ),
-//               disabledHint: Text(context.localize.noZipCodes),
-//               items: _userStore.zipCodes
-//                   .map(
-//                     (element) => DropdownMenuItem(
-//                         value: element,
-//                         child: Text(
-//                           element,
-//                         )),
-//                   )
-//                   .toList(),
-//               onChanged: (value) {
-//                 if (widget.onZipCodeChange != null) {
-//                   widget.onZipCodeChange!(value);
-//                 }
-//               },
-//             ),
-//           ),

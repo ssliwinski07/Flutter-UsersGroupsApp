@@ -21,33 +21,6 @@ class _ZipCodesNetworkServiceMain implements ZipCodesNetworkServiceMain {
   String? baseUrl;
 
   @override
-  Future<List<String>> getZipCodes({required String cityName}) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _result =
-        await _dio.fetch<List<dynamic>>(_setStreamType<List<String>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/city/${cityName}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = _result.data!.cast<String>();
-    return _value;
-  }
-
-  @override
   Future<List<ZipCodeModel>> getZipCodeInfo({required String zipCode}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

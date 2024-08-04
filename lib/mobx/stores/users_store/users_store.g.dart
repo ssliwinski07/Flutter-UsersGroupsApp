@@ -24,22 +24,6 @@ mixin _$UsersStore on UsersStoreBase, Store {
     });
   }
 
-  late final _$zipCodesAtom =
-      Atom(name: 'UsersStoreBase.zipCodes', context: context);
-
-  @override
-  ObservableList<String> get zipCodes {
-    _$zipCodesAtom.reportRead();
-    return super.zipCodes;
-  }
-
-  @override
-  set zipCodes(ObservableList<String> value) {
-    _$zipCodesAtom.reportWrite(value, super.zipCodes, () {
-      super.zipCodes = value;
-    });
-  }
-
   late final _$usersCounterAtom =
       Atom(name: 'UsersStoreBase.usersCounter', context: context);
 
@@ -96,15 +80,6 @@ mixin _$UsersStore on UsersStoreBase, Store {
     return _$deleteUserAsyncAction.run(() => super.deleteUser(userId: userId));
   }
 
-  late final _$getZipCodesAsyncAction =
-      AsyncAction('UsersStoreBase.getZipCodes', context: context);
-
-  @override
-  Future<void> getZipCodes({required String cityName}) {
-    return _$getZipCodesAsyncAction
-        .run(() => super.getZipCodes(cityName: cityName));
-  }
-
   late final _$getZipCodeInfoAsyncAction =
       AsyncAction('UsersStoreBase.getZipCodeInfo', context: context);
 
@@ -145,11 +120,11 @@ mixin _$UsersStore on UsersStoreBase, Store {
       ActionController(name: 'UsersStoreBase', context: context);
 
   @override
-  void countUsers() {
+  void clearZipCodeInfo() {
     final _$actionInfo = _$UsersStoreBaseActionController.startAction(
-        name: 'UsersStoreBase.countUsers');
+        name: 'UsersStoreBase.clearZipCodeInfo');
     try {
-      return super.countUsers();
+      return super.clearZipCodeInfo();
     } finally {
       _$UsersStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -159,7 +134,6 @@ mixin _$UsersStore on UsersStoreBase, Store {
   String toString() {
     return '''
 users: ${users},
-zipCodes: ${zipCodes},
 usersCounter: ${usersCounter},
 userGroup: ${userGroup},
 zipCodeInfo: ${zipCodeInfo}

@@ -30,5 +30,5 @@
     "modifyingUserError" : "Błąd w trakcie modyfikacji użytkownika",
     "userModified" : "Użytkownik został zmodyfikowany",
     "noZipCodes" : "Brak kodów pocztowych",
-    "fetchingZipCodesError" : "Błąd podczas pobierania kodów pocztowych dla miasta {cityName}"
+    "fetchingCityError" : "Wystąpił błąd podczas pobierania miasta na podstawie kodu pocztowego {zipCode}"
 }

@@ -68,8 +68,9 @@ class _MainScreenViewState extends State<MainScreenView> {
                 ),
                 backgroundColor: Colors.amberAccent,
                 child: Observer(
-                    builder: (_) => Text(
-                        '${context.localize.changeLanguage}: ${_getLanguageCode()}')),
+                  builder: (_) => Text(
+                      '${context.localize.changeLanguage}: ${_getLanguageCode()}'),
+                ),
               ),
             ),
     );
@@ -200,28 +201,17 @@ class _UsersTileWidgetState extends State<_UsersTileWidget> {
                       },
                       onCityChange: (value) async {
                         city = value!;
-                        // try {
-                        //   await _usersStore.getZipCodes(cityName: city!);
-                        // } catch (_) {
-                        //   if (context.mounted) {
-                        //     _messageInfoService.showMessage(
-                        //         context: context,
-                        //         infoMessage: context.localize
-                        //             .fetchingZipCodesError(city!),
-                        //         infoType: MessageInfoTypes.alert);
-                        //   }
-                        // }
                       },
                       onZipCodeChange: (value) async {
                         zipCode = value!;
                         try {
-                          await _usersStore.getZipCodeInfo(zipCode: '40-101');
+                          await _usersStore.getZipCodeInfo(zipCode: zipCode!);
                         } catch (_) {
                           if (context.mounted) {
                             _messageInfoService.showMessage(
                               context: context,
                               infoMessage:
-                                  'Error while fetching city based on zip code $zipCode',
+                                  context.localize.fetchingCityError(zipCode!),
                               infoType: MessageInfoTypes.alert,
                             );
                           }

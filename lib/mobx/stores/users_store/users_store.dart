@@ -19,9 +19,6 @@ abstract class UsersStoreBase with Store {
   ObservableList<UserModel> users = ObservableList<UserModel>();
 
   @observable
-  ObservableList<String> zipCodes = ObservableList<String>();
-
-  @observable
   int usersCounter = 0;
 
   @observable
@@ -31,19 +28,13 @@ abstract class UsersStoreBase with Store {
   ZipCodeModel? zipCodeInfo;
 
   @action
-  void countUsers() {
-    usersCounter = users.length;
+  void clearZipCodeInfo() {
+    zipCodeInfo = null;
   }
 
   @action
   Future<void> deleteUser({required int userId}) async {
     await databaseService.deleteUser(userId: userId);
-  }
-
-  @action
-  Future<void> getZipCodes({required String cityName}) async {
-    zipCodes = ObservableList.of(
-        await zipCodesNetworkServiceBase.getZipCodes(cityName: cityName));
   }
 
   @action
@@ -67,6 +58,9 @@ abstract class UsersStoreBase with Store {
   @action
   Future<void> addUser(
       {required Map<String, dynamic> userJson, required int groupId}) async {
-    await databaseService.addUser(userJson: userJson, groupId: groupId);
+    await databaseService.addUser(
+      userJson: userJson,
+      groupId: groupId,
+    );
   }
 }

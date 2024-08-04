@@ -30,5 +30,5 @@
     "modifyingUserError" : "Error while modifying user",
     "userModified" : "User has been modified",
     "noZipCodes" : "No zip codes",
-    "fetchingZipCodesError" : "Error occured while fetching zip codes for city {cityName}"
+    "fetchingCityError" : "Error while fetching city based on zip code {zipCode}"
 }

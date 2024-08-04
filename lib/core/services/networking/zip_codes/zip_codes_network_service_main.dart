@@ -14,12 +14,6 @@ abstract class ZipCodesNetworkServiceMain
       _ZipCodesNetworkServiceMain;
 
   @override
-  @GET('/city/{cityName}')
-  Future<List<String>> getZipCodes({
-    @Path('cityName') required String cityName,
-  });
-
-  @override
   @GET('/api/{zipCode}')
   Future<List<ZipCodeModel>> getZipCodeInfo({
     @Path('zipCode') required String zipCode,
