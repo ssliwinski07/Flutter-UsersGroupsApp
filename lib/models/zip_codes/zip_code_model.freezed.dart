@@ -24,8 +24,6 @@ mixin _$ZipCodeModel {
   String get zipCode => throw _privateConstructorUsedError;
   @JsonKey(name: 'miejscowosc')
   String get city => throw _privateConstructorUsedError;
-  @JsonKey(name: 'ulica')
-  String get streetName => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,8 +39,7 @@ abstract class $ZipCodeModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'kod') String zipCode,
-      @JsonKey(name: 'miejscowosc') String city,
-      @JsonKey(name: 'ulica') String streetName});
+      @JsonKey(name: 'miejscowosc') String city});
 }
 
 /// @nodoc
@@ -60,7 +57,6 @@ class _$ZipCodeModelCopyWithImpl<$Res, $Val extends ZipCodeModel>
   $Res call({
     Object? zipCode = null,
     Object? city = null,
-    Object? streetName = null,
   }) {
     return _then(_value.copyWith(
       zipCode: null == zipCode
@@ -70,10 +66,6 @@ class _$ZipCodeModelCopyWithImpl<$Res, $Val extends ZipCodeModel>
       city: null == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
-              as String,
-      streetName: null == streetName
-          ? _value.streetName
-          : streetName // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -89,8 +81,7 @@ abstract class _$$ZipCodeModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'kod') String zipCode,
-      @JsonKey(name: 'miejscowosc') String city,
-      @JsonKey(name: 'ulica') String streetName});
+      @JsonKey(name: 'miejscowosc') String city});
 }
 
 /// @nodoc
@@ -106,7 +97,6 @@ class __$$ZipCodeModelImplCopyWithImpl<$Res>
   $Res call({
     Object? zipCode = null,
     Object? city = null,
-    Object? streetName = null,
   }) {
     return _then(_$ZipCodeModelImpl(
       zipCode: null == zipCode
@@ -117,10 +107,6 @@ class __$$ZipCodeModelImplCopyWithImpl<$Res>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as String,
-      streetName: null == streetName
-          ? _value.streetName
-          : streetName // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -130,8 +116,7 @@ class __$$ZipCodeModelImplCopyWithImpl<$Res>
 class _$ZipCodeModelImpl implements _ZipCodeModel {
   _$ZipCodeModelImpl(
       {@JsonKey(name: 'kod') required this.zipCode,
-      @JsonKey(name: 'miejscowosc') required this.city,
-      @JsonKey(name: 'ulica') required this.streetName});
+      @JsonKey(name: 'miejscowosc') required this.city});
 
   factory _$ZipCodeModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ZipCodeModelImplFromJson(json);
@@ -142,13 +127,10 @@ class _$ZipCodeModelImpl implements _ZipCodeModel {
   @override
   @JsonKey(name: 'miejscowosc')
   final String city;
-  @override
-  @JsonKey(name: 'ulica')
-  final String streetName;
 
   @override
   String toString() {
-    return 'ZipCodeModel(zipCode: $zipCode, city: $city, streetName: $streetName)';
+    return 'ZipCodeModel(zipCode: $zipCode, city: $city)';
   }
 
   @override
@@ -157,14 +139,12 @@ class _$ZipCodeModelImpl implements _ZipCodeModel {
         (other.runtimeType == runtimeType &&
             other is _$ZipCodeModelImpl &&
             (identical(other.zipCode, zipCode) || other.zipCode == zipCode) &&
-            (identical(other.city, city) || other.city == city) &&
-            (identical(other.streetName, streetName) ||
-                other.streetName == streetName));
+            (identical(other.city, city) || other.city == city));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, zipCode, city, streetName);
+  int get hashCode => Object.hash(runtimeType, zipCode, city);
 
   @JsonKey(ignore: true)
   @override
@@ -183,8 +163,7 @@ class _$ZipCodeModelImpl implements _ZipCodeModel {
 abstract class _ZipCodeModel implements ZipCodeModel {
   factory _ZipCodeModel(
           {@JsonKey(name: 'kod') required final String zipCode,
-          @JsonKey(name: 'miejscowosc') required final String city,
-          @JsonKey(name: 'ulica') required final String streetName}) =
+          @JsonKey(name: 'miejscowosc') required final String city}) =
       _$ZipCodeModelImpl;
 
   factory _ZipCodeModel.fromJson(Map<String, dynamic> json) =
@@ -196,9 +175,6 @@ abstract class _ZipCodeModel implements ZipCodeModel {
   @override
   @JsonKey(name: 'miejscowosc')
   String get city;
-  @override
-  @JsonKey(name: 'ulica')
-  String get streetName;
   @override
   @JsonKey(ignore: true)
   _$$ZipCodeModelImplCopyWith<_$ZipCodeModelImpl> get copyWith =>

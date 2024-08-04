@@ -8,6 +8,7 @@ import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
 import 'package:flutter_users_group_app/models/models.dart';
 import 'package:flutter_users_group_app/mobx/stores/stores.dart';
+import 'package:flutter_users_group_app/core/core.dart';
 
 class UserForm extends StatefulWidget {
   const UserForm({
@@ -46,6 +47,9 @@ class UserForm extends StatefulWidget {
 class _UserFormState extends State<UserForm> {
   late UsersStore _usersStore;
   late TextEditingController _cityTextController;
+
+  MessageInfoServiceBase get _messageInfoService => ServiceLocator()
+      .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
 
   @override
   void initState() {
@@ -140,9 +144,19 @@ class _UserFormState extends State<UserForm> {
                 ),
               ],
             ),
-            onChanged: (value) {
+            onChanged: (value) async {
               if (value != null && value.isNotEmpty && value.length == 6) {
-                widget.onZipCodeChange!(value);
+                try {
+                  await _usersStore.getZipCodeInfo(zipCode: value);
+                } catch (_) {
+                  if (context.mounted) {
+                    _messageInfoService.showMessage(
+                      context: context,
+                      infoMessage: context.localize.fetchingCityError(value),
+                      infoType: MessageInfoTypes.alert,
+                    );
+                  }
+                }
               } else if (value != null &&
                   value.isNotEmpty &&
                   value.length < 6) {
@@ -162,7 +176,7 @@ class _UserFormState extends State<UserForm> {
                 ),
               ],
             ),
-            onChanged: (value) async {
+            onChanged: (value) {
               if (widget.onCityChange != null) {
                 widget.onCityChange!(value);
               }

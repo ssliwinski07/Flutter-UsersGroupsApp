@@ -199,23 +199,23 @@ class _UsersTileWidgetState extends State<_UsersTileWidget> {
                       onStreetNameChange: (value) {
                         streetName = value!;
                       },
-                      onCityChange: (value) async {
+                      onCityChange: (value) {
                         city = value!;
                       },
-                      onZipCodeChange: (value) async {
+                      onZipCodeChange: (value) {
                         zipCode = value!;
-                        try {
-                          await _usersStore.getZipCodeInfo(zipCode: zipCode!);
-                        } catch (_) {
-                          if (context.mounted) {
-                            _messageInfoService.showMessage(
-                              context: context,
-                              infoMessage:
-                                  context.localize.fetchingCityError(zipCode!),
-                              infoType: MessageInfoTypes.alert,
-                            );
-                          }
-                        }
+                        // try {
+                        //   await _usersStore.getZipCodeInfo(zipCode: zipCode!);
+                        // } catch (_) {
+                        //   if (context.mounted) {
+                        //     _messageInfoService.showMessage(
+                        //       context: context,
+                        //       infoMessage:
+                        //           context.localize.fetchingCityError(zipCode!),
+                        //       infoType: MessageInfoTypes.alert,
+                        //     );
+                        //   }
+                        // }
                       },
                       onGroupChange: (value) {
                         group = value!;

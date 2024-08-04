@@ -10,12 +10,10 @@ _$ZipCodeModelImpl _$$ZipCodeModelImplFromJson(Map<String, dynamic> json) =>
     _$ZipCodeModelImpl(
       zipCode: json['kod'] as String,
       city: json['miejscowosc'] as String,
-      streetName: json['ulica'] as String,
     );
 
 Map<String, dynamic> _$$ZipCodeModelImplToJson(_$ZipCodeModelImpl instance) =>
     <String, dynamic>{
       'kod': instance.zipCode,
       'miejscowosc': instance.city,
-      'ulica': instance.streetName,
     };

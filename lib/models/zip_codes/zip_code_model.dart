@@ -10,7 +10,6 @@ class ZipCodeModel with _$ZipCodeModel {
   factory ZipCodeModel({
     @JsonKey(name: 'kod') required String zipCode,
     @JsonKey(name: 'miejscowosc') required String city,
-    @JsonKey(name: 'ulica') required String streetName,
   }) = _ZipCodeModel;
 
   factory ZipCodeModel.fromJson(Map<String, Object?> json) =>
