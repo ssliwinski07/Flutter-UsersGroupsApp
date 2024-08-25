@@ -81,180 +81,184 @@ class _UserFormState extends State<UserForm> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          FormBuilderTextField(
-            name: userNameForm,
-            initialValue: widget.user?.userName ?? '',
-            decoration: InputDecoration(labelText: context.localize.name),
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(
-                errorText: context.localize.requiredField,
-              ),
-            ]),
-            onChanged: (value) {
-              if (widget.onNameChange != null) {
-                widget.onNameChange!(value);
-              }
-            },
-          ),
-          FormBuilderTextField(
-            name: userLastNameForm,
-            initialValue: widget.user?.lastName ?? '',
-            decoration: InputDecoration(labelText: context.localize.lastName),
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(
-                errorText: context.localize.requiredField,
-              ),
-            ]),
-            onChanged: (value) {
-              if (widget.onLastNameChange != null) {
-                widget.onLastNameChange!(value);
-              }
-            },
-          ),
-          FormBuilderTextField(
-            name: streetNameForm,
-            initialValue: widget.user?.streetName ?? '',
-            decoration: InputDecoration(labelText: context.localize.streetName),
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(
-                errorText: context.localize.requiredField,
-              ),
-            ]),
-            onChanged: (value) {
-              if (widget.onStreetNameChange != null) {
-                widget.onStreetNameChange!(value);
-              }
-            },
-          ),
-          FormBuilderTextField(
-            name: zipCodeForm,
-            initialValue: widget.user?.postalCode ?? '',
-            inputFormatters: [Formatters().zipCodeFormatter],
-            decoration: InputDecoration(
-              hintText: '##-###',
-              labelText: context.localize.zipCode,
-            ),
-            validator: FormBuilderValidators.compose(
-              [
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            FormBuilderTextField(
+              name: userNameForm,
+              initialValue: widget.user?.userName ?? '',
+              decoration: InputDecoration(labelText: context.localize.name),
+              validator: FormBuilderValidators.compose([
                 FormBuilderValidators.required(
                   errorText: context.localize.requiredField,
                 ),
-              ],
-            ),
-            onChanged: (value) async {
-              if (value != null && value.isNotEmpty && value.length == 6) {
-                try {
-                  await _usersStore.getZipCodeInfo(zipCode: value);
-                } catch (_) {
-                  if (context.mounted) {
-                    _messageInfoService.showMessage(
-                      context: context,
-                      infoMessage: context.localize.fetchingCityError(value),
-                      infoType: MessageInfoTypes.alert,
-                    );
-                  }
+              ]),
+              onChanged: (value) {
+                if (widget.onNameChange != null) {
+                  widget.onNameChange!(value);
                 }
-              } else if (value != null &&
-                  value.isNotEmpty &&
-                  value.length < 6) {
-                _cityTextController.clear();
-                _usersStore.clearZipCodeInfo();
-              }
-
-              if (widget.onZipCodeChange != null) {
-                widget.onZipCodeChange!(value);
-              }
-            },
-          ),
-          FormBuilderTextField(
-            name: cityForm,
-            controller: _cityTextController,
-            decoration: InputDecoration(labelText: context.localize.cityName),
-            validator: FormBuilderValidators.compose(
-              [
+              },
+            ),
+            FormBuilderTextField(
+              name: userLastNameForm,
+              initialValue: widget.user?.lastName ?? '',
+              decoration: InputDecoration(labelText: context.localize.lastName),
+              validator: FormBuilderValidators.compose([
                 FormBuilderValidators.required(
                   errorText: context.localize.requiredField,
                 ),
-              ],
+              ]),
+              onChanged: (value) {
+                if (widget.onLastNameChange != null) {
+                  widget.onLastNameChange!(value);
+                }
+              },
             ),
-            onChanged: (value) {
-              if (widget.onCityChange != null) {
-                widget.onCityChange!(value);
-              }
-            },
-          ),
-          FormBuilderDropdown<GroupModel>(
-            validator: FormBuilderValidators.compose(
-              [
+            FormBuilderTextField(
+              name: streetNameForm,
+              initialValue: widget.user?.streetName ?? '',
+              decoration:
+                  InputDecoration(labelText: context.localize.streetName),
+              validator: FormBuilderValidators.compose([
                 FormBuilderValidators.required(
                   errorText: context.localize.requiredField,
                 ),
-              ],
+              ]),
+              onChanged: (value) {
+                if (widget.onStreetNameChange != null) {
+                  widget.onStreetNameChange!(value);
+                }
+              },
             ),
-            name: usersGroupsForm,
-            initialValue: widget.group,
-            decoration: InputDecoration(
-              label: Text(
-                context.localize.usersGroups,
+            FormBuilderTextField(
+              name: zipCodeForm,
+              initialValue: widget.user?.postalCode ?? '',
+              inputFormatters: [Formatters().zipCodeFormatter],
+              decoration: InputDecoration(
+                hintText: '##-###',
+                labelText: context.localize.zipCode,
               ),
-            ),
-            disabledHint: Text(context.localize.noGroups),
-            items: widget.items
-                .map(
-                  (element) => DropdownMenuItem(
-                      value: element,
-                      child: Text(
-                        element.groupName,
-                      )),
-                )
-                .toList(),
-            onChanged: (value) {
-              if (widget.onGroupChange != null) {
-                widget.onGroupChange!(value);
-              }
-            },
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                ),
-                onPressed: () {
-                  context.goRouterPop();
-                },
-                child: Text(
-                  context.localize.cancel,
-                  style: const TextStyle(color: Colors.white),
-                ),
+              validator: FormBuilderValidators.compose(
+                [
+                  FormBuilderValidators.required(
+                    errorText: context.localize.requiredField,
+                  ),
+                ],
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                ),
-                onPressed: () async {
-                  if (widget.formKey.currentState?.saveAndValidate() ?? false) {
-                    if (true) {
-                      if (widget.onSubbmit != null) {
-                        widget.onSubbmit!();
-                        context.goRouterPop();
-                      }
+              onChanged: (value) async {
+                if (value != null && value.isNotEmpty && value.length == 6) {
+                  try {
+                    await _usersStore.getZipCodeInfo(zipCode: value);
+                  } catch (_) {
+                    if (context.mounted) {
+                      _messageInfoService.showMessage(
+                        context: context,
+                        infoMessage: context.localize.fetchingCityError(value),
+                        infoType: MessageInfoTypes.alert,
+                      );
                     }
                   }
-                },
-                child: Text(widget.confirmationButtonName,
-                    style: const TextStyle(color: Colors.white)),
+                } else if (value != null &&
+                    value.isNotEmpty &&
+                    value.length < 6) {
+                  _cityTextController.clear();
+                  _usersStore.clearZipCodeInfo();
+                }
+
+                if (widget.onZipCodeChange != null) {
+                  widget.onZipCodeChange!(value);
+                }
+              },
+            ),
+            FormBuilderTextField(
+              name: cityForm,
+              controller: _cityTextController,
+              decoration: InputDecoration(labelText: context.localize.cityName),
+              validator: FormBuilderValidators.compose(
+                [
+                  FormBuilderValidators.required(
+                    errorText: context.localize.requiredField,
+                  ),
+                ],
               ),
-            ],
-          )
-        ],
+              onChanged: (value) {
+                if (widget.onCityChange != null) {
+                  widget.onCityChange!(value);
+                }
+              },
+            ),
+            FormBuilderDropdown<GroupModel>(
+              validator: FormBuilderValidators.compose(
+                [
+                  FormBuilderValidators.required(
+                    errorText: context.localize.requiredField,
+                  ),
+                ],
+              ),
+              name: usersGroupsForm,
+              initialValue: widget.group,
+              decoration: InputDecoration(
+                label: Text(
+                  context.localize.usersGroups,
+                ),
+              ),
+              disabledHint: Text(context.localize.noGroups),
+              items: widget.items
+                  .map(
+                    (element) => DropdownMenuItem(
+                        value: element,
+                        child: Text(
+                          element.groupName,
+                        )),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                if (widget.onGroupChange != null) {
+                  widget.onGroupChange!(value);
+                }
+              },
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  onPressed: () {
+                    context.goRouterPop();
+                  },
+                  child: Text(
+                    context.localize.cancel,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
+                  onPressed: () async {
+                    if (widget.formKey.currentState?.saveAndValidate() ??
+                        false) {
+                      if (true) {
+                        if (widget.onSubbmit != null) {
+                          widget.onSubbmit!();
+                          context.goRouterPop();
+                        }
+                      }
+                    }
+                  },
+                  child: Text(widget.confirmationButtonName,
+                      style: const TextStyle(color: Colors.white)),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

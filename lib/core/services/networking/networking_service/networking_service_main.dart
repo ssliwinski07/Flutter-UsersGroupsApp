@@ -5,8 +5,13 @@ import 'package:flutter_users_group_app/helpers/helpers.dart';
 
 class NetworkingServiceMain implements NetworkingServiceBase {
   NetworkingServiceMain() {
-    createDio();
+    _dioClient = createDio();
   }
+
+  late final Dio _dioClient;
+
+  @override
+  Dio get dioClient => _dioClient;
 
   @override
   Dio createDio() {
