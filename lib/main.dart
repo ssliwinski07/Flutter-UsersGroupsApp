@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'helpers/helpers.dart';
 import 'core/core.dart';
 import 'mobx/stores/stores.dart';
 import 'routes/routes.dart';
+import 'cubit/cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +32,7 @@ void main() async {
   await databaseServiceBase.initilizeDatabase();
 
   runApp(
-    MultiProvider(
+    MultiBlocProvider(
       providers: [
         Provider<UsersStore>(
           create: (context) => UsersStore(
@@ -45,6 +48,11 @@ void main() async {
           create: (context) =>
               SettingsStore(databaseServiceBase: databaseServiceBase),
         ),
+        BlocProvider<UsersCubit>(
+          create: (context) => UsersCubit(
+            zipCodeService: zipCodesNetworkServiceBase,
+          ),
+        )
       ],
       child: MyApp(),
     ),
