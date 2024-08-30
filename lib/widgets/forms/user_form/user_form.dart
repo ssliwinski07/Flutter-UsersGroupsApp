@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_users_group_app/cubit/users/cubit/users_cubit.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
@@ -131,44 +133,51 @@ class _UserFormState extends State<UserForm> {
                 }
               },
             ),
-            FormBuilderTextField(
-              name: zipCodeForm,
-              initialValue: widget.user?.postalCode ?? '',
-              inputFormatters: [Formatters().zipCodeFormatter],
-              decoration: InputDecoration(
-                hintText: '##-###',
-                labelText: context.localize.zipCode,
-              ),
-              validator: FormBuilderValidators.compose(
-                [
-                  FormBuilderValidators.required(
-                    errorText: context.localize.requiredField,
+            BlocBuilder<UsersCubit, UsersState>(
+              builder: (context, state) {
+                return FormBuilderTextField(
+                  name: zipCodeForm,
+                  initialValue: widget.user?.postalCode ?? '',
+                  inputFormatters: [Formatters().zipCodeFormatter],
+                  decoration: InputDecoration(
+                    hintText: '##-###',
+                    labelText: context.localize.zipCode,
                   ),
-                ],
-              ),
-              onChanged: (value) async {
-                if (value != null && value.isNotEmpty && value.length == 6) {
-                  try {
-                    await _usersStore.getZipCodeInfo(zipCode: value);
-                  } catch (_) {
-                    if (context.mounted) {
-                      _messageInfoService.showMessage(
-                        context: context,
-                        infoMessage: context.localize.fetchingCityError(value),
-                        infoType: MessageInfoTypes.alert,
-                      );
+                  validator: FormBuilderValidators.compose(
+                    [
+                      FormBuilderValidators.required(
+                        errorText: context.localize.requiredField,
+                      ),
+                    ],
+                  ),
+                  onChanged: (value) async {
+                    if (value != null &&
+                        value.isNotEmpty &&
+                        value.length == 6) {
+                      try {
+                        await _usersStore.getZipCodeInfo(zipCode: value);
+                      } catch (_) {
+                        if (context.mounted) {
+                          _messageInfoService.showMessage(
+                            context: context,
+                            infoMessage:
+                                context.localize.fetchingCityError(value),
+                            infoType: MessageInfoTypes.alert,
+                          );
+                        }
+                      }
+                    } else if (value != null &&
+                        value.isNotEmpty &&
+                        value.length < 6) {
+                      _cityTextController.clear();
+                      _usersStore.clearZipCodeInfo();
                     }
-                  }
-                } else if (value != null &&
-                    value.isNotEmpty &&
-                    value.length < 6) {
-                  _cityTextController.clear();
-                  _usersStore.clearZipCodeInfo();
-                }
 
-                if (widget.onZipCodeChange != null) {
-                  widget.onZipCodeChange!(value);
-                }
+                    if (widget.onZipCodeChange != null) {
+                      widget.onZipCodeChange!(value);
+                    }
+                  },
+                );
               },
             ),
             FormBuilderTextField(

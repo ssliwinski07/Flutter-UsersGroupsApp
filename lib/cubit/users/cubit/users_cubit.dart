@@ -14,13 +14,20 @@ class UsersCubit extends Cubit<UsersState> {
 
   final ZipCodesNetworkServiceBase zipCodeService;
 
+  ZipCodeModel? zipCodeInfo;
+
   Future<void> getZipCodeInfo({required String zipCode}) async {
     emit(const UsersState.loading());
     try {
       final result = await zipCodeService.getZipCodeInfo(zipCode: zipCode);
-      emit(UsersState.loaded(result.first));
+      zipCodeInfo = result.first;
+      emit(UsersState.loaded(zipCodeInfo));
     } catch (e) {
       emit(const UsersState.error());
     }
+  }
+
+  void clearZipCodeInfo() {
+    zipCodeInfo = null;
   }
 }

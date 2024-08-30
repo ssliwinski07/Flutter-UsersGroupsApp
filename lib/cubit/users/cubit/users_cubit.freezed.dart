@@ -20,7 +20,7 @@ mixin _$UsersState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ZipCodeModel data) loaded,
+    required TResult Function(ZipCodeModel? data) loaded,
     required TResult Function() error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$UsersState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ZipCodeModel data)? loaded,
+    TResult? Function(ZipCodeModel? data)? loaded,
     TResult? Function()? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$UsersState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ZipCodeModel data)? loaded,
+    TResult Function(ZipCodeModel? data)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) =>
@@ -126,7 +126,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ZipCodeModel data) loaded,
+    required TResult Function(ZipCodeModel? data) loaded,
     required TResult Function() error,
   }) {
     return initial();
@@ -137,7 +137,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ZipCodeModel data)? loaded,
+    TResult? Function(ZipCodeModel? data)? loaded,
     TResult? Function()? error,
   }) {
     return initial?.call();
@@ -148,7 +148,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ZipCodeModel data)? loaded,
+    TResult Function(ZipCodeModel? data)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -240,7 +240,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ZipCodeModel data) loaded,
+    required TResult Function(ZipCodeModel? data) loaded,
     required TResult Function() error,
   }) {
     return loading();
@@ -251,7 +251,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ZipCodeModel data)? loaded,
+    TResult? Function(ZipCodeModel? data)? loaded,
     TResult? Function()? error,
   }) {
     return loading?.call();
@@ -262,7 +262,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ZipCodeModel data)? loaded,
+    TResult Function(ZipCodeModel? data)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -320,9 +320,9 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({ZipCodeModel data});
+  $Res call({ZipCodeModel? data});
 
-  $ZipCodeModelCopyWith<$Res> get data;
+  $ZipCodeModelCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -336,20 +336,24 @@ class __$$LoadedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
+    Object? data = freezed,
   }) {
     return _then(_$LoadedImpl(
-      null == data
+      freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as ZipCodeModel,
+              as ZipCodeModel?,
     ));
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $ZipCodeModelCopyWith<$Res> get data {
-    return $ZipCodeModelCopyWith<$Res>(_value.data, (value) {
+  $ZipCodeModelCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $ZipCodeModelCopyWith<$Res>(_value.data!, (value) {
       return _then(_value.copyWith(data: value));
     });
   }
@@ -361,7 +365,7 @@ class _$LoadedImpl implements _Loaded {
   const _$LoadedImpl(this.data);
 
   @override
-  final ZipCodeModel data;
+  final ZipCodeModel? data;
 
   @override
   String toString() {
@@ -390,7 +394,7 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ZipCodeModel data) loaded,
+    required TResult Function(ZipCodeModel? data) loaded,
     required TResult Function() error,
   }) {
     return loaded(data);
@@ -401,7 +405,7 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ZipCodeModel data)? loaded,
+    TResult? Function(ZipCodeModel? data)? loaded,
     TResult? Function()? error,
   }) {
     return loaded?.call(data);
@@ -412,7 +416,7 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ZipCodeModel data)? loaded,
+    TResult Function(ZipCodeModel? data)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -461,9 +465,9 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements UsersState {
-  const factory _Loaded(final ZipCodeModel data) = _$LoadedImpl;
+  const factory _Loaded(final ZipCodeModel? data) = _$LoadedImpl;
 
-  ZipCodeModel get data;
+  ZipCodeModel? get data;
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -509,7 +513,7 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ZipCodeModel data) loaded,
+    required TResult Function(ZipCodeModel? data) loaded,
     required TResult Function() error,
   }) {
     return error();
@@ -520,7 +524,7 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ZipCodeModel data)? loaded,
+    TResult? Function(ZipCodeModel? data)? loaded,
     TResult? Function()? error,
   }) {
     return error?.call();
@@ -531,7 +535,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ZipCodeModel data)? loaded,
+    TResult Function(ZipCodeModel? data)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
