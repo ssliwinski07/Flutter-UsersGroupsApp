@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_users_group_app/cubit/users/cubit/users_cubit.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:mobx/mobx.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
 import 'package:flutter_users_group_app/models/models.dart';
-import 'package:flutter_users_group_app/mobx/stores/stores.dart';
 import 'package:flutter_users_group_app/core/core.dart';
 
 class UserForm extends StatefulWidget {
@@ -47,24 +44,21 @@ class UserForm extends StatefulWidget {
 }
 
 class _UserFormState extends State<UserForm> {
-  late UsersStore _usersStore;
+  late UsersCubit _usersCubit;
   late TextEditingController _cityTextController;
 
   MessageInfoServiceBase get _messageInfoService => ServiceLocator()
       .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
 
+  bool _hasReachedValue = false;
+  bool _hasClearedZipCode = false;
+
   @override
   void initState() {
     super.initState();
-    _usersStore = Provider.of<UsersStore>(context, listen: false);
+    _usersCubit = BlocProvider.of<UsersCubit>(context, listen: false);
     _cityTextController = TextEditingController();
 
-    reaction(
-      (_) => _usersStore.zipCodeInfo?.city,
-      (city) {
-        _cityTextController.text = city!;
-      },
-    );
     _updateCityTextController();
   }
 
@@ -133,57 +127,14 @@ class _UserFormState extends State<UserForm> {
                 }
               },
             ),
-            BlocBuilder<UsersCubit, UsersState>(
-              builder: (context, state) {
-                return FormBuilderTextField(
-                  name: zipCodeForm,
-                  initialValue: widget.user?.postalCode ?? '',
-                  inputFormatters: [Formatters().zipCodeFormatter],
-                  decoration: InputDecoration(
-                    hintText: '##-###',
-                    labelText: context.localize.zipCode,
-                  ),
-                  validator: FormBuilderValidators.compose(
-                    [
-                      FormBuilderValidators.required(
-                        errorText: context.localize.requiredField,
-                      ),
-                    ],
-                  ),
-                  onChanged: (value) async {
-                    if (value != null &&
-                        value.isNotEmpty &&
-                        value.length == 6) {
-                      try {
-                        await _usersStore.getZipCodeInfo(zipCode: value);
-                      } catch (_) {
-                        if (context.mounted) {
-                          _messageInfoService.showMessage(
-                            context: context,
-                            infoMessage:
-                                context.localize.fetchingCityError(value),
-                            infoType: MessageInfoTypes.alert,
-                          );
-                        }
-                      }
-                    } else if (value != null &&
-                        value.isNotEmpty &&
-                        value.length < 6) {
-                      _cityTextController.clear();
-                      _usersStore.clearZipCodeInfo();
-                    }
-
-                    if (widget.onZipCodeChange != null) {
-                      widget.onZipCodeChange!(value);
-                    }
-                  },
-                );
-              },
-            ),
             FormBuilderTextField(
-              name: cityForm,
-              controller: _cityTextController,
-              decoration: InputDecoration(labelText: context.localize.cityName),
+              name: zipCodeForm,
+              initialValue: widget.user?.postalCode ?? '',
+              inputFormatters: [Formatters().zipCodeFormatter],
+              decoration: InputDecoration(
+                hintText: '##-###',
+                labelText: context.localize.zipCode,
+              ),
               validator: FormBuilderValidators.compose(
                 [
                   FormBuilderValidators.required(
@@ -191,11 +142,62 @@ class _UserFormState extends State<UserForm> {
                   ),
                 ],
               ),
-              onChanged: (value) {
-                if (widget.onCityChange != null) {
-                  widget.onCityChange!(value);
+              onChanged: (value) async {
+                if (value != null && value.isNotEmpty && value.length == 6) {
+                  _hasClearedZipCode = false;
+                  _hasReachedValue = true;
+                  try {
+                    await _usersCubit.getZipCodeInfo(zipCode: value);
+                  } catch (_) {
+                    if (context.mounted) {
+                      _messageInfoService.showMessage(
+                        context: context,
+                        infoMessage: context.localize.fetchingCityError(value),
+                        infoType: MessageInfoTypes.alert,
+                      );
+                    }
+                  }
+                } else if (value != null &&
+                    value.isNotEmpty &&
+                    value.length < 6) {
+                  if (_hasReachedValue && !_hasClearedZipCode) {
+                    _cityTextController.clear();
+                    _usersCubit.clearZipCodeInfo();
+                    _hasClearedZipCode = true;
+                    _hasReachedValue = false;
+                  }
+                }
+
+                if (widget.onZipCodeChange != null) {
+                  widget.onZipCodeChange!(value);
                 }
               },
+            ),
+            BlocListener<UsersCubit, UsersState>(
+              listener: (context, state) {
+                _cityTextController.text = state.maybeMap(
+                  orElse: () => '',
+                  loaded: (state) => state.data?.city ?? '',
+                );
+              },
+              child: FormBuilderTextField(
+                name: cityForm,
+                controller: _cityTextController,
+                decoration:
+                    InputDecoration(labelText: context.localize.cityName),
+                validator: FormBuilderValidators.compose(
+                  [
+                    FormBuilderValidators.required(
+                      errorText: context.localize.requiredField,
+                    ),
+                  ],
+                ),
+                onChanged: (value) {
+                  if (widget.onCityChange != null) {
+                    widget.onCityChange!(value);
+                  }
+                },
+              ),
             ),
             FormBuilderDropdown<GroupModel>(
               validator: FormBuilderValidators.compose(
