@@ -177,7 +177,7 @@ class _UserFormState extends State<UserForm> {
               listener: (context, state) {
                 _cityTextController.text = state.maybeMap(
                   orElse: () => '',
-                  loaded: (state) => state.data?.city ?? '',
+                  loaded: (loaded) => loaded.data?.city ?? '',
                 );
               },
               child: FormBuilderTextField(
