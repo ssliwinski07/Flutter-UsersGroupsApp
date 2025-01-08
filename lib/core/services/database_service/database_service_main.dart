@@ -6,9 +6,11 @@ import 'package:flutter_users_group_app/helpers/helpers.dart';
 import 'package:flutter_users_group_app/models/models.dart';
 
 class DatabaseServiceMain implements DatabaseServiceBase {
+  late Database _db;
+
   @override
-  Future<Database> initilizeDatabase() async {
-    final db = openDatabase(
+  Future<void> openDb() async {
+    _db = await openDatabase(
       join(await getDatabasesPath(), databaseName),
       onCreate: (db, version) async {
         await db.execute(
@@ -51,7 +53,11 @@ class DatabaseServiceMain implements DatabaseServiceBase {
       },
       version: 1,
     );
-    return db;
+  }
+
+  @override
+  Future<void> close() async {
+    await _db.close();
   }
 
   @override
@@ -224,16 +230,13 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     required Map<String, List<dynamic>> queries,
     bool continueOnError = true,
   }) async {
-    final db = await initilizeDatabase();
-    final batch = db.batch();
+    final batch = _db.batch();
 
     for (var entry in queries.entries) {
       batch.rawDelete(entry.key, entry.value);
     }
 
     await batch.commit(noResult: true, continueOnError: continueOnError);
-
-    await db.close();
   }
 
   Future<List<T>> _getListDataFromQuery<T>({
@@ -241,11 +244,8 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     List<Object?>? parameters,
     required T Function(Map<String, dynamic>) fromJson,
   }) async {
-    final Database db = await initilizeDatabase();
     final List<Map<String, dynamic>> dataMap =
-        await db.rawQuery(query, parameters);
-
-    await db.close();
+        await _db.rawQuery(query, parameters);
 
     return dataMap.map(
       (e) {
@@ -259,10 +259,7 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     List<Object?>? parameters,
     required T Function(Map<String, dynamic>) fromJson,
   }) async {
-    final Database db = await initilizeDatabase();
-    List<Map<String, dynamic>> dataMap = await db.rawQuery(query, parameters);
-
-    await db.close();
+    List<Map<String, dynamic>> dataMap = await _db.rawQuery(query, parameters);
 
     return fromJson(dataMap.first);
   }
@@ -272,14 +269,11 @@ class DatabaseServiceMain implements DatabaseServiceBase {
       required T Function(Map<String, dynamic>) fromJson,
       String? where,
       List<Object?>? whereArgs}) async {
-    final Database db = await initilizeDatabase();
-    final List<Map<String, dynamic>> dataMap = await db.query(
+    final List<Map<String, dynamic>> dataMap = await _db.query(
       table,
       where: where,
       whereArgs: whereArgs,
     );
-
-    await db.close();
 
     return fromJson(dataMap.first);
   }
@@ -289,40 +283,29 @@ class DatabaseServiceMain implements DatabaseServiceBase {
       required T Function(Map<String, dynamic>) fromJson,
       String? where,
       List<Object?>? whereArgs}) async {
-    final Database db = await initilizeDatabase();
-    final List<Map<String, dynamic>> dataMap = await db.query(
+    final List<Map<String, dynamic>> dataMap = await _db.query(
       table,
       where: where,
       whereArgs: whereArgs,
     );
-
-    await db.close();
 
     return dataMap.map((e) => fromJson(e)).toList();
   }
 
   Future<int> _addToTable(
       {required Map<String, dynamic> json, required String tableName}) async {
-    final db = await initilizeDatabase();
-
-    final result = await db.insert(tableName, json,
+    final result = await _db.insert(tableName, json,
         conflictAlgorithm: ConflictAlgorithm.replace);
-
-    await db.close();
 
     return result;
   }
 
   Future<int> _updateTableFromQuery(
       {required String query, List<Object?>? parameters}) async {
-    final db = await initilizeDatabase();
-
-    final result = await db.rawUpdate(
+    final result = await _db.rawUpdate(
       query,
       parameters,
     );
-
-    await db.close();
 
     return result;
   }
@@ -331,11 +314,7 @@ class DatabaseServiceMain implements DatabaseServiceBase {
     required String query,
     List<Object?>? parameters,
   }) async {
-    final db = await initilizeDatabase();
-
-    final result = await db.rawInsert(query, parameters);
-
-    await db.close();
+    final result = await _db.rawInsert(query, parameters);
 
     return result;
   }

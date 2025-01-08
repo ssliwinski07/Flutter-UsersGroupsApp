@@ -5,18 +5,20 @@ import 'package:flutter_users_group_app/core/core.dart';
 
 class ServiceLocator {
   GetIt get getInstance => GetIt.instance;
-  DatabaseServiceBase get databaseServiceBase => _networkDatabaseService;
-  ZipCodesNetworkServiceBase get zipCodesNetworkServiceBase =>
-      _zipCodesNetworkServiceBase;
 
-  late final DatabaseServiceBase _networkDatabaseService;
-  late final ZipCodesNetworkServiceBase _zipCodesNetworkServiceBase;
+  Future<void> setupServiceLocators() async {
+    await _initializeCoreServices();
+    await _initializeUiServices();
+  }
+
+  Future<void> setupDependencies() async {
+    await GetServices().databaseServiceBase.openDb();
+  }
 
   //Core services
-  Future<void> initializeCoreServices() async {
+  Future<void> _initializeCoreServices() async {
     //database service init
     final databaseService = DatabaseServiceMain();
-    await databaseService.initilizeDatabase();
     getInstance.registerSingleton<DatabaseServiceBase>(
       databaseService,
       instanceName: mainInstance,
@@ -39,18 +41,13 @@ class ServiceLocator {
   }
 
   //UI services
-  Future<void> initializeUiServices() async {
+  Future<void> _initializeUiServices() async {
     //message service init
     final messageService = MessageInfoServiceUi();
     getInstance.registerSingleton<MessageInfoServiceBase>(
       messageService,
       instanceName: mainInstance,
     );
-  }
-
-  Future<void> initServices() async {
-    await initializeCoreServices();
-    await initializeUiServices();
   }
 }
 
