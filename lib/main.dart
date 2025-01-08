@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -13,28 +14,36 @@ import 'cubit/cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  //Handles the app exit - in that case it closes db while exiting the app.
+  //Termination handled on Android and IOS. See 'AppDelegate.swift' and 'MainActivity.kt' files.
+  _AppExitHandler.exitHandler();
+
   final serviceLocator = ServiceLocator();
 
-  await serviceLocator.initServices();
+  //setting up services
+  await serviceLocator.setupServiceLocators();
 
-  final getServices = GetServices();
+  //setting up app dependencies
+  await serviceLocator.setupDependencies();
 
   runApp(
     MultiBlocProvider(
       providers: [
         Provider<UsersStore>(
           create: (context) => UsersStore(
-            databaseService: getServices.databaseServiceBase,
-            zipCodesNetworkServiceBase: getServices.zipCodesNetworkServiceBase,
+            databaseService: GetServices().databaseServiceBase,
+            zipCodesNetworkServiceBase:
+                GetServices().zipCodesNetworkServiceBase,
           ),
         ),
         Provider<GroupsStore>(
           create: (context) =>
-              GroupsStore(databaseService: getServices.databaseServiceBase),
+              GroupsStore(databaseService: GetServices().databaseServiceBase),
         ),
         Provider<SettingsStore>(
           create: (context) => SettingsStore(
-              databaseServiceBase: getServices.databaseServiceBase),
+            databaseServiceBase: GetServices().databaseServiceBase,
+          ),
         ),
         BlocProvider<UsersCubit>(
           create: (context) => UsersCubit(
@@ -68,5 +77,17 @@ class MyApp extends StatelessWidget {
         locale: Locale(settingsStore.locale ?? pl),
       ),
     );
+  }
+}
+
+class _AppExitHandler {
+  static const MethodChannel _channel = MethodChannel(appExitChannel);
+
+  static void exitHandler() {
+    _channel.setMethodCallHandler((h) async {
+      if (h.method == onAppExit) {
+        await GetServices().databaseServiceBase.dropDatabase();
+      }
+    });
   }
 }
