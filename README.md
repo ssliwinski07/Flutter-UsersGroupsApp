@@ -15,6 +15,7 @@ Additional notes:
    - In the `main` branch MobX was used for managing app state.
    - In the `cubit_refactor` BLoC pattern (instead of MobX) was used to fetch data from API. Class `UsersCubit` -> `UserForm`. It was only used in that one place to show I know 
      how to use it.
+   - App termination handled on iOS and Android to properly close database while exiting the app - see `AppDelegate.swift` and `MainActivity.kt` files and `_AppExitHandler` class.
 
 
 

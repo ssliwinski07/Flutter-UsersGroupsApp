@@ -1,3 +1,11 @@
+// channels
+
+const appExitChannel = 'appExitChannel';
+
+// Native platforms (iOS and Android)
+
+const onAppExit = 'onAppExit';
+
 // Service locators instances name
 const mainInstance = 'mainInstance';
 

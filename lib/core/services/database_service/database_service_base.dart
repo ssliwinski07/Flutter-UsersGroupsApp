@@ -1,9 +1,8 @@
-import 'package:sqflite/sqflite.dart';
-
 import 'package:flutter_users_group_app/models/models.dart';
 
 abstract interface class DatabaseServiceBase {
-  Future<Database> initilizeDatabase();
+  Future<void> openDb();
+  Future<void> close();
   Future<bool> dropDatabase();
   Future<List<UserModel>> getUsers();
   Future<GroupModel> getUserGroup({required int userId});
