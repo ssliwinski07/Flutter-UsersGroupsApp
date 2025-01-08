@@ -13,37 +13,26 @@ void main() async {
 
   final serviceLocator = ServiceLocator();
 
-  Future<void> initServices() async {
-    await serviceLocator.initializeCoreServices();
-    await serviceLocator.initializeUiServices();
-  }
+  await serviceLocator.initServices();
 
-  await initServices();
-
-  DatabaseServiceBase databaseServiceBase = serviceLocator
-      .getInstance<DatabaseServiceBase>(instanceName: mainInstance);
-
-  ZipCodesNetworkServiceBase zipCodesNetworkServiceBase = serviceLocator
-      .getInstance<ZipCodesNetworkServiceBase>(instanceName: mainInstance);
-
-  await databaseServiceBase.initilizeDatabase();
+  final getServices = GetServices();
 
   runApp(
     MultiProvider(
       providers: [
         Provider<UsersStore>(
           create: (context) => UsersStore(
-            databaseService: databaseServiceBase,
-            zipCodesNetworkServiceBase: zipCodesNetworkServiceBase,
+            databaseService: getServices.databaseServiceBase,
+            zipCodesNetworkServiceBase: getServices.zipCodesNetworkServiceBase,
           ),
         ),
         Provider<GroupsStore>(
           create: (context) =>
-              GroupsStore(databaseService: databaseServiceBase),
+              GroupsStore(databaseService: getServices.databaseServiceBase),
         ),
         Provider<SettingsStore>(
-          create: (context) =>
-              SettingsStore(databaseServiceBase: databaseServiceBase),
+          create: (context) => SettingsStore(
+              databaseServiceBase: getServices.databaseServiceBase),
         ),
       ],
       child: MyApp(),

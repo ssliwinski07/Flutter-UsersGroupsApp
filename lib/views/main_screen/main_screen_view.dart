@@ -145,8 +145,7 @@ class _UsersTileWidgetState extends State<_UsersTileWidget> {
   late GroupsStore _groupsStore;
   late UsersStore _usersStore;
 
-  MessageInfoServiceBase get _messageInfoService => ServiceLocator()
-      .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
+  GetServices getServices = GetServices();
 
   @override
   void initState() {
@@ -236,7 +235,7 @@ class _UsersTileWidgetState extends State<_UsersTileWidget> {
                           );
 
                           if (context.mounted) {
-                            _messageInfoService.showMessage(
+                            getServices.messageInfoServiceBase.showMessage(
                               context: context,
                               infoMessage: context.localize.userAdded,
                               infoType: MessageInfoTypes.info,
@@ -244,7 +243,7 @@ class _UsersTileWidgetState extends State<_UsersTileWidget> {
                           }
                         } catch (e) {
                           if (context.mounted) {
-                            _messageInfoService.showMessage(
+                            getServices.messageInfoServiceBase.showMessage(
                               context: context,
                               infoMessage: context.localize.addingUserError,
                               infoType: MessageInfoTypes.alert,

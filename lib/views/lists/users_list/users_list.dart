@@ -18,8 +18,7 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
-  MessageInfoServiceBase get _messageInfoService => ServiceLocator()
-      .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
+  GetServices getServices = GetServices();
 
   final _formKey = GlobalKey<FormBuilderState>();
 
@@ -60,7 +59,7 @@ class _UsersListState extends State<UsersList> {
                       await _deleteUser(userId: user.userId!);
 
                       if (context.mounted) {
-                        _messageInfoService.showMessage(
+                        getServices.messageInfoServiceBase.showMessage(
                           infoMessage: context.localize
                               .userRemoved('${user.userName} ${user.lastName}'),
                           infoType: MessageInfoTypes.info,
@@ -69,7 +68,7 @@ class _UsersListState extends State<UsersList> {
                       }
                     } catch (e) {
                       if (context.mounted) {
-                        _messageInfoService.showMessage(
+                        getServices.messageInfoServiceBase.showMessage(
                           infoMessage: context.localize.removingUserError(
                               '${user.userName} ${user.lastName}'),
                           infoType: MessageInfoTypes.alert,
@@ -106,7 +105,8 @@ class _UsersListState extends State<UsersList> {
                             onSubbmit: () async {
                               try {
                                 if (context.mounted) {
-                                  _messageInfoService.showMessage(
+                                  getServices.messageInfoServiceBase
+                                      .showMessage(
                                     context: context,
                                     infoMessage: context.localize.userModified,
                                     infoType: MessageInfoTypes.info,
@@ -114,7 +114,8 @@ class _UsersListState extends State<UsersList> {
                                 }
                               } catch (_) {
                                 if (context.mounted) {
-                                  _messageInfoService.showMessage(
+                                  getServices.messageInfoServiceBase
+                                      .showMessage(
                                     context: context,
                                     infoMessage:
                                         context.localize.modifyingUserError,
