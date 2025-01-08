@@ -3,8 +3,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'package:flutter_users_group_app/helpers/extensions/go_route.dart';
 import 'package:flutter_users_group_app/widgets/widgets.dart';
-import 'package:flutter_users_group_app/core/core.dart';
-import 'package:flutter_users_group_app/helpers/helpers.dart';
 
 class CustomListView extends StatefulWidget {
   const CustomListView({
