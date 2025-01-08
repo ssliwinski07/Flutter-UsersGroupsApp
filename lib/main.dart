@@ -38,7 +38,7 @@ void main() async {
         ),
         BlocProvider<UsersCubit>(
           create: (context) => UsersCubit(
-            zipCodeService: zipCodesNetworkServiceBase,
+            zipCodeService: getServices.zipCodesNetworkServiceBase,
           ),
         )
       ],
