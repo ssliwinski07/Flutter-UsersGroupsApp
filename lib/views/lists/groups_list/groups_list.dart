@@ -18,8 +18,7 @@ class GroupsList extends StatefulWidget {
 }
 
 class _GroupsListState extends State<GroupsList> {
-  MessageInfoServiceBase get _messageInfoService => ServiceLocator()
-      .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
+  GetServices getServices = GetServices();
 
   final _formKey = GlobalKey<FormBuilderState>();
 
@@ -60,7 +59,7 @@ class _GroupsListState extends State<GroupsList> {
                       await _deleteGroup(groupId: group.groupId!);
 
                       if (context.mounted) {
-                        _messageInfoService.showMessage(
+                        getServices.messageInfoServiceBase.showMessage(
                           infoMessage:
                               context.localize.groupRemoved(group.groupName),
                           infoType: MessageInfoTypes.info,
@@ -69,7 +68,7 @@ class _GroupsListState extends State<GroupsList> {
                       }
                     } catch (_) {
                       if (context.mounted) {
-                        _messageInfoService.showMessage(
+                        getServices.messageInfoServiceBase.showMessage(
                           infoMessage: context.localize
                               .removingGroupError(group.groupName),
                           infoType: MessageInfoTypes.alert,
@@ -96,7 +95,7 @@ class _GroupsListState extends State<GroupsList> {
                               groupName: groupName!,
                             );
                             if (context.mounted) {
-                              _messageInfoService.showMessage(
+                              getServices.messageInfoServiceBase.showMessage(
                                 context: context,
                                 infoMessage: context.localize.groupModified,
                                 infoType: MessageInfoTypes.info,
@@ -104,7 +103,7 @@ class _GroupsListState extends State<GroupsList> {
                             }
                           } catch (e) {
                             if (context.mounted) {
-                              _messageInfoService.showMessage(
+                              getServices.messageInfoServiceBase.showMessage(
                                 context: context,
                                 infoMessage: context.localize.addingGroupError,
                                 infoType: MessageInfoTypes.alert,
