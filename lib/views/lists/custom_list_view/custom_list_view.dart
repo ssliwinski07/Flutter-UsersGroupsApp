@@ -25,9 +25,6 @@ class CustomListView extends StatefulWidget {
 }
 
 class _CustomListViewState extends State<CustomListView> {
-  MessageInfoServiceBase get messageInfoService => ServiceLocator()
-      .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
-
   @override
   void initState() {
     super.initState();

@@ -47,8 +47,7 @@ class _UserFormState extends State<UserForm> {
   late UsersCubit _usersCubit;
   late TextEditingController _cityTextController;
 
-  MessageInfoServiceBase get _messageInfoService => ServiceLocator()
-      .getInstance<MessageInfoServiceBase>(instanceName: mainInstance);
+  GetServices getServices = GetServices();
 
   bool _hasReachedValue = false;
   bool _hasClearedZipCode = false;
@@ -150,7 +149,7 @@ class _UserFormState extends State<UserForm> {
                     await _usersCubit.getZipCodeInfo(zipCode: value);
                   } catch (_) {
                     if (context.mounted) {
-                      _messageInfoService.showMessage(
+                      getServices.messageInfoServiceBase.showMessage(
                         context: context,
                         infoMessage: context.localize.fetchingCityError(value),
                         infoType: MessageInfoTypes.alert,
