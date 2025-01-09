@@ -79,7 +79,7 @@ class _AppExitHandler {
   static void exitHandler() {
     _channel.setMethodCallHandler((h) async {
       if (h.method == onAppExit) {
-        await GetServices().databaseServiceBase.dropDatabase();
+        await GetServices().databaseServiceBase.close();
       }
     });
   }
